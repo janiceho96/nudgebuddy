@@ -1,6 +1,6 @@
 import React from 'react';
 import { EnergyLevel, HoverHideMode } from '../../types';
-import { Settings, Sparkles, Eye, Minimize2, Pin, Brain, Trophy, FolderSync } from 'lucide-react';
+import { Settings, Sparkles, EyeOff, Pin, Brain, Trophy, FolderSync, ArrowDownToLine, PanelRightClose } from 'lucide-react';
 
 interface MacOSHeaderProps {
   isWideMode: boolean;
@@ -36,16 +36,14 @@ export const MacOSHeader: React.FC<MacOSHeaderProps> = ({
   const getHoverModeLabel = () => {
     switch (hoverHideMode) {
       case 'bottom_dock':
-        return { label: 'Bottom Dock', icon: <Minimize2 size={13} />, bg: '#86efac', title: '🚀 Bottom Dock: Floats as a bottom pill and expands UPWARD when hovered' };
+        return { label: 'Bottom Dock', icon: <ArrowDownToLine size={13} />, bg: '#86efac', title: '🚀 Bottom Dock: Shrinks to bottom corner pill and pops up on hover' };
       case 'edge_drawer':
-        return { label: 'Edge Drawer', icon: <Minimize2 size={13} />, bg: '#fef08a', title: '🪄 Edge Slide-out: Slides into the right bezel of your Mac' };
-      case 'peek_dock':
-        return { label: 'Peek Dock', icon: <Minimize2 size={13} />, bg: '#fed7aa', title: 'Hover-to-Reveal: Collapses to mini pill when cursor leaves' };
+        return { label: 'Edge Drawer', icon: <PanelRightClose size={13} />, bg: '#fef08a', title: '🪄 Edge Drawer: Tucks into the right edge of your screen' };
       case 'ghost_dim':
-        return { label: 'Ghost Dim', icon: <Eye size={13} />, bg: '#d8b4fe', title: 'Hover-to-Reveal: Dims translucent when cursor leaves' };
+        return { label: 'Ghost Dim', icon: <EyeOff size={13} />, bg: '#d8b4fe', title: '👁️ Ghost Dim: Dims translucent when you move away' };
       case 'none':
       default:
-        return { label: 'Pinned Open', icon: <Pin size={13} />, bg: '#ffffff', title: '📌 Pinned Open: Always fully visible (will not minimize when dragged)' };
+        return { label: 'Pinned Open', icon: <Pin size={13} />, bg: '#ffffff', title: '📌 Pinned Open: Always visible on your desktop' };
     }
   };
 
