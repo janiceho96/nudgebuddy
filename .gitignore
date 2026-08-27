@@ -1,0 +1,7 @@
+node_modules
+dist
+dist-macos
+dist-chrome-extension
+.DS_Store
+*.log
+*.zip
