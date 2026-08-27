@@ -30,6 +30,7 @@ fi
 mkdir -p "$APP_BUNDLE/Contents/Resources/app"
 cp -R "$PROJECT_DIR/dist" "$APP_BUNDLE/Contents/Resources/app/"
 cp "$PROJECT_DIR/electron-main.cjs" "$APP_BUNDLE/Contents/Resources/app/"
+cp "$PROJECT_DIR/preload.cjs" "$APP_BUNDLE/Contents/Resources/app/"
 cp "$PROJECT_DIR/package.json" "$APP_BUNDLE/Contents/Resources/app/"
 
 # Update Info.plist

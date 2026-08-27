@@ -1,4 +1,4 @@
-const { app, BrowserWindow, screen, globalShortcut } = require('electron');
+const { app, BrowserWindow, screen, globalShortcut, ipcMain } = require('electron');
 const path = require('path');
 
 let mainWindow = null;
@@ -22,12 +22,13 @@ function createWindow() {
     alwaysOnTop: true,
     resizable: true,
     webPreferences: {
+      preload: path.join(__dirname, 'preload.cjs'),
       nodeIntegration: false,
       contextIsolation: true
     }
   });
 
-  // Standard macOS floating window level (floats above apps but allows smooth background clicking!)
+  // Standard macOS floating window level
   mainWindow.setAlwaysOnTop(true, 'floating');
   mainWindow.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
 
@@ -49,6 +50,28 @@ function createWindow() {
     mainWindow = null;
   });
 }
+
+// IPC Handlers for Dynamic Click-Through and Window Controls
+ipcMain.on('set-ignore-mouse-events', (event, ignore, options) => {
+  const win = BrowserWindow.fromWebContents(event.sender);
+  if (win && !win.isDestroyed()) {
+    win.setIgnoreMouseEvents(ignore, { forward: true, ...options });
+  }
+});
+
+ipcMain.on('resize-window', (event, width, height) => {
+  const win = BrowserWindow.fromWebContents(event.sender);
+  if (win && !win.isDestroyed()) {
+    win.setSize(Math.round(width), Math.round(height));
+  }
+});
+
+ipcMain.on('set-always-on-top', (event, alwaysOnTop) => {
+  const win = BrowserWindow.fromWebContents(event.sender);
+  if (win && !win.isDestroyed()) {
+    win.setAlwaysOnTop(alwaysOnTop, alwaysOnTop ? 'floating' : 'normal');
+  }
+});
 
 // Keep in macOS dock
 app.dock && app.dock.show();
