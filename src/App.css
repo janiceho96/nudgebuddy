@@ -1,20 +1,20 @@
 .app-wrapper {
   width: 100%;
   height: 100%;
-  max-width: 100%;
+  max-width: 440px;
   display: flex;
   flex-direction: column;
   background: var(--bg-app);
-  border: none;
-  box-shadow: none;
-  border-radius: 0px;
+  border: 2.5px solid var(--border-dark);
+  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.25);
+  border-radius: 16px;
   overflow: hidden;
   position: relative;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .app-wrapper.wide-mode {
-  max-width: 100%;
+  max-width: 860px;
 }
 
 /* Bottom Dock / Upward Pop-out Mode */

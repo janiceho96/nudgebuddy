@@ -7,16 +7,19 @@ function createWindow() {
   const primaryDisplay = screen.getPrimaryDisplay();
   const { width: screenWidth, height: screenHeight } = primaryDisplay.workAreaSize;
 
-  const windowWidth = Math.min(1080, screenWidth - 100);
-  const windowHeight = Math.min(780, screenHeight - 100);
+  const windowWidth = 440;
+  const windowHeight = Math.min(760, screenHeight - 60);
 
   mainWindow = new BrowserWindow({
     width: windowWidth,
     height: windowHeight,
-    center: true,
-    frame: true,
-    title: 'NudgeBuddy',
-    backgroundColor: '#fbf9f4',
+    x: screenWidth - windowWidth - 20,
+    y: 40,
+    frame: false,
+    transparent: true,
+    backgroundColor: '#00000000',
+    hasShadow: false,
+    alwaysOnTop: true,
     resizable: true,
     webPreferences: {
       nodeIntegration: false,
