@@ -3,7 +3,7 @@ import { AgentState, Task, EnergyLevel, FocusSession, ChatMessage, MicroStep } f
 import { MascotAvatar } from './MascotAvatar';
 import { generateAgentReply } from '../../core/agentAIEngine';
 import { audioEngine } from '../../core/audioEngine';
-import { X, Send, Sparkles, Play, Check, Volume2, Flame, Bot } from 'lucide-react';
+import { X, Send, Sparkles, Play, Check, Bot, Heart, Coffee } from 'lucide-react';
 
 interface AgentChatModalProps {
   agent: AgentState;
@@ -42,25 +42,47 @@ export const AgentChatModal: React.FC<AgentChatModalProps> = ({
   const [isGenerating, setIsGenerating] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  const history = agent?.chatHistory && agent.chatHistory.length > 0
+    ? agent.chatHistory
+    : [
+        {
+          id: 'welcome-1',
+          sender: 'agent' as const,
+          text: `Hello friend! 🌿 I'm Sprout, your mindful forest companion. How is your energy feeling today? Let me know if you'd like to break down ${task ? `"${task.title}"` : 'your intention'} into tiny, peaceful steps.`,
+          timestamp: new Date().toISOString(),
+          mood: 'celebrating' as const
+        }
+      ];
+
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [agent.chatHistory, isGenerating]);
+    try {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    } catch {
+      // safe ignore
+    }
+  }, [history.length, isGenerating]);
 
   const speakMessage = (text: string) => {
     if (!voiceEnabled) return;
-    onSetTalking(true);
-    audioEngine.speakText(
-      text,
-      agent.persona,
-      () => onSetTalking(true),
-      () => onSetTalking(false)
-    );
+    try {
+      onSetTalking(true);
+      audioEngine.speakText(
+        text,
+        agent.persona,
+        () => onSetTalking(true),
+        () => onSetTalking(false)
+      );
+    } catch {
+      onSetTalking(false);
+    }
   };
 
   const handleSendMessage = async (text: string) => {
     if (!text.trim() || isGenerating) return;
 
-    if (soundEnabled) audioEngine.playSfx('pop');
+    if (soundEnabled) {
+      try { audioEngine.playSfx('pop'); } catch {}
+    }
 
     const userMsg: ChatMessage = {
       id: `user-${Date.now()}`,
@@ -93,10 +115,12 @@ export const AgentChatModal: React.FC<AgentChatModalProps> = ({
       };
 
       onAddMessage(agentMsg);
-      if (soundEnabled) audioEngine.playSfx('ding');
+      if (soundEnabled) {
+        try { audioEngine.playSfx('ding'); } catch {}
+      }
       speakMessage(response.replyText);
-    } catch {
-      // Fallback
+    } catch (err) {
+      console.warn('Agent reply error:', err);
     } finally {
       setIsGenerating(false);
     }
@@ -104,7 +128,9 @@ export const AgentChatModal: React.FC<AgentChatModalProps> = ({
 
   const handleApplySteps = (suggestedSteps: string[]) => {
     if (!task) return;
-    if (soundEnabled) audioEngine.playSfx('boing');
+    if (soundEnabled) {
+      try { audioEngine.playSfx('boing'); } catch {}
+    }
     const microSteps: MicroStep[] = suggestedSteps.map((s, idx) => ({
       id: `ms-${Date.now()}-${idx}`,
       text: s.replace(/^\d+\.\s*/, ''),
@@ -115,29 +141,43 @@ export const AgentChatModal: React.FC<AgentChatModalProps> = ({
   };
 
   const quickPrompts = [
-    { label: "😫 Can't get started", prompt: "I'm experiencing severe task paralysis and can't get started. Help!" },
-    { label: "🌶️ Roast me", prompt: "Roast me for procrastinating on this task!" },
-    { label: "🧩 3 Micro-Steps", prompt: "Break this task into 3 ridiculously easy 2-minute baby steps." },
-    { label: "☕ Give me a pep talk", prompt: "Give me an energetic ADHD-friendly pep talk." },
-    { label: "📱 Keep getting distracted", prompt: "I keep checking my phone and getting distracted." }
+    { label: "🌱 Help me start gently", prompt: "I'm feeling stuck or overwhelmed. Can you give me a calm, gentle way to start?" },
+    { label: "🧩 3 Tiny Micro-Steps", prompt: "Please break my task into 3 ridiculously easy 2-minute micro steps." },
+    { label: "🍵 Mindful Pep Talk", prompt: "Give me a warm, supportive pep talk to center my focus." },
+    { label: "🧘 Reset Overthinking", prompt: "I'm caught in an overthinking loop. Help me ground myself in the present." }
   ];
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content" style={{ maxWidth: '520px', height: '85vh', display: 'flex', flexDirection: 'column', padding: '1rem', background: '#fbf9f4' }}>
+    <div className="modal-overlay" style={{ zIndex: 999999 }}>
+      <div
+        className="modal-content"
+        style={{
+          maxWidth: '460px',
+          width: '92%',
+          height: '82vh',
+          display: 'flex',
+          flexDirection: 'column',
+          padding: '1.1rem',
+          background: '#f2f7f4',
+          border: '1.5px solid var(--border-dark)',
+          borderRadius: '22px',
+          boxShadow: '0 20px 48px -12px rgba(20, 54, 34, 0.22)',
+          position: 'relative'
+        }}
+      >
         {/* Header */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '2.5px solid #121826', paddingBottom: '0.65rem', marginBottom: '0.65rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-            <MascotAvatar mood={agent.currentMood} isTalking={agent.isTalking} size={46} />
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--border-dark)', paddingBottom: '0.75rem', marginBottom: '0.75rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+            <MascotAvatar mood={agent.currentMood} isTalking={agent.isTalking} size={42} />
             <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                <strong style={{ fontSize: '0.95rem' }}>Budge AI Accountability</strong>
-                <span className="nb-badge" style={{ background: agent.persona === 'spicy' ? '#fca5a5' : agent.persona === 'direct' ? '#fed7aa' : '#fbcfe8', fontSize: '0.68rem' }}>
-                  {agent.persona.toUpperCase()}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                <strong style={{ fontSize: '0.95rem', color: '#143622' }}>Sprout Forest Companion</strong>
+                <span style={{ background: '#d8f3dc', color: '#1b4332', fontSize: '0.65rem', fontWeight: 700, padding: '0.15rem 0.45rem', borderRadius: '10px' }}>
+                  🌿 SANCTUARY
                 </span>
               </div>
-              <div style={{ fontSize: '0.72rem', color: '#64748b' }}>
-                {task ? `Target: "${task.title.substring(0, 32)}..."` : 'No active task selected'}
+              <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
+                {task ? `Intention: "${task.title.substring(0, 28)}..."` : 'Mindful guidance'}
               </div>
             </div>
           </div>
@@ -145,35 +185,36 @@ export const AgentChatModal: React.FC<AgentChatModalProps> = ({
           <button
             type="button"
             onClick={() => {
-              audioEngine.stopSpeaking();
+              try { audioEngine.stopSpeaking(); } catch {}
               onClose();
             }}
             style={{
               background: '#ffffff',
-              border: '2px solid #121826',
+              border: '1px solid var(--border-dark)',
               borderRadius: '50%',
-              width: '28px',
-              height: '28px',
+              width: '30px',
+              height: '30px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              cursor: 'pointer'
+              cursor: 'pointer',
+              color: 'var(--text-secondary)'
             }}
           >
-            <X size={15} />
+            <X size={16} />
           </button>
         </div>
 
         {/* Message Stream */}
         <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '0.75rem', paddingRight: '0.3rem', marginBottom: '0.6rem' }}>
-          {agent.chatHistory.map((msg) => {
+          {history.map((msg) => {
             const isUser = msg.sender === 'user';
             return (
               <div
                 key={msg.id}
                 style={{
                   alignSelf: isUser ? 'flex-end' : 'flex-start',
-                  maxWidth: '85%',
+                  maxWidth: '86%',
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: isUser ? 'flex-end' : 'flex-start'
@@ -181,141 +222,168 @@ export const AgentChatModal: React.FC<AgentChatModalProps> = ({
               >
                 <div
                   style={{
-                    background: isUser ? '#121826' : '#ffffff',
-                    color: isUser ? '#ffffff' : '#0f172a',
-                    border: '2px solid #121826',
-                    boxShadow: isUser ? '2px 2px 0px rgba(0,0,0,0.3)' : '2.5px 2.5px 0px #121826',
-                    borderRadius: isUser ? '12px 12px 2px 12px' : '12px 12px 12px 2px',
-                    padding: '0.6rem 0.8rem',
+                    background: isUser ? '#2d6a4f' : '#ffffff',
+                    color: isUser ? '#ffffff' : '#143622',
+                    border: isUser ? 'none' : '1px solid var(--border-dark)',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+                    borderRadius: isUser ? '16px 16px 4px 16px' : '16px 16px 16px 4px',
+                    padding: '0.7rem 0.9rem',
                     fontSize: '0.86rem',
-                    lineHeight: 1.35,
-                    fontWeight: isUser ? 600 : 700
+                    lineHeight: 1.45,
+                    fontWeight: isUser ? 500 : 500
                   }}
                 >
-                  <p>{msg.text}</p>
+                  <p style={{ margin: 0 }}>{msg.text}</p>
 
                   {/* Suggested Micro Steps Actions */}
                   {msg.suggestedSteps && msg.suggestedSteps.length > 0 && (
-                    <div style={{ marginTop: '0.6rem', background: '#fffbeb', border: '1.5px solid #121826', borderRadius: '8px', padding: '0.5rem', color: '#1e293b' }}>
-                      <div style={{ fontSize: '0.74rem', fontWeight: 800, marginBottom: '0.35rem', display: 'flex', alignItems: 'center', gap: '0.2rem' }}>
-                        <Sparkles size={12} color="#eab308" /> Proposed Micro-Steps:
+                    <div style={{ marginTop: '0.65rem', background: '#eaf5ee', border: '1px solid #b7e4c7', borderRadius: '12px', padding: '0.55rem 0.7rem', color: '#1b4332' }}>
+                      <div style={{ fontSize: '0.74rem', fontWeight: 700, marginBottom: '0.4rem', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                        <span>🌱</span>
+                        <span>Gentle Micro-Steps:</span>
                       </div>
-                      <ol style={{ paddingLeft: '1.2rem', fontSize: '0.78rem', marginBottom: '0.45rem' }}>
-                        {msg.suggestedSteps.map((s, i) => (
-                          <li key={i}>{s}</li>
+                      <ol style={{ paddingLeft: '1.1rem', margin: '0 0 0.5rem 0', fontSize: '0.78rem', lineHeight: 1.4 }}>
+                        {msg.suggestedSteps.map((step, idx) => (
+                          <li key={idx} style={{ marginBottom: '0.25rem' }}>{step}</li>
                         ))}
                       </ol>
                       {task && (
                         <button
                           type="button"
-                          className="nb-btn nb-btn-success"
-                          style={{ width: '100%', fontSize: '0.75rem', padding: '0.35rem' }}
                           onClick={() => handleApplySteps(msg.suggestedSteps!)}
+                          style={{
+                            width: '100%',
+                            padding: '0.35rem',
+                            fontSize: '0.74rem',
+                            fontWeight: 700,
+                            background: '#2d6a4f',
+                            color: '#ffffff',
+                            border: 'none',
+                            borderRadius: '8px',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: '0.3rem'
+                          }}
                         >
-                          <Check size={13} strokeWidth={3} /> Inject Into Task & Focus!
+                          <Check size={12} /> Add steps to current task
                         </button>
                       )}
                     </div>
                   )}
 
-                  {/* Action button if present */}
+                  {/* Quick Action Start Focus */}
                   {msg.actionType === 'start_focus' && task && (
-                    <div style={{ marginTop: '0.5rem' }}>
-                      <button
-                        type="button"
-                        className="nb-btn nb-btn-primary"
-                        style={{ width: '100%', fontSize: '0.75rem', padding: '0.35rem' }}
-                        onClick={() => {
-                          onStartFocus(task.id);
-                          onClose();
-                        }}
-                      >
-                        <Play size={13} fill="#121826" /> Start 25m Focus Sesh Now
-                      </button>
-                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        onStartFocus(task.id);
+                        onClose();
+                      }}
+                      style={{
+                        marginTop: '0.5rem',
+                        padding: '0.4rem 0.8rem',
+                        fontSize: '0.75rem',
+                        fontWeight: 700,
+                        background: '#52b788',
+                        color: '#ffffff',
+                        border: 'none',
+                        borderRadius: '8px',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.3rem'
+                      }}
+                    >
+                      <Play size={12} /> Begin 25m Focus Sprint
+                    </button>
                   )}
                 </div>
-
-                {!isUser && (
-                  <button
-                    type="button"
-                    onClick={() => speakMessage(msg.text)}
-                    style={{
-                      marginTop: '2px',
-                      background: 'transparent',
-                      border: 'none',
-                      cursor: 'pointer',
-                      fontSize: '0.7rem',
-                      color: '#64748b',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '2px'
-                    }}
-                    title="Read aloud"
-                  >
-                    <Volume2 size={11} /> Speak
-                  </button>
-                )}
               </div>
             );
           })}
 
           {isGenerating && (
-            <div style={{ alignSelf: 'flex-start', background: '#ffffff', border: '2px solid #121826', borderRadius: '10px', padding: '0.5rem 0.8rem', fontSize: '0.8rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-              <Bot size={14} className="animate-spin" /> Budge is thinking...
+            <div style={{ alignSelf: 'flex-start', background: '#ffffff', border: '1px solid var(--border-dark)', borderRadius: '16px', padding: '0.6rem 0.9rem', fontSize: '0.8rem', color: '#40916c', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+              <Sparkles size={14} className="spinning-sparkle" />
+              <span>Sprout is thinking mindfully...</span>
             </div>
           )}
-
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Quick Action Prompt Chips */}
-        <div style={{ display: 'flex', gap: '0.35rem', overflowX: 'auto', paddingBottom: '0.4rem', marginBottom: '0.4rem' }}>
+        {/* Quick Prompts */}
+        <div style={{ display: 'flex', gap: '0.35rem', overflowX: 'auto', paddingBottom: '0.45rem', marginBottom: '0.45rem' }}>
           {quickPrompts.map((qp, idx) => (
             <button
               key={idx}
               type="button"
-              className="nb-btn"
-              style={{
-                fontSize: '0.72rem',
-                padding: '0.25rem 0.5rem',
-                whiteSpace: 'nowrap',
-                background: '#ffffff',
-                flexShrink: 0
-              }}
               onClick={() => handleSendMessage(qp.prompt)}
+              disabled={isGenerating}
+              style={{
+                fontSize: '0.7rem',
+                fontWeight: 600,
+                padding: '0.3rem 0.6rem',
+                background: '#ffffff',
+                border: '1px solid var(--border-dark)',
+                borderRadius: '12px',
+                whiteSpace: 'nowrap',
+                color: '#2d6a4f',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease'
+              }}
             >
               {qp.label}
             </button>
           ))}
         </div>
 
-        {/* Input Bar */}
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleSendMessage(inputVal);
-          }}
-          style={{ display: 'flex', gap: '0.4rem' }}
-        >
+        {/* Text Input */}
+        <div style={{ display: 'flex', gap: '0.4rem' }}>
           <input
             type="text"
-            className="quick-capture-input"
-            placeholder={`Talk to ${agent.name}... (e.g. 'I keep checking Twitter', 'Help me start')`}
             value={inputVal}
             onChange={(e) => setInputVal(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                handleSendMessage(inputVal);
+              }
+            }}
+            placeholder="Talk with Sprout or ask for guidance..."
             disabled={isGenerating}
-            autoFocus
+            style={{
+              flex: 1,
+              padding: '0.6rem 0.85rem',
+              borderRadius: '12px',
+              border: '1px solid var(--border-dark)',
+              fontSize: '0.82rem',
+              outline: 'none',
+              background: '#ffffff',
+              color: 'var(--text-main)'
+            }}
           />
           <button
-            type="submit"
-            className="nb-btn nb-btn-primary"
+            type="button"
+            onClick={() => handleSendMessage(inputVal)}
             disabled={isGenerating || !inputVal.trim()}
-            style={{ padding: '0.5rem 0.8rem' }}
+            style={{
+              padding: '0 0.85rem',
+              background: '#2d6a4f',
+              color: '#ffffff',
+              border: 'none',
+              borderRadius: '12px',
+              cursor: inputVal.trim() ? 'pointer' : 'default',
+              opacity: inputVal.trim() ? 1 : 0.6,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
           >
             <Send size={15} />
           </button>
-        </form>
+        </div>
       </div>
     </div>
   );
