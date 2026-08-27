@@ -3,7 +3,7 @@ import { appReducer, createInitialState, AppState } from './core/stateMachine';
 import { loadStateFromStorage, saveStateToStorage, clearStateFromStorage } from './core/storage';
 import { getDoThisNowTask } from './core/priorityEngine';
 import { audioEngine } from './core/audioEngine';
-import { HoverHideMode, Task } from './types';
+import { HoverHideMode, Task, EnergyLevel } from './types';
 
 import { MacOSHeader } from './components/Layout/MacOSHeader';
 import { MascotAvatar } from './components/Agent/MascotAvatar';
@@ -135,7 +135,7 @@ export function App() {
 
   return (
     <div
-      className={`app-wrapper ${isWideMode ? 'wide-mode' : ''} mode-${hoverMode} ${isMouseInside ? 'is-mouse-inside' : ''}`}
+      className={`app-wrapper ${isWideMode ? 'wide-mode' : ''} mode-${hoverMode} ${isMouseInside ? 'is-mouse-inside' : ''} ${state.isSettingsOpen ? 'is-settings-open' : ''}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -291,6 +291,31 @@ export function App() {
               dispatch({ type: 'SET_PERSONA', payload: persona });
             }}
           />
+
+          {/* Energy State Quick Bar */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: '#ffffff', border: '2px solid #121826', borderRadius: '10px', padding: '0.35rem 0.6rem', boxShadow: '2px 2px 0px #121826' }}>
+            <span style={{ fontSize: '0.74rem', fontWeight: 800, color: '#64748b' }}>Current Energy:</span>
+            <div style={{ display: 'flex', gap: '4px' }}>
+              {(['low', 'medium', 'high'] as EnergyLevel[]).map((lvl) => (
+                <button
+                  key={lvl}
+                  type="button"
+                  className="nb-btn"
+                  style={{
+                    padding: '0.2rem 0.45rem',
+                    fontSize: '0.72rem',
+                    background: state.settings.userEnergy === lvl ? (lvl === 'low' ? '#fca5a5' : lvl === 'medium' ? '#fed7aa' : '#86efac') : '#ffffff'
+                  }}
+                  onClick={() => {
+                    if (state.settings.soundEnabled) audioEngine.playSfx('pop');
+                    dispatch({ type: 'SET_USER_ENERGY', payload: lvl });
+                  }}
+                >
+                  {lvl === 'low' ? '🪫 Low' : lvl === 'medium' ? '⚡ Med' : '🚀 High'}
+                </button>
+              ))}
+            </div>
+          </div>
 
           {/* Integrated Soundscape Player */}
           <SoundscapePlayer isTimerRunning={state.timer.status === 'running'} />

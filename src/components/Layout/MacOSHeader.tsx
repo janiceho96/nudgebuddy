@@ -75,20 +75,17 @@ export const MacOSHeader: React.FC<MacOSHeaderProps> = ({
         />
       </div>
 
-      <div className="header-title-badge">
-        <Sparkles size={16} color="#eab308" fill="#eab308" />
-        <span>NudgeBuddy</span>
-        <span style={{ fontSize: '0.65rem', background: '#e2e8f0', padding: '0.1rem 0.35rem', borderRadius: '4px', border: '1px solid #121826' }}>
-          macOS
-        </span>
+      <div className="header-title-badge" style={{ gap: '0.35rem', fontSize: '0.85rem' }}>
+        <Sparkles size={14} color="#eab308" fill="#eab308" />
+        <span style={{ fontWeight: 900 }}>NudgeBuddy</span>
       </div>
 
-      <div className="header-controls">
+      <div className="header-controls" style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
         {/* Brain Dump Action */}
         <button
           type="button"
           className="nb-btn"
-          style={{ padding: '0.25rem 0.45rem', fontSize: '0.72rem', background: '#fef08a' }}
+          style={{ padding: '0.25rem 0.4rem', fontSize: '0.72rem', background: '#fef08a' }}
           onClick={onOpenBrainDump}
           title="🧠 Open Brain Dump AI Parser"
         >
@@ -99,7 +96,7 @@ export const MacOSHeader: React.FC<MacOSHeaderProps> = ({
         <button
           type="button"
           className="nb-btn"
-          style={{ padding: '0.25rem 0.45rem', fontSize: '0.72rem', background: '#bbf7d0' }}
+          style={{ padding: '0.25rem 0.4rem', fontSize: '0.72rem', background: '#bbf7d0' }}
           onClick={onOpenDailyRecap}
           title="🏆 Daily Recap & Dopamine Badges"
         >
@@ -110,7 +107,7 @@ export const MacOSHeader: React.FC<MacOSHeaderProps> = ({
         <button
           type="button"
           className="nb-btn"
-          style={{ padding: '0.25rem 0.45rem', fontSize: '0.72rem', background: '#bfdbfe' }}
+          style={{ padding: '0.25rem 0.4rem', fontSize: '0.72rem', background: '#bfdbfe' }}
           onClick={onOpenSync}
           title="📂 Sync Markdown / Obsidian / Backups"
         >
@@ -121,80 +118,31 @@ export const MacOSHeader: React.FC<MacOSHeaderProps> = ({
         <button
           type="button"
           className="nb-btn"
-          style={{ padding: '0.25rem 0.45rem', fontSize: '0.72rem', background: modeInfo.bg }}
+          style={{ padding: '0.25rem 0.4rem', fontSize: '0.72rem', background: modeInfo.bg }}
           onClick={onCycleHoverHideMode}
           title={modeInfo.title}
         >
           {modeInfo.icon}
         </button>
 
-        {/* User Energy Switcher */}
-        <div style={{ display: 'flex', gap: '2px', background: '#f1f5f9', border: '1.5px solid #121826', borderRadius: '6px', padding: '2px' }}>
-          <button
-            type="button"
-            title="Low Energy Mode (Zombie 🪫)"
-            style={{
-              background: userEnergy === 'low' ? '#fca5a5' : 'transparent',
-              border: 'none',
-              padding: '2px 5px',
-              borderRadius: '4px',
-              fontSize: '0.75rem',
-              cursor: 'pointer'
-            }}
-            onClick={() => onSetEnergy('low')}
-          >
-            🪫
-          </button>
-          <button
-            type="button"
-            title="Medium Energy Mode (Normal ⚡)"
-            style={{
-              background: userEnergy === 'medium' ? '#fed7aa' : 'transparent',
-              border: 'none',
-              padding: '2px 5px',
-              borderRadius: '4px',
-              fontSize: '0.75rem',
-              cursor: 'pointer'
-            }}
-            onClick={() => onSetEnergy('medium')}
-          >
-            ⚡
-          </button>
-          <button
-            type="button"
-            title="High Energy Mode (Beast 🚀)"
-            style={{
-              background: userEnergy === 'high' ? '#86efac' : 'transparent',
-              border: 'none',
-              padding: '2px 5px',
-              borderRadius: '4px',
-              fontSize: '0.75rem',
-              cursor: 'pointer'
-            }}
-            onClick={() => onSetEnergy('high')}
-          >
-            🚀
-          </button>
-        </div>
-
         {/* Settings button */}
         <button
           type="button"
           className="nb-btn"
           style={{
-            padding: '0.28rem 0.55rem',
+            padding: '0.25rem 0.5rem',
             fontSize: '0.72rem',
             background: '#d8b4fe',
             display: 'flex',
             alignItems: 'center',
-            gap: '4px',
+            gap: '3px',
             cursor: 'pointer'
           }}
           onClick={(e) => {
             e.stopPropagation();
             onOpenSettings();
           }}
-          title="App & Persona Settings"
+          title="⚙️ App Settings"
         >
           <Settings size={13} />
           <span style={{ fontWeight: 800 }}>Settings</span>
