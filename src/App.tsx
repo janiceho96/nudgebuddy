@@ -13,6 +13,7 @@ import { TaskList } from './components/Tasks/TaskList';
 import { QuickCaptureInput } from './components/Tasks/QuickCaptureInput';
 import { SettingsModal } from './components/Settings/SettingsModal';
 import { AgentChatModal } from './components/Agent/AgentChatModal';
+import treeBgImg from './assets/forest-tree-bg.png';
 
 import './App.css';
 
@@ -78,6 +79,13 @@ export function App() {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
+      {/* Serene Forest Tree Watermark Background */}
+      <div
+        className="app-tree-bg"
+        style={{ backgroundImage: `url(${treeBgImg})` }}
+        aria-hidden="true"
+      />
+
       {/* Bottom Dock Mini Capsule */}
       <div
         className="bottom-dock-pill"
