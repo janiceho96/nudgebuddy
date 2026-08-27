@@ -157,7 +157,30 @@ export function App() {
           {activeFocusTask?.title || 'No task'}
         </div>
 
-        <span style={{ fontSize: '0.75rem', fontWeight: 900, color: '#121826' }}>▲</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+          <button
+            type="button"
+            style={{
+              background: '#ffffff',
+              border: '1.5px solid #121826',
+              borderRadius: '6px',
+              padding: '2px 5px',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              fontSize: '0.7rem'
+            }}
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsMouseInside(true);
+              dispatch({ type: 'TOGGLE_SETTINGS' });
+            }}
+            title="Open Settings"
+          >
+            ⚙️
+          </button>
+          <span style={{ fontSize: '0.75rem', fontWeight: 900, color: '#121826' }}>▲</span>
+        </div>
       </div>
 
       {/* Edge Drawer Pull Tab (Protruding tab when docked to Mac right bezel) */}

@@ -181,11 +181,23 @@ export const MacOSHeader: React.FC<MacOSHeaderProps> = ({
         <button
           type="button"
           className="nb-btn"
-          style={{ padding: '0.3rem 0.45rem', fontSize: '0.75rem' }}
-          onClick={onOpenSettings}
-          title="App Settings"
+          style={{
+            padding: '0.28rem 0.55rem',
+            fontSize: '0.72rem',
+            background: '#d8b4fe',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '4px',
+            cursor: 'pointer'
+          }}
+          onClick={(e) => {
+            e.stopPropagation();
+            onOpenSettings();
+          }}
+          title="App & Persona Settings"
         >
-          <Settings size={14} />
+          <Settings size={13} />
+          <span style={{ fontWeight: 800 }}>Settings</span>
         </button>
       </div>
     </header>
