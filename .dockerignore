@@ -1,0 +1,9 @@
+node_modules
+dist
+dist-macos
+dist-chrome-extension
+.git
+.gitignore
+*.log
+.DS_Store
+NudgeBuddy-*.zip

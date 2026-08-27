@@ -1,0 +1,30 @@
+================================================================================
+   🕊️ NUDGEBUDDY — MINIMALIST SANCTUARY (HOW TO OPEN)
+================================================================================
+
+Choose ANY of the 3 easy ways below to open NudgeBuddy on your Mac:
+
+--------------------------------------------------------------------------------
+👉 WAY 1 (EASIEST — ZERO WARNINGS): Double-Click "NudgeBuddy-Offline.html"
+--------------------------------------------------------------------------------
+Simply double-click "NudgeBuddy-Offline.html".
+It will open instantly in your browser with 100% full offline focus features.
+(No security prompts, no setup needed!)
+
+--------------------------------------------------------------------------------
+👉 WAY 2: Double-Click "Install-NudgeBuddy.command"
+--------------------------------------------------------------------------------
+1. Hold down the "Control" key on your keyboard and click "Install-NudgeBuddy.command" (or Right-Click).
+2. Click "Open" from the menu.
+3. It will automatically strip macOS quarantine and pop up the app!
+
+--------------------------------------------------------------------------------
+👉 WAY 3: Open "NudgeBuddy.app" as a Native Desktop App
+--------------------------------------------------------------------------------
+1. Right-Click (or Control + Click) "NudgeBuddy.app".
+2. Click "Open" from the context menu.
+3. Click "Open" on the confirmation dialog.
+(macOS will remember this and allow 1-click open forever after!)
+
+Enjoy your peaceful focus sanctuary! 🕊️
+================================================================================
