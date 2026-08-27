@@ -153,22 +153,25 @@ export function getAgentDialogue(
 export function getRandomBanter(persona: AgentPersona, _snoozeLevel: number = 0): AgentDialogue {
   if (persona === 'gentle') {
     const quotes = [
-      { quote: "Honor your quiet rhythms today. Meaningful depth over rushed speed.", mood: 'idle' as AgentMood },
-      { quote: "Hydration check — a warm sip of tea or water helps restore clarity.", mood: 'idle' as AgentMood },
-      { quote: "You don't need anyone's permission to move thoughtfully and deliberately.", mood: 'idle' as AgentMood }
+      { quote: "I'm watering your focus plant with warm sunshine today! 🌱✨", mood: 'celebrating' as AgentMood },
+      { quote: "One tiny gentle step is all we need, friend 🌸", mood: 'idle' as AgentMood },
+      { quote: "Breathe in the pine breeze... you're doing so well 🍃", mood: 'idle' as AgentMood },
+      { quote: "Look at your progress sprouting! Proud of you 🌿💖", mood: 'celebrating' as AgentMood },
+      { quote: "Hydration check! A warm sip of water or tea for your bright mind 🍵✨", mood: 'idle' as AgentMood }
     ];
     return quotes[Math.floor(Math.random() * quotes.length)];
   } else if (persona === 'direct') {
     const quotes = [
-      { quote: "Clarity comes from focused action. What is your true priority right now?", mood: 'watching' as AgentMood },
-      { quote: "Protect your deep work sanctuary. Close the non-essential tabs.", mood: 'watching' as AgentMood },
-      { quote: "25 minutes of unbroken attention is transformative.", mood: 'watching' as AgentMood }
+      { quote: "Ancient Oak standing tall with you 🌲. You've got this.", mood: 'watching' as AgentMood },
+      { quote: "Protect your deep work sanctuary. One strong root at a time 🌿", mood: 'watching' as AgentMood },
+      { quote: "25 minutes of unbroken attention is where magic happens ✨", mood: 'watching' as AgentMood }
     ];
     return quotes[Math.floor(Math.random() * quotes.length)];
   } else {
     const quotes = [
-      { quote: "Trust your visionary instincts. One calm step at a time.", mood: 'hyped' as AgentMood },
-      { quote: "Release perfectionism — simply show up and let flow happen.", mood: 'hyped' as AgentMood }
+      { quote: "Wild Flora is blooming! Bring your sparkle to this task 🌸✨", mood: 'hyped' as AgentMood },
+      { quote: "Release all worries — you are naturally brilliant! 🌱💖", mood: 'hyped' as AgentMood },
+      { quote: "Sprout believes in you! Let's make something lovely 🍃⭐", mood: 'hyped' as AgentMood }
     ];
     return quotes[Math.floor(Math.random() * quotes.length)];
   }
