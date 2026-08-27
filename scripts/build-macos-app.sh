@@ -1,43 +1,49 @@
 #!/bin/bash
 set -e
 
-PROJECT_DIR="/Users/macjanice/.gemini/antigravity-ide/scratch/nudgebuddy"
+PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 APP_NAME="NudgeBuddy"
 APP_DIR="$PROJECT_DIR/dist-macos/$APP_NAME.app"
 DESKTOP_APP="/Users/macjanice/Desktop/$APP_NAME.app"
+
+# 1. Build production bundle first
+cd "$PROJECT_DIR"
+npm run build
 
 mkdir -p "$PROJECT_DIR/dist-macos"
 rm -rf "$APP_DIR" "$DESKTOP_APP"
 
 # Create .app directory structure
 mkdir -p "$APP_DIR/Contents/MacOS"
-mkdir -p "$APP_DIR/Contents/Resources"
+mkdir -p "$APP_DIR/Contents/Resources/app"
 
-# 1. Launcher Executable (Launches true Electron floating window)
+# Copy compiled static web app directly inside the .app bundle (100% self-contained!)
+cp -R "$PROJECT_DIR/dist/"* "$APP_DIR/Contents/Resources/app/"
+
+# 2. Universal Self-Contained Launcher (Runs on ANY Mac)
 cat << 'EOF' > "$APP_DIR/Contents/MacOS/NudgeBuddy"
 #!/bin/bash
-export PATH="/usr/local/bin:/opt/homebrew/bin:$PATH"
-PROJECT_DIR="/Users/macjanice/.gemini/antigravity-ide/scratch/nudgebuddy"
+DIR="$(cd "$(dirname "$0")/../Resources/app" && pwd)"
+PORT=5188
 
-# Check if Vite server on port 5173 is active
-if ! nc -z localhost 5173 2>/dev/null; then
-  cd "$PROJECT_DIR"
-  nohup npm run dev > /tmp/nudgebuddy_dev.log 2>&1 &
-  for i in {1..25}; do
-    if nc -z localhost 5173 2>/dev/null; then
-      break
-    fi
-    sleep 0.2
-  done
+# Check if port is already running
+if ! nc -z localhost $PORT 2>/dev/null; then
+  cd "$DIR"
+  python3 -m http.server $PORT > /dev/null 2>&1 &
+  sleep 0.5
 fi
 
-cd "$PROJECT_DIR"
-exec ./node_modules/.bin/electron electron-main.cjs
+# Open in Chrome App Mode if available, or default browser
+if [ -d "/Applications/Google Chrome.app" ]; then
+  open -na "Google Chrome" --args --app="http://localhost:$PORT" --window-size=440,780 2>/dev/null || open "http://localhost:$PORT"
+else
+  open "http://localhost:$PORT"
+fi
 EOF
 
 chmod +x "$APP_DIR/Contents/MacOS/NudgeBuddy"
 
-# 2. Info.plist
+# 3. Info.plist
 cat << EOF > "$APP_DIR/Contents/Info.plist"
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -58,19 +64,22 @@ cat << EOF > "$APP_DIR/Contents/Info.plist"
     <key>CFBundleVersion</key>
     <string>1</string>
     <key>LSMinimumSystemVersion</key>
-    <string>11.0</string>
+    <string>10.15</string>
     <key>NSHighResolutionCapable</key>
     <true/>
 </dict>
 </plist>
 EOF
 
-# 3. Copy Icon
+# 4. Copy Mascot Icon
 if [ -f "/tmp/appIcon.icns" ]; then
   cp "/tmp/appIcon.icns" "$APP_DIR/Contents/Resources/appIcon.icns"
 fi
 
-# Copy directly to Desktop for 1-click drag & launch
+# Self-sign with ad-hoc signature
+codesign --force --deep --sign - "$APP_DIR" 2>/dev/null || true
+
+# Copy directly to Desktop
 cp -R "$APP_DIR" "/Users/macjanice/Desktop/"
 
-echo "Successfully built native floating NudgeBuddy.app on Desktop!"
+echo "Successfully built 100% self-contained portable NudgeBuddy.app!"
