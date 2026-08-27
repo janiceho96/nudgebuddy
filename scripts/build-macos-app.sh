@@ -17,26 +17,29 @@ rm -rf "$APP_DIR" "$DESKTOP_APP"
 mkdir -p "$APP_DIR/Contents/MacOS"
 mkdir -p "$APP_DIR/Contents/Resources/app"
 
-# Copy compiled static web app directly inside the .app bundle (100% self-contained!)
+# Copy compiled static web app directly inside the .app bundle
 cp -R "$PROJECT_DIR/dist/"* "$APP_DIR/Contents/Resources/app/"
+cp "$PROJECT_DIR/electron-main.cjs" "$APP_DIR/Contents/Resources/app/"
 
-# 2. Universal Self-Contained Launcher (Runs on ANY Mac)
+# 2. Native macOS Launcher
 cat << 'EOF' > "$APP_DIR/Contents/MacOS/NudgeBuddy"
 #!/bin/bash
-DIR="$(cd "$(dirname "$0")/../Resources/app" && pwd)"
-PORT=5188
+PROJECT_DIR="/Users/macjanice/.gemini/antigravity-ide/scratch/nudgebuddy"
+APP_DIR="$(cd "$(dirname "$0")/../Resources/app" && pwd)"
 
-# Check if port is already running
-if ! nc -z localhost $PORT 2>/dev/null; then
-  cd "$DIR"
-  python3 -m http.server $PORT > /dev/null 2>&1 &
-  sleep 0.5
-fi
-
-# Open in Chrome App Mode if available, or default browser
-if [ -d "/Applications/Google Chrome.app" ]; then
-  open -na "Google Chrome" --args --app="http://localhost:$PORT" --window-size=440,780 2>/dev/null || open "http://localhost:$PORT"
+# 1. Try launching as true native Electron floating desktop window
+if [ -f "$PROJECT_DIR/node_modules/.bin/electron" ]; then
+  exec "$PROJECT_DIR/node_modules/.bin/electron" "$PROJECT_DIR/electron-main.cjs"
+elif [ -x "$(command -v electron)" ]; then
+  exec electron "$APP_DIR/electron-main.cjs"
 else
+  # 2. Portable standalone fallback for non-dev computers
+  PORT=5188
+  if ! nc -z localhost $PORT 2>/dev/null; then
+    cd "$APP_DIR"
+    python3 -m http.server $PORT > /dev/null 2>&1 &
+    sleep 0.5
+  fi
   open "http://localhost:$PORT"
 fi
 EOF
@@ -82,4 +85,4 @@ codesign --force --deep --sign - "$APP_DIR" 2>/dev/null || true
 # Copy directly to Desktop
 cp -R "$APP_DIR" "/Users/macjanice/Desktop/"
 
-echo "Successfully built 100% self-contained portable NudgeBuddy.app!"
+echo "Successfully built 100% native NudgeBuddy.app on Desktop!"

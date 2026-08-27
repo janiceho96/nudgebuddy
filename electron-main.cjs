@@ -31,7 +31,17 @@ function createWindow() {
   mainWindow.setAlwaysOnTop(true, 'floating');
   mainWindow.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
 
-  mainWindow.loadURL('http://localhost:5173/');
+  const distIndex = path.join(__dirname, 'dist', 'index.html');
+  const appIndex = path.join(__dirname, 'Contents', 'Resources', 'app', 'index.html');
+  const fs = require('fs');
+
+  if (fs.existsSync(appIndex)) {
+    mainWindow.loadFile(appIndex);
+  } else if (fs.existsSync(distIndex)) {
+    mainWindow.loadFile(distIndex);
+  } else {
+    mainWindow.loadURL('http://localhost:5173/');
+  }
 
   // Global hotkey: Option + Space toggles NudgeBuddy visibility anywhere on macOS
   globalShortcut.register('Alt+Space', () => {
