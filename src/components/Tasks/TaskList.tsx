@@ -1,110 +1,123 @@
 import React from 'react';
 import { Task } from '../../types';
-import { TaskItem } from './TaskItem';
+import { Check, Trash2 } from 'lucide-react';
 
 interface TaskListProps {
   tasks: Task[];
   activeTaskId: string | null;
-  filter: 'all' | 'avoided' | 'completed';
-  onSetFilter: (filter: 'all' | 'avoided' | 'completed') => void;
   onSelectTask: (id: string) => void;
   onToggleComplete: (id: string) => void;
-  onOpenDetails: (id: string) => void;
-  onSnooze: (id: string) => void;
+  onDeleteTask?: (id: string) => void;
 }
 
 export const TaskList: React.FC<TaskListProps> = ({
   tasks,
   activeTaskId,
-  filter,
-  onSetFilter,
   onSelectTask,
   onToggleComplete,
-  onOpenDetails,
-  onSnooze
+  onDeleteTask
 }) => {
-  const filteredTasks = tasks.filter((t) => {
-    if (filter === 'completed') return t.status === 'completed';
-    if (filter === 'avoided') return (t.snoozeCount >= 2 || t.isAvoided) && t.status !== 'completed';
-    return t.status !== 'completed';
-  });
-
-  const activeCount = tasks.filter(t => t.status !== 'completed').length;
-  const avoidedCount = tasks.filter(t => (t.snoozeCount >= 2 || t.isAvoided) && t.status !== 'completed').length;
-  const completedCount = tasks.filter(t => t.status === 'completed').length;
+  const activeTasks = tasks.filter(t => t.status !== 'completed');
+  const completedTasks = tasks.filter(t => t.status === 'completed');
 
   return (
-    <div className="task-list-section" style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
-      {/* Filter Tabs */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <div style={{ display: 'flex', gap: '0.3rem' }}>
-          <button
-            type="button"
-            className="nb-btn"
-            style={{
-              padding: '0.25rem 0.6rem',
-              fontSize: '0.74rem',
-              background: filter === 'all' ? 'var(--color-matcha-dark)' : '#fdfbf7',
-              color: filter === 'all' ? '#ffffff' : 'var(--text-main)',
-              borderColor: filter === 'all' ? 'var(--color-matcha-dark)' : 'var(--border-subtle)'
-            }}
-            onClick={() => onSetFilter('all')}
-          >
-            Active ({activeCount})
-          </button>
-          <button
-            type="button"
-            className="nb-btn"
-            style={{
-              padding: '0.25rem 0.6rem',
-              fontSize: '0.74rem',
-              background: filter === 'avoided' ? '#fae1d9' : '#fdfbf7',
-              color: filter === 'avoided' ? '#c85a54' : 'var(--text-main)',
-              borderColor: filter === 'avoided' ? '#c85a54' : 'var(--border-subtle)'
-            }}
-            onClick={() => onSetFilter('avoided')}
-          >
-            🚨 Avoided ({avoidedCount})
-          </button>
-          <button
-            type="button"
-            className="nb-btn"
-            style={{
-              padding: '0.25rem 0.6rem',
-              fontSize: '0.74rem',
-              background: filter === 'completed' ? '#e3ede5' : '#fdfbf7',
-              color: filter === 'completed' ? '#344e41' : 'var(--text-main)',
-              borderColor: filter === 'completed' ? '#588157' : 'var(--border-subtle)'
-            }}
-            onClick={() => onSetFilter('completed')}
-          >
-            ✅ Done ({completedCount})
-          </button>
-        </div>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 0.2rem' }}>
+        <span style={{ fontSize: '0.74rem', fontWeight: 600, color: 'var(--text-muted)', letterSpacing: '0.5px', textTransform: 'uppercase' }}>
+          Intentions ({activeTasks.length})
+        </span>
       </div>
 
-      {/* List items */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
-        {filteredTasks.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '1.4rem 0.5rem', color: '#8c9c93', fontSize: '0.8rem', background: '#faf8f5', border: '1.2px dashed var(--border-subtle)', borderRadius: '14px' }}>
-            {filter === 'avoided'
-              ? 'No avoided tasks — your mind is clear and flowing! 🍵'
-              : filter === 'completed'
-              ? 'No completed tasks yet. Finish a 25m sprint!'
-              : 'Your inbox is clear. Add a gentle task below.'}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+        {activeTasks.length === 0 ? (
+          <div style={{ textAlign: 'center', padding: '1.2rem', color: 'var(--text-muted)', fontSize: '0.8rem', background: '#ffffff', border: '1px dashed var(--border-dark)', borderRadius: '12px' }}>
+            Your space is clear. Enter an intention below.
           </div>
         ) : (
-          filteredTasks.map((task) => (
-            <TaskItem
-              key={task.id}
-              task={task}
-              isSelected={task.id === activeTaskId}
-              onSelect={onSelectTask}
-              onToggleComplete={onToggleComplete}
-              onOpenDetails={onOpenDetails}
-              onSnooze={onSnooze}
-            />
-          ))
+          activeTasks.map((task) => {
+            const isSelected = task.id === activeTaskId;
+            return (
+              <div
+                key={task.id}
+                onClick={() => onSelectTask(task.id)}
+                style={{
+                  background: isSelected ? '#f8f9fc' : '#ffffff',
+                  border: isSelected ? '1px solid rgba(99, 102, 241, 0.4)' : '1px solid var(--border-subtle)',
+                  borderRadius: '12px',
+                  padding: '0.65rem 0.85rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.65rem',
+                  cursor: 'pointer',
+                  boxShadow: isSelected ? 'var(--shadow-main)' : 'var(--shadow-sm)',
+                  transition: 'all 0.2s ease'
+                }}
+              >
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onToggleComplete(task.id);
+                  }}
+                  style={{
+                    width: '18px',
+                    height: '18px',
+                    borderRadius: '5px',
+                    border: '1.2px solid #cbd5e1',
+                    background: '#ffffff',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    cursor: 'pointer',
+                    flexShrink: 0
+                  }}
+                >
+                  <Check size={11} strokeWidth={2.5} color="transparent" />
+                </button>
+
+                <span style={{ flex: 1, fontSize: '0.84rem', fontWeight: isSelected ? 600 : 400, color: 'var(--text-main)' }}>
+                  {task.title}
+                </span>
+
+                {task.estimatedMinutes && (
+                  <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
+                    {task.estimatedMinutes}m
+                  </span>
+                )}
+              </div>
+            );
+          })
+        )}
+
+        {/* Completed Section (Discreet & Folded) */}
+        {completedTasks.length > 0 && (
+          <div style={{ marginTop: '0.5rem', opacity: 0.6 }}>
+            <div style={{ fontSize: '0.7rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '0.3rem', padding: '0 0.2rem' }}>
+              Fulfilled ({completedTasks.length})
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
+              {completedTasks.slice(0, 3).map((task) => (
+                <div
+                  key={task.id}
+                  style={{
+                    background: '#f8f9fa',
+                    border: '1px solid var(--border-subtle)',
+                    borderRadius: '10px',
+                    padding: '0.45rem 0.75rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    fontSize: '0.78rem',
+                    color: 'var(--text-muted)',
+                    textDecoration: 'line-through'
+                  }}
+                >
+                  <Check size={13} color="#0d9488" strokeWidth={2.5} />
+                  <span style={{ flex: 1 }}>{task.title}</span>
+                </div>
+              ))}
+            </div>
+          </div>
         )}
       </div>
     </div>
