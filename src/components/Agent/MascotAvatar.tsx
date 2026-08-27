@@ -9,18 +9,17 @@ interface MascotAvatarProps {
 }
 
 export const MascotAvatar: React.FC<MascotAvatarProps> = ({ mood, size = 64, isTalking = false, onClick }) => {
-  // Render dynamic SVG facial features based on mood
   const renderEyesAndMouth = () => {
     if (isTalking) {
       return (
         <>
-          <circle cx="28" cy="38" r="5.5" fill="#121826" />
-          <circle cx="52" cy="38" r="5.5" fill="#121826" />
-          <circle cx="29" cy="36.5" r="2" fill="#ffffff" />
-          <circle cx="53" cy="36.5" r="2" fill="#ffffff" />
-          {/* Animated talking open mouth */}
-          <ellipse cx="40" cy="52" rx="7" ry="5" fill="#121826" className="animate-talking-mouth" />
-          <ellipse cx="40" cy="54" rx="4" ry="2.5" fill="#fda4af" />
+          <circle cx="28" cy="40" r="4.5" fill="#242e28" />
+          <circle cx="52" cy="40" r="4.5" fill="#242e28" />
+          <circle cx="29.5" cy="38.5" r="1.6" fill="#ffffff" />
+          <circle cx="53.5" cy="38.5" r="1.6" fill="#ffffff" />
+          {/* Gentle talking mouth */}
+          <ellipse cx="40" cy="52" rx="5" ry="3.5" fill="#242e28" />
+          <ellipse cx="40" cy="53" rx="3" ry="1.8" fill="#f5cac3" />
         </>
       );
     }
@@ -29,88 +28,70 @@ export const MascotAvatar: React.FC<MascotAvatarProps> = ({ mood, size = 64, isT
       case 'watching':
         return (
           <>
-            {/* Concentrated focused eyes with pupil darts */}
-            <circle cx="28" cy="38" r="5.5" fill="#121826" />
-            <circle cx="52" cy="38" r="5.5" fill="#121826" />
-            <circle cx="29" cy="36.5" r="2" fill="#ffffff" />
-            <circle cx="53" cy="36.5" r="2" fill="#ffffff" />
-            {/* Direct concentrated flat mouth */}
-            <line x1="33" y1="52" x2="47" y2="52" stroke="#121826" strokeWidth="3" strokeLinecap="round" />
-            {/* Eyebrows angled inward */}
-            <line x1="22" y1="30" x2="33" y2="33" stroke="#121826" strokeWidth="2.5" strokeLinecap="round" />
-            <line x1="58" y1="30" x2="47" y2="33" stroke="#121826" strokeWidth="2.5" strokeLinecap="round" />
+            <circle cx="28" cy="40" r="4.5" fill="#242e28" />
+            <circle cx="52" cy="40" r="4.5" fill="#242e28" />
+            <circle cx="29.5" cy="38.5" r="1.6" fill="#ffffff" />
+            <circle cx="53.5" cy="38.5" r="1.6" fill="#ffffff" />
+            <line x1="34" y1="52" x2="46" y2="52" stroke="#242e28" strokeWidth="2.2" strokeLinecap="round" />
+            <circle cx="20" cy="45" r="3.5" fill="#f5cac3" opacity="0.75" />
+            <circle cx="60" cy="45" r="3.5" fill="#f5cac3" opacity="0.75" />
           </>
         );
 
       case 'hyped':
         return (
           <>
-            {/* Star sparkle / big excited eyes */}
-            <circle cx="27" cy="36" r="6" fill="#121826" />
-            <circle cx="53" cy="36" r="6" fill="#121826" />
-            <circle cx="29" cy="34" r="2.5" fill="#ffe600" />
-            <circle cx="55" cy="34" r="2.5" fill="#ffe600" />
-            {/* Big grin */}
-            <path d="M 28 48 Q 40 60 52 48" fill="#121826" />
-            <path d="M 33 51 Q 40 57 47 51" fill="#fda4af" />
+            <circle cx="28" cy="38" r="5" fill="#242e28" />
+            <circle cx="52" cy="38" r="5" fill="#242e28" />
+            <circle cx="29" cy="36.5" r="2" fill="#dfb15b" />
+            <circle cx="53" cy="36.5" r="2" fill="#dfb15b" />
+            <path d="M 30 48 Q 40 58 50 48" stroke="#242e28" strokeWidth="2.2" fill="#fdfbf7" strokeLinecap="round" />
+            <circle cx="18" cy="44" r="4" fill="#f5cac3" opacity="0.9" />
+            <circle cx="62" cy="44" r="4" fill="#f5cac3" opacity="0.9" />
           </>
         );
 
       case 'judging':
         return (
           <>
-            {/* Side-eye look */}
-            <ellipse cx="27" cy="38" rx="6" ry="3.5" fill="#121826" />
-            <ellipse cx="53" cy="38" rx="6" ry="3.5" fill="#121826" />
-            <circle cx="24" cy="38" r="2.5" fill="#ffffff" />
-            <circle cx="50" cy="38" r="2.5" fill="#ffffff" />
-            {/* Smug / cynical slanted mouth */}
-            <path d="M 32 53 Q 42 50 49 55" stroke="#121826" strokeWidth="3" fill="none" strokeLinecap="round" />
-            {/* Raised single eyebrow */}
-            <path d="M 21 28 Q 28 25 34 31" stroke="#121826" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-            <line x1="47" y1="32" x2="58" y2="32" stroke="#121826" strokeWidth="2.5" strokeLinecap="round" />
+            <ellipse cx="28" cy="40" rx="5" ry="3" fill="#242e28" />
+            <ellipse cx="52" cy="40" rx="5" ry="3" fill="#242e28" />
+            <path d="M 33 52 Q 41 50 47 53" stroke="#242e28" strokeWidth="2.2" fill="none" strokeLinecap="round" />
+            <path d="M 23 32 Q 28 30 33 34" stroke="#242e28" strokeWidth="2" fill="none" strokeLinecap="round" />
           </>
         );
 
       case 'worried':
         return (
           <>
-            {/* Wide teary empathetic eyes */}
-            <circle cx="27" cy="37" r="6.5" fill="#121826" />
-            <circle cx="53" cy="37" r="6.5" fill="#121826" />
-            <circle cx="25" cy="35" r="2.5" fill="#ffffff" />
-            <circle cx="51" cy="35" r="2.5" fill="#ffffff" />
-            {/* Worried inverted arc mouth */}
-            <path d="M 32 54 Q 40 47 48 54" stroke="#121826" strokeWidth="3" fill="none" strokeLinecap="round" />
-            {/* Worried eyebrows angled outward */}
-            <line x1="22" y1="32" x2="33" y2="28" stroke="#121826" strokeWidth="2.5" strokeLinecap="round" />
-            <line x1="58" y1="32" x2="47" y2="28" stroke="#121826" strokeWidth="2.5" strokeLinecap="round" />
+            <circle cx="28" cy="39" r="5" fill="#242e28" />
+            <circle cx="52" cy="39" r="5" fill="#242e28" />
+            <circle cx="26.5" cy="37.5" r="1.8" fill="#ffffff" />
+            <circle cx="50.5" cy="37.5" r="1.8" fill="#ffffff" />
+            <path d="M 34 53 Q 40 48 46 53" stroke="#242e28" strokeWidth="2.2" fill="none" strokeLinecap="round" />
           </>
         );
 
       case 'celebrating':
         return (
           <>
-            {/* Happy closed curve eyes */}
-            <path d="M 22 38 Q 28 30 34 38" stroke="#121826" strokeWidth="3.5" fill="none" strokeLinecap="round" />
-            <path d="M 46 38 Q 52 30 58 38" stroke="#121826" strokeWidth="3.5" fill="none" strokeLinecap="round" />
-            {/* Wide joyful mouth */}
-            <path d="M 28 46 Q 40 62 52 46 Z" fill="#121826" />
-            <path d="M 33 50 Q 40 59 47 50" fill="#fda4af" />
-            {/* Party sparkles on side */}
-            <text x="60" y="24" fontSize="14">✨</text>
-            <text x="4" y="26" fontSize="14">🎉</text>
+            <path d="M 23 40 Q 28 34 33 40" stroke="#242e28" strokeWidth="2.8" fill="none" strokeLinecap="round" />
+            <path d="M 47 40 Q 52 34 57 40" stroke="#242e28" strokeWidth="2.8" fill="none" strokeLinecap="round" />
+            <path d="M 30 47 Q 40 60 50 47 Z" fill="#242e28" />
+            <circle cx="18" cy="43" r="4.5" fill="#f5cac3" />
+            <circle cx="62" cy="43" r="4.5" fill="#f5cac3" />
+            <text x="61" y="24" fontSize="12">🍵</text>
+            <text x="4" y="25" fontSize="12">✨</text>
           </>
         );
 
       case 'sleeping':
         return (
           <>
-            {/* Flat sleeping lines */}
-            <line x1="22" y1="38" x2="33" y2="38" stroke="#121826" strokeWidth="3" strokeLinecap="round" />
-            <line x1="47" y1="38" x2="58" y2="38" stroke="#121826" strokeWidth="3" strokeLinecap="round" />
-            <ellipse cx="40" cy="51" rx="3" ry="2" fill="#121826" />
-            <text x="56" y="22" fontSize="12" fontWeight="bold" fill="#64748b">Zzz</text>
+            <line x1="23" y1="40" x2="33" y2="40" stroke="#242e28" strokeWidth="2.5" strokeLinecap="round" />
+            <line x1="47" y1="40" x2="57" y2="40" stroke="#242e28" strokeWidth="2.5" strokeLinecap="round" />
+            <ellipse cx="40" cy="51" rx="2.5" ry="1.5" fill="#242e28" />
+            <text x="56" y="22" fontSize="11" fontWeight="600" fill="#84a98c">Zzz</text>
           </>
         );
 
@@ -118,16 +99,15 @@ export const MascotAvatar: React.FC<MascotAvatarProps> = ({ mood, size = 64, isT
       default:
         return (
           <>
-            {/* Neutral friendly eyes */}
-            <circle cx="28" cy="38" r="5" fill="#121826" />
-            <circle cx="52" cy="38" r="5" fill="#121826" />
-            <circle cx="30" cy="36" r="1.8" fill="#ffffff" />
-            <circle cx="54" cy="36" r="1.8" fill="#ffffff" />
-            {/* Cute gentle smile */}
-            <path d="M 33 49 Q 40 56 47 49" stroke="#121826" strokeWidth="2.8" fill="none" strokeLinecap="round" />
-            {/* Rosy cheeks */}
-            <circle cx="20" cy="44" r="3.5" fill="#fda4af" opacity="0.8" />
-            <circle cx="60" cy="44" r="3.5" fill="#fda4af" opacity="0.8" />
+            <circle cx="28" cy="40" r="4.2" fill="#242e28" />
+            <circle cx="52" cy="40" r="4.2" fill="#242e28" />
+            <circle cx="29.5" cy="38.5" r="1.5" fill="#ffffff" />
+            <circle cx="53.5" cy="38.5" r="1.5" fill="#ffffff" />
+            {/* Gentle zen smile */}
+            <path d="M 34 50 Q 40 55 46 50" stroke="#242e28" strokeWidth="2.2" fill="none" strokeLinecap="round" />
+            {/* Soft pink blush */}
+            <circle cx="19" cy="45" r="4" fill="#f5cac3" opacity="0.8" />
+            <circle cx="61" cy="45" r="4" fill="#f5cac3" opacity="0.8" />
           </>
         );
     }
@@ -136,15 +116,15 @@ export const MascotAvatar: React.FC<MascotAvatarProps> = ({ mood, size = 64, isT
   return (
     <div
       onClick={onClick}
-      className={`mascot-avatar-container ${mood === 'hyped' ? 'animate-wiggle' : isTalking ? 'animate-talking-mascot' : 'animate-bounce-subtle'}`}
+      className={`mascot-avatar-container ${isTalking ? 'talking-mascot' : 'floating-mascot'}`}
       style={{
         width: size,
         height: size,
         cursor: 'pointer',
         flexShrink: 0,
-        filter: 'drop-shadow(2px 2px 0px #121826)'
+        filter: 'drop-shadow(0 4px 12px rgba(49, 78, 62, 0.12))'
       }}
-      title="Budge the Accountability Gremlin (Click to chat or banter!)"
+      title="Matcha Budge — Your Zen Focus Tea Spirit"
     >
       <svg
         viewBox="0 0 80 80"
@@ -153,21 +133,33 @@ export const MascotAvatar: React.FC<MascotAvatarProps> = ({ mood, size = 64, isT
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
-        {/* Antennas / Goblin Ears */}
-        <path d="M 16 28 L 8 16 L 24 22 Z" fill="#86efac" stroke="#121826" strokeWidth="2.5" strokeLinejoin="round" />
-        <path d="M 64 28 L 72 16 L 56 22 Z" fill="#86efac" stroke="#121826" strokeWidth="2.5" strokeLinejoin="round" />
-
-        {/* Main Head/Body Blob */}
+        {/* Cute Tea Leaf Sprout on Head */}
         <path
-          d="M 18 36 C 18 20, 62 20, 62 36 C 65 52, 60 66, 40 67 C 20 66, 15 52, 18 36 Z"
-          fill="#86efac"
-          stroke="#121826"
-          strokeWidth="3"
+          d="M 40 22 C 34 12, 28 15, 30 10 C 33 5, 45 10, 40 22 Z"
+          fill="#588157"
+          stroke="#344e41"
+          strokeWidth="1.5"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M 40 22 C 46 13, 53 14, 52 9 C 48 5, 38 12, 40 22 Z"
+          fill="#84a98c"
+          stroke="#344e41"
+          strokeWidth="1.5"
           strokeLinejoin="round"
         />
 
-        {/* Little Belly Pattern */}
-        <ellipse cx="40" cy="58" rx="14" ry="7" fill="#bbf7d0" />
+        {/* Main Soft Rounded Body */}
+        <path
+          d="M 20 38 C 20 22, 60 22, 60 38 C 63 54, 58 66, 40 67 C 22 66, 17 54, 20 38 Z"
+          fill="#a3b18a"
+          stroke="#344e41"
+          strokeWidth="2"
+          strokeLinejoin="round"
+        />
+
+        {/* Gentle Cream Belly */}
+        <ellipse cx="40" cy="56" rx="13" ry="7" fill="#dad7cd" opacity="0.85" />
 
         {/* Dynamic Facial Features */}
         {renderEyesAndMouth()}

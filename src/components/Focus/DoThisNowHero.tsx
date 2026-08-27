@@ -21,10 +21,10 @@ export const DoThisNowHero: React.FC<DoThisNowHeroProps> = ({
 }) => {
   if (!task) {
     return (
-      <div className="hero-card" style={{ background: '#e2e8f0', textAlign: 'center', padding: '1.5rem 1rem' }}>
-        <h3 style={{ fontSize: '1.1rem', fontWeight: 800, marginBottom: '0.4rem' }}>Inbox Zero! 🥳</h3>
-        <p style={{ fontSize: '0.85rem', color: '#475569' }}>
-          All caught up! Add a new task below or take a well-deserved guilt-free break.
+      <div className="hero-card" style={{ background: '#f5efe6', textAlign: 'center', padding: '1.5rem 1rem', borderRadius: '18px', border: '1.5px solid var(--border-subtle)' }}>
+        <h3 style={{ fontSize: '1.05rem', fontWeight: 700, marginBottom: '0.4rem', color: 'var(--color-matcha-dark)' }}>Zen Mind — Inbox Zero 🍵</h3>
+        <p style={{ fontSize: '0.82rem', color: '#6b7c72' }}>
+          All caught up! Take a calm breath, sip some tea, or capture a new task below.
         </p>
       </div>
     );
@@ -36,39 +36,39 @@ export const DoThisNowHero: React.FC<DoThisNowHeroProps> = ({
   const getUrgencyBadge = () => {
     switch (task.urgency) {
       case 'critical':
-        return <span className="nb-badge" style={{ background: '#fca5a5' }}><Flame size={12} /> Critical</span>;
+        return <span className="nb-badge" style={{ background: '#fae1d9', color: '#c85a54', borderColor: '#f2b5a7' }}><Flame size={12} /> Urgent</span>;
       case 'high':
-        return <span className="nb-badge" style={{ background: '#fed7aa' }}>🔥 High</span>;
+        return <span className="nb-badge" style={{ background: '#fceed8', color: '#b08968', borderColor: '#e6ccb2' }}>🌿 High</span>;
       case 'medium':
-        return <span className="nb-badge" style={{ background: '#fef08a' }}>⚡ Medium</span>;
+        return <span className="nb-badge" style={{ background: '#e3ede5', color: '#344e41', borderColor: '#cad2c5' }}>🍵 Focus</span>;
       case 'low':
-        return <span className="nb-badge" style={{ background: '#e2e8f0' }}>🌱 Low</span>;
+        return <span className="nb-badge" style={{ background: '#f5f2eb', color: '#7f8c8d', borderColor: '#e6e0d3' }}>🌱 Gentle</span>;
     }
   };
 
   const getEnergyBadge = () => {
     switch (task.energyLevel) {
       case 'low':
-        return <span className="nb-badge" style={{ background: '#fbcfe8' }}><Moon size={11} /> Zombie Mode</span>;
+        return <span className="nb-badge" style={{ background: '#f7ece8', color: '#c87d55' }}><Moon size={11} /> Low Energy</span>;
       case 'medium':
-        return <span className="nb-badge" style={{ background: '#fed7aa' }}><Zap size={11} /> Normal</span>;
+        return <span className="nb-badge" style={{ background: '#f3ede2', color: '#588157' }}><Zap size={11} /> Balanced</span>;
       case 'high':
-        return <span className="nb-badge" style={{ background: '#86efac' }}><Flame size={11} /> Beast Mode</span>;
+        return <span className="nb-badge" style={{ background: '#e3ede5', color: '#344e41' }}><Flame size={11} /> Deep Focus</span>;
     }
   };
 
   return (
-    <div className="hero-card">
-      <div className="hero-tag-bar">
+    <div className="hero-card" style={{ background: '#ffffff', border: '1.5px solid var(--color-matcha)', borderRadius: '20px', padding: '1.1rem', boxShadow: '0 8px 24px rgba(49, 78, 62, 0.08)' }}>
+      <div className="hero-tag-bar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.65rem' }}>
         <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap', alignItems: 'center' }}>
-          <span className="nb-badge" style={{ background: '#121826', color: '#ffe600', borderColor: '#121826' }}>
+          <span className="nb-badge" style={{ background: 'var(--color-matcha-dark)', color: '#ffffff', border: 'none' }}>
             🎯 DO THIS NOW
           </span>
           {getUrgencyBadge()}
           {getEnergyBadge()}
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.2rem', fontSize: '0.75rem', fontWeight: 700 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', fontSize: '0.75rem', fontWeight: 600, color: 'var(--color-matcha-dark)' }}>
           <Clock size={13} />
           <span>{task.estimatedMinutes}m</span>
         </div>
@@ -78,24 +78,24 @@ export const DoThisNowHero: React.FC<DoThisNowHeroProps> = ({
         className="hero-title"
         onClick={() => onOpenDetails(task.id)}
         title="Click to view details"
-        style={{ cursor: 'pointer' }}
+        style={{ cursor: 'pointer', fontSize: '1.15rem', fontWeight: 700, color: 'var(--text-main)', marginBottom: '0.4rem', lineHeight: 1.3 }}
       >
         {task.title}
       </h2>
 
       {task.notes && (
-        <p style={{ fontSize: '0.8rem', color: '#334155', marginBottom: '0.6rem', lineClamp: 2, display: '-webkit-box', WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+        <p style={{ fontSize: '0.8rem', color: '#6b7c72', marginBottom: '0.65rem', lineClamp: 2, display: '-webkit-box', WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
           {task.notes}
         </p>
       )}
 
       {/* Micro-steps teaser if any */}
       {task.microSteps && task.microSteps.length > 0 && (
-        <div style={{ background: 'rgba(255, 255, 255, 0.75)', border: '1.5px solid #121826', borderRadius: '8px', padding: '0.5rem', marginBottom: '0.6rem' }}>
-          <div style={{ fontSize: '0.72rem', fontWeight: 800, textTransform: 'uppercase', marginBottom: '0.25rem', display: 'flex', alignItems: 'center', gap: '0.2rem' }}>
-            <CornerDownRight size={12} /> First Micro-Step:
+        <div style={{ background: '#f9f7f2', border: '1px solid var(--border-subtle)', borderRadius: '10px', padding: '0.5rem 0.65rem', marginBottom: '0.75rem' }}>
+          <div style={{ fontSize: '0.7rem', fontWeight: 700, color: 'var(--color-matcha-dark)', textTransform: 'uppercase', marginBottom: '0.2rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+            <CornerDownRight size={11} /> First Step:
           </div>
-          <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#1e293b' }}>
+          <div style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--text-main)' }}>
             {task.microSteps[0].text}
           </div>
         </div>
@@ -106,21 +106,21 @@ export const DoThisNowHero: React.FC<DoThisNowHeroProps> = ({
         <div
           onClick={() => onOpenAvoidance(task.id)}
           style={{
-            background: '#fee2e2',
-            border: '1.8px solid #ef4444',
-            borderRadius: '6px',
-            padding: '0.35rem 0.5rem',
-            marginBottom: '0.6rem',
+            background: '#fcf0ed',
+            border: '1.2px solid var(--color-terracotta)',
+            borderRadius: '10px',
+            padding: '0.4rem 0.6rem',
+            marginBottom: '0.75rem',
             fontSize: '0.75rem',
-            fontWeight: 700,
-            color: '#b91c1c',
+            fontWeight: 600,
+            color: 'var(--color-terracotta)',
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
             cursor: 'pointer'
           }}
         >
-          <span>🚨 Snoozed {task.snoozeCount}x — High Resistance!</span>
+          <span>🚨 Snoozed {task.snoozeCount}x — Let's make it easy</span>
           <span style={{ textDecoration: 'underline', display: 'flex', alignItems: 'center', gap: '2px' }}>
             Break Down <ArrowRight size={11} />
           </span>
@@ -128,15 +128,15 @@ export const DoThisNowHero: React.FC<DoThisNowHeroProps> = ({
       )}
 
       {/* Action Buttons */}
-      <div className="hero-actions">
+      <div className="hero-actions" style={{ display: 'flex', gap: '0.4rem' }}>
         {isTimerRunningOnThisTask ? (
           <button
             type="button"
             className="nb-btn nb-btn-success"
-            style={{ flex: 1.5, background: '#86efac' }}
+            style={{ flex: 1.5 }}
             onClick={() => onStartFocus(task.id)}
           >
-            <Play size={15} /> In Focus...
+            <Play size={14} /> In Focus...
           </button>
         ) : isTimerPausedOnThisTask ? (
           <button
@@ -145,33 +145,33 @@ export const DoThisNowHero: React.FC<DoThisNowHeroProps> = ({
             style={{ flex: 1.5 }}
             onClick={() => onStartFocus(task.id)}
           >
-            <Play size={15} /> Resume Focus
+            <Play size={14} /> Resume Focus
           </button>
         ) : (
           <button
             type="button"
-            className="nb-btn"
-            style={{ flex: 1.5, background: '#121826', color: '#ffe600' }}
+            className="nb-btn nb-btn-primary"
+            style={{ flex: 1.5 }}
             onClick={() => onStartFocus(task.id)}
           >
-            <Play size={15} fill="#ffe600" /> Start 25m Focus
+            <Play size={14} /> Start 25m Focus
           </button>
         )}
 
         <button
           type="button"
           className="nb-btn"
-          style={{ background: '#ffffff' }}
+          style={{ background: '#fdfbf7' }}
           onClick={() => onSnooze(task.id)}
           title="Snooze for later"
         >
-          💤 Snooze
+          💤 Later
         </button>
 
         <button
           type="button"
           className="nb-btn"
-          style={{ background: '#ffffff', padding: '0.5rem 0.65rem' }}
+          style={{ background: '#fdfbf7', padding: '0.45rem 0.65rem' }}
           onClick={() => onOpenDetails(task.id)}
           title="Open Task Details"
         >

@@ -24,25 +24,38 @@ export const TaskItem: React.FC<TaskItemProps> = ({
 
   const getUrgencyColor = () => {
     switch (task.urgency) {
-      case 'critical': return '#fca5a5';
-      case 'high': return '#fed7aa';
-      case 'medium': return '#fef08a';
-      case 'low': return '#e2e8f0';
+      case 'critical': return '#fae1d9';
+      case 'high': return '#fceed8';
+      case 'medium': return '#e3ede5';
+      case 'low': return '#f5f2eb';
     }
   };
 
   const getEnergyIcon = () => {
     switch (task.energyLevel) {
-      case 'low': return <Moon size={11} color="#9333ea" />;
-      case 'medium': return <Zap size={11} color="#d97706" />;
-      case 'high': return <Flame size={11} color="#16a34a" />;
+      case 'low': return <Moon size={11} color="#c87d55" />;
+      case 'medium': return <Zap size={11} color="#588157" />;
+      case 'high': return <Flame size={11} color="#344e41" />;
     }
   };
 
   return (
     <div
-      className={`task-card ${isSelected ? 'active-selected' : ''} ${isAvoided && !isCompleted ? 'avoided-card' : ''} ${isCompleted ? 'is-completed' : ''}`}
+      className={`task-item-card ${isSelected ? 'is-active-focus' : ''} ${isAvoided && !isCompleted ? 'is-avoided' : ''}`}
       onClick={() => onSelect(task.id)}
+      style={{
+        background: isCompleted ? '#faf8f5' : isSelected ? '#fdfbf7' : '#ffffff',
+        opacity: isCompleted ? 0.65 : 1,
+        border: isSelected ? '1.5px solid var(--color-matcha)' : '1px solid var(--border-subtle)',
+        borderRadius: '16px',
+        padding: '0.65rem 0.85rem',
+        boxShadow: isSelected ? '0 4px 16px rgba(88, 129, 87, 0.12)' : '0 2px 8px rgba(49, 78, 62, 0.04)',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '0.6rem',
+        cursor: 'pointer',
+        transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)'
+      }}
     >
       {/* Checkbox button */}
       <button
@@ -52,19 +65,20 @@ export const TaskItem: React.FC<TaskItemProps> = ({
           onToggleComplete(task.id);
         }}
         style={{
-          width: '22px',
-          height: '22px',
+          width: '20px',
+          height: '20px',
           borderRadius: '6px',
-          border: '2px solid #121826',
-          background: isCompleted ? '#86efac' : '#ffffff',
+          border: isCompleted ? '1.5px solid var(--color-matcha)' : '1.5px solid var(--border-dark)',
+          background: isCompleted ? 'var(--color-matcha)' : '#ffffff',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           cursor: 'pointer',
-          flexShrink: 0
+          flexShrink: 0,
+          transition: 'all 0.15s ease'
         }}
       >
-        {isCompleted && <Check size={14} strokeWidth={3.5} color="#121826" />}
+        {isCompleted && <Check size={13} strokeWidth={3} color="#ffffff" />}
       </button>
 
       {/* Task Content */}
@@ -72,9 +86,9 @@ export const TaskItem: React.FC<TaskItemProps> = ({
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', flexWrap: 'wrap', marginBottom: '0.2rem' }}>
           <span
             style={{
-              fontWeight: 700,
-              fontSize: '0.86rem',
-              color: isCompleted ? '#64748b' : '#0f172a',
+              fontWeight: 600,
+              fontSize: '0.84rem',
+              color: isCompleted ? '#8c9c93' : 'var(--text-main)',
               textDecoration: isCompleted ? 'line-through' : 'none'
             }}
           >
@@ -82,29 +96,29 @@ export const TaskItem: React.FC<TaskItemProps> = ({
           </span>
         </div>
 
-        <div style={{ display: 'flex', gap: '0.3rem', alignItems: 'center', flexWrap: 'wrap', fontSize: '0.72rem' }}>
-          <span className="nb-badge" style={{ background: getUrgencyColor(), padding: '0.1rem 0.35rem' }}>
+        <div style={{ display: 'flex', gap: '0.25rem', alignItems: 'center', flexWrap: 'wrap', fontSize: '0.7rem' }}>
+          <span className="nb-badge" style={{ background: getUrgencyColor(), padding: '0.1rem 0.4rem' }}>
             {task.urgency}
           </span>
 
-          <span className="nb-badge" style={{ background: '#f8fafc', padding: '0.1rem 0.35rem' }}>
+          <span className="nb-badge" style={{ background: '#f5f2eb', padding: '0.1rem 0.4rem' }}>
             {getEnergyIcon()} {task.estimatedMinutes}m
           </span>
 
           {task.tags.map((tag) => (
-            <span key={tag} className="nb-badge" style={{ background: '#f1f5f9', padding: '0.1rem 0.35rem', color: '#475569' }}>
+            <span key={tag} className="nb-badge" style={{ background: '#f3ede2', padding: '0.1rem 0.4rem', color: '#6b7c72' }}>
               #{tag}
             </span>
           ))}
 
           {task.snoozeCount > 0 && !isCompleted && (
-            <span className="nb-badge" style={{ background: isAvoided ? '#fca5a5' : '#fed7aa', padding: '0.1rem 0.35rem' }}>
+            <span className="nb-badge" style={{ background: isAvoided ? '#fae1d9' : '#fceed8', color: isAvoided ? '#c85a54' : '#b08968', padding: '0.1rem 0.4rem' }}>
               💤 {task.snoozeCount}x
             </span>
           )}
 
           {task.microSteps && task.microSteps.length > 0 && !isCompleted && (
-            <span className="nb-badge" style={{ background: '#e0e7ff', padding: '0.1rem 0.35rem' }}>
+            <span className="nb-badge" style={{ background: '#e3ede5', color: '#344e41', padding: '0.1rem 0.4rem' }}>
               🧩 {task.microSteps.filter(s => s.completed).length}/{task.microSteps.length}
             </span>
           )}
@@ -112,12 +126,12 @@ export const TaskItem: React.FC<TaskItemProps> = ({
       </div>
 
       {/* Quick Actions */}
-      <div style={{ display: 'flex', gap: '0.3rem', flexShrink: 0 }} onClick={(e) => e.stopPropagation()}>
+      <div style={{ display: 'flex', gap: '0.25rem', flexShrink: 0 }} onClick={(e) => e.stopPropagation()}>
         {!isCompleted && (
           <button
             type="button"
             className="nb-btn"
-            style={{ padding: '0.25rem 0.4rem', fontSize: '0.7rem' }}
+            style={{ padding: '0.2rem 0.35rem', fontSize: '0.7rem', background: '#fdfbf7', border: '1px solid var(--border-subtle)' }}
             onClick={() => onSnooze(task.id)}
             title="Snooze"
           >
@@ -127,7 +141,7 @@ export const TaskItem: React.FC<TaskItemProps> = ({
         <button
           type="button"
           className="nb-btn"
-          style={{ padding: '0.25rem 0.4rem', fontSize: '0.7rem' }}
+          style={{ padding: '0.2rem 0.35rem', fontSize: '0.7rem', background: '#fdfbf7', border: '1px solid var(--border-subtle)' }}
           onClick={() => onOpenDetails(task.id)}
           title="Details"
         >

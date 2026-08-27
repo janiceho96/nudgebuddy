@@ -57,7 +57,6 @@ export const QuickCaptureInput: React.FC<QuickCaptureInputProps> = ({ onAddTask 
       text = text.replace(/!med(ium)?/i, '').trim();
     }
 
-    // Clean up multiple spaces
     text = text.replace(/\s+/g, ' ').trim();
 
     onAddTask({
@@ -72,41 +71,41 @@ export const QuickCaptureInput: React.FC<QuickCaptureInputProps> = ({ onAddTask 
   };
 
   return (
-    <div className="quick-capture-wrap">
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+    <div className="quick-capture-wrap" style={{ background: '#ffffff', borderTop: '1.5px solid var(--border-subtle)', padding: '0.75rem 1rem' }}>
+      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
         <div style={{ display: 'flex', gap: '0.4rem' }}>
           <input
             type="text"
             className="quick-capture-input"
-            placeholder="Quick capture: 'Write memo 15m #work !high'..."
+            placeholder="Gentle capture: 'Draft proposal 20m #work !high'..."
             value={inputVal}
             onChange={(e) => setInputVal(e.target.value)}
           />
           <button
             type="submit"
             className="nb-btn nb-btn-primary"
-            style={{ padding: '0.5rem 0.8rem', flexShrink: 0 }}
+            style={{ padding: '0.5rem 0.85rem', flexShrink: 0 }}
           >
-            <Plus size={16} /> Add
+            <Plus size={15} /> Add
           </button>
         </div>
 
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.72rem', color: '#64748b' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.72rem', color: '#6b7c72' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.2rem' }}>
-            <Sparkles size={11} color="#eab308" />
-            <span>Shortcuts: <strong>15m</strong>, <strong>#tag</strong>, <strong>!high</strong></span>
+            <Sparkles size={11} color="#588157" />
+            <span>Syntax: <strong>15m</strong>, <strong>#tag</strong>, <strong>!high</strong></span>
           </div>
 
-          <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: '3px', alignItems: 'center' }}>
             <span>Energy:</span>
             <button
               type="button"
               onClick={() => setEnergyLevel('low')}
               style={{
-                background: energyLevel === 'low' ? '#fbcfe8' : '#ffffff',
-                border: '1px solid #121826',
-                borderRadius: '4px',
-                padding: '1px 4px',
+                background: energyLevel === 'low' ? '#f7ece8' : '#fdfbf7',
+                border: '1px solid var(--border-subtle)',
+                borderRadius: '5px',
+                padding: '1px 5px',
                 fontSize: '0.7rem',
                 cursor: 'pointer'
               }}
@@ -117,10 +116,10 @@ export const QuickCaptureInput: React.FC<QuickCaptureInputProps> = ({ onAddTask 
               type="button"
               onClick={() => setEnergyLevel('medium')}
               style={{
-                background: energyLevel === 'medium' ? '#fed7aa' : '#ffffff',
-                border: '1px solid #121826',
-                borderRadius: '4px',
-                padding: '1px 4px',
+                background: energyLevel === 'medium' ? '#f3ede2' : '#fdfbf7',
+                border: '1px solid var(--border-subtle)',
+                borderRadius: '5px',
+                padding: '1px 5px',
                 fontSize: '0.7rem',
                 cursor: 'pointer'
               }}
@@ -131,10 +130,10 @@ export const QuickCaptureInput: React.FC<QuickCaptureInputProps> = ({ onAddTask 
               type="button"
               onClick={() => setEnergyLevel('high')}
               style={{
-                background: energyLevel === 'high' ? '#86efac' : '#ffffff',
-                border: '1px solid #121826',
-                borderRadius: '4px',
-                padding: '1px 4px',
+                background: energyLevel === 'high' ? '#e3ede5' : '#fdfbf7',
+                border: '1px solid var(--border-subtle)',
+                borderRadius: '5px',
+                padding: '1px 5px',
                 fontSize: '0.7rem',
                 cursor: 'pointer'
               }}

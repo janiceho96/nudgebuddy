@@ -1,7 +1,6 @@
 import React from 'react';
 import { Task } from '../../types';
 import { TaskItem } from './TaskItem';
-import { ListFilter } from 'lucide-react';
 
 interface TaskListProps {
   tasks: Task[];
@@ -35,17 +34,19 @@ export const TaskList: React.FC<TaskListProps> = ({
   const completedCount = tasks.filter(t => t.status === 'completed').length;
 
   return (
-    <div className="task-list-section">
+    <div className="task-list-section" style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
       {/* Filter Tabs */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: '0.2rem 0' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div style={{ display: 'flex', gap: '0.3rem' }}>
           <button
             type="button"
             className="nb-btn"
             style={{
-              padding: '0.25rem 0.55rem',
+              padding: '0.25rem 0.6rem',
               fontSize: '0.74rem',
-              background: filter === 'all' ? '#ffe600' : '#ffffff'
+              background: filter === 'all' ? 'var(--color-matcha-dark)' : '#fdfbf7',
+              color: filter === 'all' ? '#ffffff' : 'var(--text-main)',
+              borderColor: filter === 'all' ? 'var(--color-matcha-dark)' : 'var(--border-subtle)'
             }}
             onClick={() => onSetFilter('all')}
           >
@@ -55,9 +56,11 @@ export const TaskList: React.FC<TaskListProps> = ({
             type="button"
             className="nb-btn"
             style={{
-              padding: '0.25rem 0.55rem',
+              padding: '0.25rem 0.6rem',
               fontSize: '0.74rem',
-              background: filter === 'avoided' ? '#fca5a5' : '#ffffff'
+              background: filter === 'avoided' ? '#fae1d9' : '#fdfbf7',
+              color: filter === 'avoided' ? '#c85a54' : 'var(--text-main)',
+              borderColor: filter === 'avoided' ? '#c85a54' : 'var(--border-subtle)'
             }}
             onClick={() => onSetFilter('avoided')}
           >
@@ -67,9 +70,11 @@ export const TaskList: React.FC<TaskListProps> = ({
             type="button"
             className="nb-btn"
             style={{
-              padding: '0.25rem 0.55rem',
+              padding: '0.25rem 0.6rem',
               fontSize: '0.74rem',
-              background: filter === 'completed' ? '#86efac' : '#ffffff'
+              background: filter === 'completed' ? '#e3ede5' : '#fdfbf7',
+              color: filter === 'completed' ? '#344e41' : 'var(--text-main)',
+              borderColor: filter === 'completed' ? '#588157' : 'var(--border-subtle)'
             }}
             onClick={() => onSetFilter('completed')}
           >
@@ -79,14 +84,14 @@ export const TaskList: React.FC<TaskListProps> = ({
       </div>
 
       {/* List items */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
         {filteredTasks.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '1.5rem 0.5rem', color: '#64748b', fontSize: '0.82rem', background: '#f8fafc', border: '1.5px dashed #cbd5e1', borderRadius: '8px' }}>
+          <div style={{ textAlign: 'center', padding: '1.4rem 0.5rem', color: '#8c9c93', fontSize: '0.8rem', background: '#faf8f5', border: '1.2px dashed var(--border-subtle)', borderRadius: '14px' }}>
             {filter === 'avoided'
-              ? 'No avoided tasks! You are smoothly on track! 🎉'
+              ? 'No avoided tasks — your mind is clear and flowing! 🍵'
               : filter === 'completed'
               ? 'No completed tasks yet. Finish a 25m sprint!'
-              : 'Inbox is clean. Add a task below to start!'}
+              : 'Your inbox is clear. Add a gentle task below.'}
           </div>
         ) : (
           filteredTasks.map((task) => (

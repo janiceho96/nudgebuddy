@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { SoundscapeType, soundscapeEngine } from '../../core/soundscapeEngine';
-import { Volume2, VolumeX, Headphones, Play, Square } from 'lucide-react';
+import { Volume2, Headphones, Play, Square } from 'lucide-react';
 
 interface SoundscapePlayerProps {
   isTimerRunning: boolean;
@@ -9,7 +9,7 @@ interface SoundscapePlayerProps {
 export const SoundscapePlayer: React.FC<SoundscapePlayerProps> = ({ isTimerRunning }) => {
   const [selectedType, setSelectedType] = useState<SoundscapeType>('none');
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [volume, setVolume] = useState<number>(0.4);
+  const [volume, setVolume] = useState<number>(0.35);
 
   // Auto-play selected soundscape during active focus sprint if one is chosen
   useEffect(() => {
@@ -51,20 +51,20 @@ export const SoundscapePlayer: React.FC<SoundscapePlayerProps> = ({ isTimerRunni
   };
 
   return (
-    <div style={{ background: '#f8fafc', border: '1.8px solid #121826', borderRadius: '8px', padding: '0.45rem 0.65rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.5rem', fontSize: '0.75rem' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontWeight: 700 }}>
-        <Headphones size={13} color="#6366f1" />
-        <span>Soundscape:</span>
+    <div style={{ background: '#fdfbf7', border: '1.5px solid var(--border-subtle)', borderRadius: '14px', padding: '0.5rem 0.75rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.5rem', fontSize: '0.75rem', boxShadow: '0 2px 8px rgba(49, 78, 62, 0.04)' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontWeight: 600, color: 'var(--color-matcha-dark)' }}>
+        <Headphones size={13} color="#588157" />
+        <span>Ambience:</span>
         <select
           value={selectedType}
           onChange={(e) => handleSelectType(e.target.value as SoundscapeType)}
-          style={{ padding: '0.2rem 0.35rem', borderRadius: '5px', border: '1.2px solid #121826', fontSize: '0.72rem', fontWeight: 600, background: '#ffffff' }}
+          style={{ padding: '0.25rem 0.45rem', borderRadius: '8px', border: '1.2px solid var(--border-dark)', fontSize: '0.72rem', fontWeight: 600, background: '#ffffff', color: 'var(--text-main)', outline: 'none' }}
         >
-          <option value="none">Off</option>
-          <option value="brown_noise">🌊 Brown Noise</option>
-          <option value="rain">🌧️ Rain on Window</option>
-          <option value="binaural_40hz">⚡ 40Hz Gamma Beats</option>
-          <option value="lofi_drone">🌆 Lo-Fi Pad</option>
+          <option value="none">Silent</option>
+          <option value="brown_noise">🍵 Zen Garden (Brown Noise)</option>
+          <option value="rain">🌧️ Soft Rain on Cedar</option>
+          <option value="binaural_40hz">⚡ 40Hz Calm Gamma Waves</option>
+          <option value="lofi_drone">📻 Lofi Tea Room</option>
         </select>
       </div>
 
@@ -73,15 +73,15 @@ export const SoundscapePlayer: React.FC<SoundscapePlayerProps> = ({ isTimerRunni
           type="button"
           onClick={togglePlay}
           className="nb-btn"
-          style={{ padding: '0.2rem 0.45rem', fontSize: '0.7rem', background: isPlaying ? '#fca5a5' : '#86efac' }}
-          title={isPlaying ? 'Pause soundscape' : 'Play soundscape'}
+          style={{ padding: '0.25rem 0.5rem', fontSize: '0.7rem', background: isPlaying ? '#fcece9' : '#e3ede5', color: isPlaying ? '#c85a54' : '#344e41', border: '1.2px solid var(--border-dark)' }}
+          title={isPlaying ? 'Pause ambience' : 'Play ambience'}
         >
-          {isPlaying ? <Square size={10} fill="#121826" /> : <Play size={10} fill="#121826" />}
-          <span>{isPlaying ? 'Stop' : 'Play'}</span>
+          {isPlaying ? <Square size={10} fill="#c85a54" /> : <Play size={10} fill="#344e41" />}
+          <span>{isPlaying ? 'Pause' : 'Play'}</span>
         </button>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
-          <Volume2 size={12} color="#64748b" />
+          <Volume2 size={12} color="#6b7c72" />
           <input
             type="range"
             min="0"
@@ -89,7 +89,7 @@ export const SoundscapePlayer: React.FC<SoundscapePlayerProps> = ({ isTimerRunni
             step="0.05"
             value={volume}
             onChange={(e) => handleVolumeChange(parseFloat(e.target.value))}
-            style={{ width: '45px', cursor: 'pointer' }}
+            style={{ width: '42px', cursor: 'pointer', accentColor: '#588157' }}
             title={`Volume: ${Math.round(volume * 100)}%`}
           />
         </div>
