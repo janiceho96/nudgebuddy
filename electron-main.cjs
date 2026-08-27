@@ -31,7 +31,8 @@ function createWindow() {
   mainWindow.setAlwaysOnTop(true, 'floating');
   mainWindow.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
 
-  mainWindow.loadURL('http://localhost:5173/');
+  // Load the compiled offline HTML directly without needing any localhost servers
+  mainWindow.loadFile(path.join(__dirname, 'dist', 'index.html'));
 
   // Global hotkey: Option + Space toggles NudgeBuddy visibility anywhere on macOS
   globalShortcut.register('Alt+Space', () => {

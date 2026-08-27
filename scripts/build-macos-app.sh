@@ -3,83 +3,112 @@ set -e
 
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 APP_NAME="NudgeBuddy"
-APP_DIR="$PROJECT_DIR/dist-macos/$APP_NAME.app"
-DESKTOP_APP="/Users/macjanice/Desktop/$APP_NAME.app"
+DIST_DIR="$PROJECT_DIR/dist-macos"
+APP_BUNDLE="$DIST_DIR/$APP_NAME.app"
+DESKTOP_DIR="/Users/macjanice/Desktop"
+DESKTOP_FOLDER="$DESKTOP_DIR/NudgeBuddy-Mac"
+ZIP_OUTPUT="$DESKTOP_DIR/NudgeBuddy-Mac.zip"
 
-# 1. Build production bundle first
+echo "🍃 1. Building production frontend..."
 cd "$PROJECT_DIR"
 npm run build
 
-mkdir -p "$PROJECT_DIR/dist-macos"
-rm -rf "$APP_DIR" "$DESKTOP_APP"
+echo "📦 2. Scaffolding Native macOS Electron App..."
+mkdir -p "$DIST_DIR"
+rm -rf "$APP_BUNDLE" "$DESKTOP_FOLDER" "$ZIP_OUTPUT"
 
-# Create .app directory structure
-mkdir -p "$APP_DIR/Contents/MacOS"
-mkdir -p "$APP_DIR/Contents/Resources/app"
-
-# Copy compiled static web app directly inside the .app bundle (100% self-contained!)
-cp -R "$PROJECT_DIR/dist/"* "$APP_DIR/Contents/Resources/app/"
-
-# 2. Universal Self-Contained Launcher (Runs on ANY Mac)
-cat << 'EOF' > "$APP_DIR/Contents/MacOS/NudgeBuddy"
-#!/bin/bash
-DIR="$(cd "$(dirname "$0")/../Resources/app" && pwd)"
-PORT=5188
-
-# Check if port is already running
-if ! nc -z localhost $PORT 2>/dev/null; then
-  cd "$DIR"
-  python3 -m http.server $PORT > /dev/null 2>&1 &
-  sleep 0.5
-fi
-
-# Open in Chrome App Mode if available, or default browser
-if [ -d "/Applications/Google Chrome.app" ]; then
-  open -na "Google Chrome" --args --app="http://localhost:$PORT" --window-size=440,780 2>/dev/null || open "http://localhost:$PORT"
+# Copy prebuilt Electron app as base
+if [ -d "$PROJECT_DIR/node_modules/electron/dist/Electron.app" ]; then
+  cp -R "$PROJECT_DIR/node_modules/electron/dist/Electron.app" "$APP_BUNDLE"
+  mv "$APP_BUNDLE/Contents/MacOS/Electron" "$APP_BUNDLE/Contents/MacOS/$APP_NAME"
 else
-  open "http://localhost:$PORT"
+  echo "Error: Electron binary not found in node_modules."
+  exit 1
 fi
-EOF
 
-chmod +x "$APP_DIR/Contents/MacOS/NudgeBuddy"
+# Populate Contents/Resources/app
+mkdir -p "$APP_BUNDLE/Contents/Resources/app"
+cp -R "$PROJECT_DIR/dist" "$APP_BUNDLE/Contents/Resources/app/"
+cp "$PROJECT_DIR/electron-main.cjs" "$APP_BUNDLE/Contents/Resources/app/"
+cp "$PROJECT_DIR/package.json" "$APP_BUNDLE/Contents/Resources/app/"
 
-# 3. Info.plist
-cat << EOF > "$APP_DIR/Contents/Info.plist"
+# Update Info.plist
+cat << EOF > "$APP_BUNDLE/Contents/Info.plist"
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
     <key>CFBundleExecutable</key>
-    <string>NudgeBuddy</string>
+    <string>$APP_NAME</string>
     <key>CFBundleIconFile</key>
-    <string>appIcon.icns</string>
+    <string>electron.icns</string>
     <key>CFBundleIdentifier</key>
-    <string>com.nudgebuddy.adhdcompanion</string>
+    <string>com.nudgebuddy.sanctuary</string>
     <key>CFBundleName</key>
-    <string>NudgeBuddy</string>
+    <string>$APP_NAME</string>
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleShortVersionString</key>
-    <string>1.0.0</string>
-    <key>CFBundleVersion</key>
-    <string>1</string>
+    <string>0.1.0</string>
     <key>LSMinimumSystemVersion</key>
-    <string>10.15</string>
+    <string>11.0</string>
     <key>NSHighResolutionCapable</key>
     <true/>
 </dict>
 </plist>
 EOF
 
-# 4. Copy Mascot Icon
-if [ -f "/tmp/appIcon.icns" ]; then
-  cp "/tmp/appIcon.icns" "$APP_DIR/Contents/Resources/appIcon.icns"
+# Clear local quarantine
+xattr -cr "$APP_BUNDLE" 2>/dev/null || true
+
+echo "📁 3. Packaging 1-Click Installer Folder on Desktop..."
+mkdir -p "$DESKTOP_FOLDER"
+cp -R "$APP_BUNDLE" "$DESKTOP_FOLDER/"
+cp -R "$APP_BUNDLE" "$DESKTOP_DIR/"
+
+# Create 1-click launcher script for her friend
+cat << 'EOF' > "$DESKTOP_FOLDER/Install-NudgeBuddy.command"
+#!/bin/bash
+DIR="$(cd "$(dirname "$0")" && pwd)"
+echo "🍃 Preparing NudgeBuddy for your Mac..."
+# Clear macOS internet download quarantine
+xattr -cr "$DIR/NudgeBuddy.app" 2>/dev/null || true
+# Move to Applications if possible, or run from folder
+if [ -w "/Applications" ]; then
+  cp -R "$DIR/NudgeBuddy.app" /Applications/ 2>/dev/null || true
+  open /Applications/NudgeBuddy.app
+else
+  open "$DIR/NudgeBuddy.app"
 fi
+echo "✨ NudgeBuddy is now open on your desktop!"
+osascript -e 'tell application "Terminal" to close (every window whose name contains "Install-NudgeBuddy")' 2>/dev/null &
+exit 0
+EOF
 
-# Self-sign with ad-hoc signature
-codesign --force --deep --sign - "$APP_DIR" 2>/dev/null || true
+chmod +x "$DESKTOP_FOLDER/Install-NudgeBuddy.command"
 
-# Copy directly to Desktop
-cp -R "$APP_DIR" "/Users/macjanice/Desktop/"
+# Create simple instructions
+cat << 'EOF' > "$DESKTOP_FOLDER/HOW-TO-OPEN.txt"
+========================================
+🌿 NudgeBuddy — Lush Forest Sanctuary
+========================================
 
-echo "Successfully built 100% self-contained portable NudgeBuddy.app!"
+How to open on any Mac:
+
+Option A (Easiest — 1 Click):
+👉 Double-click "Install-NudgeBuddy.command"
+
+Option B:
+👉 Right-Click "NudgeBuddy.app" -> Select "Open" -> Click "Open"
+
+Global Shortcut on your Mac:
+Press [Option + Space] (⌥ + Space) to toggle NudgeBuddy anywhere on your screen!
+EOF
+
+# Create Zip
+cd "$DESKTOP_DIR"
+zip -r -q "NudgeBuddy-Mac.zip" "NudgeBuddy-Mac"
+
+echo "🎉 Success! Ready to share:"
+echo "   -> $DESKTOP_FOLDER"
+echo "   -> $ZIP_OUTPUT"

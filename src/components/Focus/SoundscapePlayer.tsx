@@ -54,17 +54,18 @@ export const SoundscapePlayer: React.FC<SoundscapePlayerProps> = ({ isTimerRunni
     <div style={{ background: '#ffffff', border: '1px solid var(--border-dark)', borderRadius: '12px', padding: '0.45rem 0.75rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.5rem', fontSize: '0.74rem', boxShadow: 'var(--shadow-sm)' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontWeight: 600, color: 'var(--text-secondary)' }}>
         <Headphones size={13} color="#2d6a4f" />
-        <span>Nature:</span>
+        <span>Music:</span>
         <select
           value={selectedType}
           onChange={(e) => handleSelectType(e.target.value as SoundscapeType)}
           style={{ padding: '0.2rem 0.4rem', borderRadius: '6px', border: '1px solid var(--border-dark)', fontSize: '0.72rem', fontWeight: 600, background: '#ffffff', color: 'var(--text-main)', outline: 'none' }}
         >
-          <option value="none">Silent Forest</option>
-          <option value="brown_noise">🌲 Pine Forest & Canopy Wind</option>
-          <option value="rain">🌧️ Rain on Leaves & Forest Stream</option>
-          <option value="binaural_40hz">⚡ 40Hz Forest Flow Entrainment</option>
-          <option value="lofi_drone">🍃 Moss & Ancient Woods Calm</option>
+          <option value="none">Mute</option>
+          <option value="energetic_jazz">🎷 Energetic Jazz Bop (116 BPM)</option>
+          <option value="jazz_cafe">☕ Cozy Midnight Jazz Rhodes</option>
+          <option value="bossa_nova">🌴 Sunset Bossa Nova & Vibes</option>
+          <option value="rainy_lofi_jazz">🌧️ Tokyo Rain & Lo-Fi Jazz</option>
+          <option value="forest_stream">🍃 Forest Brook & Soft Wind</option>
         </select>
       </div>
 
