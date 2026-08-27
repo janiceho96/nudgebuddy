@@ -28,41 +28,15 @@ PORT=5188
 
 # Check if port is already running
 if ! nc -z localhost $PORT 2>/dev/null; then
-  # Start lightweight built-in macOS python web server from inside the app bundle
   cd "$DIR"
-  /usr/bin/python3 -m http.server $PORT > /dev/null 2>&1 &
-  SERVER_PID=$!
-  sleep 0.3
+  python3 -m http.server $PORT > /dev/null 2>&1 &
+  sleep 0.5
 fi
 
-# Try launching in Chrome standalone app window mode if Google Chrome is installed
+# Open in Chrome App Mode if available, or default browser
 if [ -d "/Applications/Google Chrome.app" ]; then
-  "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
-    --app="http://localhost:$PORT" \
-    --window-size=440,780 \
-    --window-position=980,60 \
-    --disable-features=TranslateUI \
-    > /dev/null 2>&1 &
-elif [ -d "$HOME/Applications/Google Chrome.app" ]; then
-  "$HOME/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
-    --app="http://localhost:$PORT" \
-    --window-size=440,780 \
-    --window-position=980,60 \
-    > /dev/null 2>&1 &
-elif [ -d "/Applications/Brave Browser.app" ]; then
-  "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser" \
-    --app="http://localhost:$PORT" \
-    --window-size=440,780 \
-    --window-position=980,60 \
-    > /dev/null 2>&1 &
-elif [ -d "/Applications/Microsoft Edge.app" ]; then
-  "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge" \
-    --app="http://localhost:$PORT" \
-    --window-size=440,780 \
-    --window-position=980,60 \
-    > /dev/null 2>&1 &
+  open -na "Google Chrome" --args --app="http://localhost:$PORT" --window-size=440,780 2>/dev/null || open "http://localhost:$PORT"
 else
-  # Fallback to default browser
   open "http://localhost:$PORT"
 fi
 EOF
