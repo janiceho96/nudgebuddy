@@ -1,20 +1,20 @@
 .app-wrapper {
   width: 100%;
   height: 100%;
-  max-width: 480px;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
   background: var(--bg-app);
-  border: 3px solid var(--border-dark);
-  box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.4);
-  border-radius: 16px;
+  border: none;
+  box-shadow: none;
+  border-radius: 0px;
   overflow: hidden;
   position: relative;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .app-wrapper.wide-mode {
-  max-width: 960px;
+  max-width: 100%;
 }
 
 /* Bottom Dock / Upward Pop-out Mode */
@@ -182,26 +182,32 @@
   flex-direction: column;
   flex: 1;
   overflow-y: auto;
-  gap: 1rem;
-  padding: 1rem;
+  gap: 1.25rem;
+  padding: 1.25rem 1.75rem;
+  width: 100%;
+  max-width: 1300px;
+  margin: 0 auto;
 }
 
-.wide-mode .app-main-grid {
-  display: grid;
-  grid-template-columns: 360px 1fr;
-  align-items: start;
-  gap: 1.25rem;
+@media (min-width: 900px) {
+  .app-main-grid {
+    display: grid;
+    grid-template-columns: 420px 1fr;
+    align-items: start;
+    gap: 1.75rem;
+  }
 }
 
 /* Header */
 .macos-header {
   background: #ffffff;
-  border-bottom: 2.5px solid var(--border-dark);
-  padding: 0.65rem 1rem;
+  border-bottom: 2px solid var(--border-dark);
+  padding: 0.75rem 1.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   user-select: none;
+  width: 100%;
   -webkit-app-region: drag;
 }
 
@@ -420,17 +426,24 @@
 
 /* Quick Capture Bar */
 .quick-capture-wrap {
-  padding: 0.75rem 1rem;
+  padding: 0.85rem 1.5rem;
   background: #ffffff;
-  border-top: 2.5px solid var(--border-dark);
+  border-top: 2px solid var(--border-dark);
+  display: flex;
+  justify-content: center;
+}
+
+.quick-capture-wrap form {
+  width: 100%;
+  max-width: 1300px;
 }
 
 .quick-capture-input {
   width: 100%;
   font-family: var(--font-sans);
-  font-size: 0.88rem;
+  font-size: 0.9rem;
   font-weight: 600;
-  padding: 0.6rem 0.8rem;
+  padding: 0.65rem 0.9rem;
   border: 2px solid var(--border-dark);
   box-shadow: 2px 2px 0px var(--border-dark);
   border-radius: 8px;
