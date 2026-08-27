@@ -206,17 +206,15 @@
 }
 
 .macos-header button,
-.macos-header .dot,
+.macos-header button *,
+.macos-header .header-controls,
+.macos-header .header-controls *,
+.macos-header .traffic-lights,
+.macos-header .traffic-lights *,
 .macos-header select,
 .macos-header input {
-  -webkit-app-region: no-drag;
-}
-
-.traffic-lights {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  -webkit-app-region: no-drag;
+  -webkit-app-region: no-drag !important;
+  pointer-events: auto !important;
 }
 
 .dot {
@@ -447,15 +445,16 @@
 
 /* Modal / Drawer Overlays */
 .modal-overlay {
-  position: absolute;
+  position: fixed;
   inset: 0;
   background: rgba(18, 24, 38, 0.65);
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(3px);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 1.25rem;
-  z-index: 50;
+  z-index: 999999;
+  -webkit-app-region: no-drag;
 }
 
 .modal-content {
@@ -467,4 +466,5 @@
   max-width: 440px;
   padding: 1.25rem;
   position: relative;
+  -webkit-app-region: no-drag;
 }
