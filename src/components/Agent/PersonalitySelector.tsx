@@ -8,13 +8,13 @@ interface PersonalitySelectorProps {
 
 export const PersonalitySelector: React.FC<PersonalitySelectorProps> = ({ currentPersona, onSelect }) => {
   const options: { id: AgentPersona; label: string; activeBg: string; activeColor: string }[] = [
-    { id: 'gentle', label: '🌸 Serene Tea', activeBg: '#fcece9', activeColor: '#c87d55' },
-    { id: 'direct', label: '⏱️ Mindful Coach', activeBg: '#f3ede2', activeColor: '#588157' },
-    { id: 'spicy', label: '🌶️ Playful Spirit', activeBg: '#fae1d9', activeColor: '#c85a54' }
+    { id: 'gentle', label: '🕊️ Sanctuary', activeBg: '#eef2ff', activeColor: '#4f46e5' },
+    { id: 'direct', label: '🧭 Mindful Sage', activeBg: '#f0fdfa', activeColor: '#0d9488' },
+    { id: 'spicy', label: '✨ Intuitive Beacon', activeBg: '#fdf2f8', activeColor: '#db2777' }
   ];
 
   return (
-    <div style={{ display: 'flex', gap: '0.4rem', justifyContent: 'center', margin: '0.1rem 0' }}>
+    <div style={{ display: 'flex', gap: '0.35rem', justifyContent: 'center', margin: '0.1rem 0' }}>
       {options.map((opt) => {
         const isSelected = currentPersona === opt.id;
         return (
@@ -23,13 +23,13 @@ export const PersonalitySelector: React.FC<PersonalitySelectorProps> = ({ curren
             type="button"
             className="nb-btn"
             style={{
-              padding: '0.3rem 0.65rem',
-              fontSize: '0.76rem',
-              fontWeight: 600,
-              background: isSelected ? opt.activeBg : '#fdfbf7',
-              color: isSelected ? opt.activeColor : '#6b7c72',
-              borderColor: isSelected ? opt.activeColor : 'var(--border-subtle)',
-              boxShadow: isSelected ? '0 4px 12px rgba(49, 78, 62, 0.08)' : 'none',
+              padding: '0.28rem 0.65rem',
+              fontSize: '0.74rem',
+              fontWeight: 500,
+              background: isSelected ? opt.activeBg : '#ffffff',
+              color: isSelected ? opt.activeColor : 'var(--text-secondary)',
+              borderColor: isSelected ? opt.activeColor : 'var(--border-dark)',
+              boxShadow: isSelected ? '0 2px 8px rgba(99, 102, 241, 0.08)' : 'none',
               transform: isSelected ? 'translateY(-1px)' : 'none'
             }}
             onClick={() => onSelect(opt.id)}

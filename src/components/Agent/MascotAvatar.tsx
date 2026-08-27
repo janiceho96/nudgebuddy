@@ -8,106 +8,52 @@ interface MascotAvatarProps {
   onClick?: () => void;
 }
 
-export const MascotAvatar: React.FC<MascotAvatarProps> = ({ mood, size = 64, isTalking = false, onClick }) => {
-  const renderEyesAndMouth = () => {
-    if (isTalking) {
-      return (
-        <>
-          <circle cx="28" cy="40" r="4.5" fill="#242e28" />
-          <circle cx="52" cy="40" r="4.5" fill="#242e28" />
-          <circle cx="29.5" cy="38.5" r="1.6" fill="#ffffff" />
-          <circle cx="53.5" cy="38.5" r="1.6" fill="#ffffff" />
-          {/* Gentle talking mouth */}
-          <ellipse cx="40" cy="52" rx="5" ry="3.5" fill="#242e28" />
-          <ellipse cx="40" cy="53" rx="3" ry="1.8" fill="#f5cac3" />
-        </>
-      );
-    }
-
+export const MascotAvatar: React.FC<MascotAvatarProps> = ({ mood, size = 48, isTalking = false, onClick }) => {
+  const renderEyes = () => {
     switch (mood) {
-      case 'watching':
-        return (
-          <>
-            <circle cx="28" cy="40" r="4.5" fill="#242e28" />
-            <circle cx="52" cy="40" r="4.5" fill="#242e28" />
-            <circle cx="29.5" cy="38.5" r="1.6" fill="#ffffff" />
-            <circle cx="53.5" cy="38.5" r="1.6" fill="#ffffff" />
-            <line x1="34" y1="52" x2="46" y2="52" stroke="#242e28" strokeWidth="2.2" strokeLinecap="round" />
-            <circle cx="20" cy="45" r="3.5" fill="#f5cac3" opacity="0.75" />
-            <circle cx="60" cy="45" r="3.5" fill="#f5cac3" opacity="0.75" />
-          </>
-        );
-
       case 'hyped':
+      case 'celebrating':
         return (
           <>
-            <circle cx="28" cy="38" r="5" fill="#242e28" />
-            <circle cx="52" cy="38" r="5" fill="#242e28" />
-            <circle cx="29" cy="36.5" r="2" fill="#dfb15b" />
-            <circle cx="53" cy="36.5" r="2" fill="#dfb15b" />
-            <path d="M 30 48 Q 40 58 50 48" stroke="#242e28" strokeWidth="2.2" fill="#fdfbf7" strokeLinecap="round" />
-            <circle cx="18" cy="44" r="4" fill="#f5cac3" opacity="0.9" />
-            <circle cx="62" cy="44" r="4" fill="#f5cac3" opacity="0.9" />
-          </>
-        );
-
-      case 'judging':
-        return (
-          <>
-            <ellipse cx="28" cy="40" rx="5" ry="3" fill="#242e28" />
-            <ellipse cx="52" cy="40" rx="5" ry="3" fill="#242e28" />
-            <path d="M 33 52 Q 41 50 47 53" stroke="#242e28" strokeWidth="2.2" fill="none" strokeLinecap="round" />
-            <path d="M 23 32 Q 28 30 33 34" stroke="#242e28" strokeWidth="2" fill="none" strokeLinecap="round" />
+            {/* Joyful curved eyes */}
+            <path d="M 28 40 Q 34 33 40 40" stroke="#1e293b" strokeWidth="2.2" fill="none" strokeLinecap="round" />
+            <path d="M 48 40 Q 54 33 60 40" stroke="#1e293b" strokeWidth="2.2" fill="none" strokeLinecap="round" />
+            {/* Spark of clarity */}
+            <circle cx="44" cy="24" r="2" fill="#818cf8" />
           </>
         );
 
       case 'worried':
         return (
           <>
-            <circle cx="28" cy="39" r="5" fill="#242e28" />
-            <circle cx="52" cy="39" r="5" fill="#242e28" />
-            <circle cx="26.5" cy="37.5" r="1.8" fill="#ffffff" />
-            <circle cx="50.5" cy="37.5" r="1.8" fill="#ffffff" />
-            <path d="M 34 53 Q 40 48 46 53" stroke="#242e28" strokeWidth="2.2" fill="none" strokeLinecap="round" />
-          </>
-        );
-
-      case 'celebrating':
-        return (
-          <>
-            <path d="M 23 40 Q 28 34 33 40" stroke="#242e28" strokeWidth="2.8" fill="none" strokeLinecap="round" />
-            <path d="M 47 40 Q 52 34 57 40" stroke="#242e28" strokeWidth="2.8" fill="none" strokeLinecap="round" />
-            <path d="M 30 47 Q 40 60 50 47 Z" fill="#242e28" />
-            <circle cx="18" cy="43" r="4.5" fill="#f5cac3" />
-            <circle cx="62" cy="43" r="4.5" fill="#f5cac3" />
-            <text x="61" y="24" fontSize="12">🍵</text>
-            <text x="4" y="25" fontSize="12">✨</text>
+            <circle cx="34" cy="40" r="3.5" fill="#1e293b" />
+            <circle cx="54" cy="40" r="3.5" fill="#1e293b" />
+            <circle cx="33" cy="38.5" r="1.2" fill="#ffffff" />
+            <circle cx="53" cy="38.5" r="1.2" fill="#ffffff" />
+            <path d="M 40 50 Q 44 47 48 50" stroke="#1e293b" strokeWidth="1.8" fill="none" strokeLinecap="round" />
           </>
         );
 
       case 'sleeping':
         return (
           <>
-            <line x1="23" y1="40" x2="33" y2="40" stroke="#242e28" strokeWidth="2.5" strokeLinecap="round" />
-            <line x1="47" y1="40" x2="57" y2="40" stroke="#242e28" strokeWidth="2.5" strokeLinecap="round" />
-            <ellipse cx="40" cy="51" rx="2.5" ry="1.5" fill="#242e28" />
-            <text x="56" y="22" fontSize="11" fontWeight="600" fill="#84a98c">Zzz</text>
+            <line x1="28" y1="41" x2="38" y2="41" stroke="#64748b" strokeWidth="2" strokeLinecap="round" />
+            <line x1="50" y1="41" x2="60" y2="41" stroke="#64748b" strokeWidth="2" strokeLinecap="round" />
           </>
         );
 
+      case 'watching':
       case 'idle':
       default:
         return (
           <>
-            <circle cx="28" cy="40" r="4.2" fill="#242e28" />
-            <circle cx="52" cy="40" r="4.2" fill="#242e28" />
-            <circle cx="29.5" cy="38.5" r="1.5" fill="#ffffff" />
-            <circle cx="53.5" cy="38.5" r="1.5" fill="#ffffff" />
-            {/* Gentle zen smile */}
-            <path d="M 34 50 Q 40 55 46 50" stroke="#242e28" strokeWidth="2.2" fill="none" strokeLinecap="round" />
-            {/* Soft pink blush */}
-            <circle cx="19" cy="45" r="4" fill="#f5cac3" opacity="0.8" />
-            <circle cx="61" cy="45" r="4" fill="#f5cac3" opacity="0.8" />
+            {/* Serene mindful eyes */}
+            <circle cx="34" cy="41" r="3.2" fill="#1e293b" />
+            <circle cx="54" cy="41" r="3.2" fill="#1e293b" />
+            <circle cx="35" cy="39.8" r="1" fill="#ffffff" />
+            <circle cx="55" cy="39.8" r="1" fill="#ffffff" />
+            {/* Gentle calm smile */}
+            <path d="M 41 49 Q 44 52 47 49" stroke="#1e293b" strokeWidth="1.8" fill="none" strokeLinecap="round" />
           </>
         );
     }
@@ -116,53 +62,57 @@ export const MascotAvatar: React.FC<MascotAvatarProps> = ({ mood, size = 64, isT
   return (
     <div
       onClick={onClick}
-      className={`mascot-avatar-container ${isTalking ? 'talking-mascot' : 'floating-mascot'}`}
+      className={`mascot-avatar-container ${isTalking ? 'talking-mascot' : 'ethereal-spirit'}`}
       style={{
         width: size,
         height: size,
         cursor: 'pointer',
         flexShrink: 0,
-        filter: 'drop-shadow(0 4px 12px rgba(49, 78, 62, 0.12))'
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'relative'
       }}
-      title="Matcha Budge — Your Zen Focus Tea Spirit"
+      title="Sol — Your Mindful Focus Guide"
     >
       <svg
-        viewBox="0 0 80 80"
+        viewBox="0 0 88 88"
         width={size}
         height={size}
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
-        {/* Cute Tea Leaf Sprout on Head */}
-        <path
-          d="M 40 22 C 34 12, 28 15, 30 10 C 33 5, 45 10, 40 22 Z"
-          fill="#588157"
-          stroke="#344e41"
-          strokeWidth="1.5"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M 40 22 C 46 13, 53 14, 52 9 C 48 5, 38 12, 40 22 Z"
-          fill="#84a98c"
-          stroke="#344e41"
-          strokeWidth="1.5"
-          strokeLinejoin="round"
+        <defs>
+          <radialGradient id="solAura" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="#eef2ff" stopOpacity="1" />
+            <stop offset="65%" stopColor="#e0e7ff" stopOpacity="0.8" />
+            <stop offset="100%" stopColor="#c7d2fe" stopOpacity="0.3" />
+          </radialGradient>
+          <linearGradient id="solCore" x1="0" y1="0" x2="88" y2="88">
+            <stop offset="0%" stopColor="#ffffff" />
+            <stop offset="100%" stopColor="#f1f5f9" />
+          </linearGradient>
+        </defs>
+
+        {/* Soft Ethereal Outer Halo */}
+        <circle cx="44" cy="44" r="38" fill="url(#solAura)" />
+
+        {/* Inner Luminous Core */}
+        <circle
+          cx="44"
+          cy="44"
+          r="26"
+          fill="url(#solCore)"
+          stroke="#cbd5e1"
+          strokeWidth="1.2"
         />
 
-        {/* Main Soft Rounded Body */}
-        <path
-          d="M 20 38 C 20 22, 60 22, 60 38 C 63 54, 58 66, 40 67 C 22 66, 17 54, 20 38 Z"
-          fill="#a3b18a"
-          stroke="#344e41"
-          strokeWidth="2"
-          strokeLinejoin="round"
-        />
+        {/* Subtle Iris Crown Node */}
+        <circle cx="44" cy="18" r="3" fill="#6366f1" opacity="0.85" />
+        <circle cx="44" cy="18" r="5" stroke="#818cf8" strokeWidth="0.8" opacity="0.5" />
 
-        {/* Gentle Cream Belly */}
-        <ellipse cx="40" cy="56" rx="13" ry="7" fill="#dad7cd" opacity="0.85" />
-
-        {/* Dynamic Facial Features */}
-        {renderEyesAndMouth()}
+        {/* Facial Expression */}
+        {renderEyes()}
       </svg>
     </div>
   );

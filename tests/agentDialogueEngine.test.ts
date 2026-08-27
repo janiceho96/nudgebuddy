@@ -24,11 +24,11 @@ describe('agentDialogueEngine', () => {
     expect(dialogue.quote.length).toBeGreaterThan(10);
   });
 
-  it('should return spicy roasting for spicy persona on multiple snoozes', () => {
+  it('should return empathetic response on multiple snoozes', () => {
     const snoozedTask = { ...sampleTask, snoozeCount: 3 };
     const dialogue = getAgentDialogue('ON_SNOOZE', 'spicy', snoozedTask);
-    expect(dialogue.mood).toBe('judging');
-    expect(dialogue.quote.toLowerCase()).toMatch(/snooze|again|procrastinat|resume|tomorrow/);
+    expect(dialogue.mood).toBe('worried');
+    expect(dialogue.quote.toLowerCase()).toMatch(/friction|break down|tiny|ready|snooze/);
   });
 
   it('should return direct coach prompt on avoidance intervention', () => {

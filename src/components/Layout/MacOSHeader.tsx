@@ -72,10 +72,10 @@ export const MacOSHeader: React.FC<MacOSHeaderProps> = ({
       </div>
 
       <div className="header-title-badge">
-        <Sparkles size={14} color="#588157" fill="#588157" />
-        <span style={{ fontFamily: 'var(--font-serif)', fontSize: '0.95rem', fontWeight: 600 }}>NudgeBuddy</span>
-        <span style={{ fontSize: '0.65rem', background: '#f3ede2', color: '#588157', padding: '0.1rem 0.4rem', borderRadius: '12px', fontWeight: 600 }}>
-          Matcha
+        <Sparkles size={14} color="#6366f1" fill="#6366f1" />
+        <span style={{ fontFamily: 'var(--font-sans)', fontSize: '0.9rem', fontWeight: 600 }}>NudgeBuddy</span>
+        <span style={{ fontSize: '0.65rem', background: '#eef2ff', color: '#4f46e5', padding: '0.1rem 0.45rem', borderRadius: '12px', fontWeight: 500 }}>
+          Sanctuary
         </span>
       </div>
 

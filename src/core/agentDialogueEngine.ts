@@ -5,27 +5,27 @@ export function getAgentDialogue(
   persona: AgentPersona,
   task?: Task | null
 ): AgentDialogue {
-  const taskTitle = task ? `"${task.title}"` : 'your task';
+  const taskTitle = task ? `"${task.title}"` : 'your intention';
 
   switch (event) {
     case 'ON_INIT': {
       if (persona === 'gentle') {
         return {
-          quote: "Hey there! Breathe. We don't have to conquer everything today. Just pick one tiny thing.",
+          quote: "Take a slow breath. We don't need to do everything at once — just align with this one moment.",
           mood: 'idle',
-          subtitle: 'Gentle Buddy is by your side 🌸'
+          subtitle: 'Sanctuary presence active 🕊️'
         };
       } else if (persona === 'direct') {
         return {
-          quote: "Ready when you are. Pick the highest impact task and let's run a 25-minute sprint.",
+          quote: "Welcome to your focus space. Choose what truly moves the needle today.",
           mood: 'idle',
-          subtitle: 'Direct Coach standing by ⏱️'
+          subtitle: 'Mindful Sage standing by 🧭'
         };
       } else {
         return {
-          quote: "Oh good, you're here. Let's get something done before the doom-scrolling takes over again.",
+          quote: "Clear the mental noise. Let your inner intuition guide what we shape next.",
           mood: 'hyped',
-          subtitle: 'Spicy Goblin is watching you 🌶️'
+          subtitle: 'Intuitive Beacon illuminating ✨'
         };
       }
     }
@@ -33,17 +33,17 @@ export function getAgentDialogue(
     case 'ON_TASK_SELECT': {
       if (persona === 'gentle') {
         return {
-          quote: `Great choice on ${taskTitle}. No rush, let's take it one step at a time.`,
+          quote: `A meaningful choice in ${taskTitle}. Flow at your own pace.`,
           mood: 'idle'
         };
       } else if (persona === 'direct') {
         return {
-          quote: `Locked on ${taskTitle}. 25 minutes of single-task focus. Let's do it.`,
+          quote: `Centered on ${taskTitle}. 25 minutes of quiet, deliberate progress.`,
           mood: 'watching'
         };
       } else {
         return {
-          quote: `Oh, you picked ${taskTitle}? Bold move! Let's see if we actually start this one.`,
+          quote: `Focusing our energy on ${taskTitle}. Let's bring clarity to this idea.`,
           mood: 'hyped'
         };
       }
@@ -52,17 +52,17 @@ export function getAgentDialogue(
     case 'ON_FOCUS_START': {
       if (persona === 'gentle') {
         return {
-          quote: `Timer is running for ${taskTitle}! Put on some chill music. You got this.`,
+          quote: `Entering gentle flow for ${taskTitle}. Protect your peace and breathe.`,
           mood: 'watching'
         };
       } else if (persona === 'direct') {
         return {
-          quote: `Clock is ticking. Close the other 37 browser tabs. Eyes on ${taskTitle}.`,
+          quote: `Deep focus sprint initiated. Release outside distractions for ${taskTitle}.`,
           mood: 'watching'
         };
       } else {
         return {
-          quote: `Locking the doors! No Twitter, no fridge opening, only ${taskTitle}!`,
+          quote: `Space created. Time to immerse yourself in ${taskTitle}.`,
           mood: 'watching'
         };
       }
@@ -71,141 +71,77 @@ export function getAgentDialogue(
     case 'ON_FOCUS_PAUSE': {
       if (persona === 'gentle') {
         return {
-          quote: "Taking a quick breath? That's fine, but keep your head in the zone.",
+          quote: "Pausing for a mindful breath. Re-ground your energy whenever you are ready.",
           mood: 'idle'
         };
       } else if (persona === 'direct') {
         return {
-          quote: "Paused. Remember: context switching costs 15 minutes of focus. Resume soon.",
-          mood: 'judging'
+          quote: "Session paused. Guard your focus against random context switching.",
+          mood: 'watching'
         };
       } else {
         return {
-          quote: "Hey! Why did we pause?! Don't you dare go check your phone notifications!",
-          mood: 'judging'
+          quote: "Notice what pulled your attention away. When ready, let's gently return.",
+          mood: 'idle'
         };
       }
     }
 
     case 'ON_FOCUS_RESUME': {
-      if (persona === 'gentle') {
-        return {
-          quote: "Welcome back! Let's glide through the rest of this session.",
-          mood: 'watching'
-        };
-      } else if (persona === 'direct') {
-        return {
-          quote: "Resuming. Let's power through to the finish line.",
-          mood: 'watching'
-        };
-      } else {
-        return {
-          quote: "Good human. Now keep typing!",
-          mood: 'watching'
-        };
-      }
+      return {
+        quote: "Welcome back to your flow state.",
+        mood: 'watching'
+      };
     }
 
     case 'ON_FOCUS_COMPLETE': {
       if (persona === 'gentle') {
         return {
-          quote: `🎉 You did it! 25 minutes on ${taskTitle}. I'm so proud of your focus!`,
+          quote: `✨ Beautiful focus. 25 minutes of thoughtful presence invested in ${taskTitle}.`,
           mood: 'celebrating'
         };
       } else if (persona === 'direct') {
         return {
-          quote: `🎯 Solid work. That's 25 focused minutes banked. Check it off or take a 5m breather.`,
+          quote: `🎯 Well done. Meaningful milestone reached on ${taskTitle}.`,
           mood: 'celebrating'
         };
       } else {
         return {
-          quote: `🔥 HOLY SMOKES YOU ACTUALLY DID IT! Dopamine hit received! High five!`,
+          quote: `🌿 A wonderful chapter completed. Notice how good it feels to finish with intention.`,
           mood: 'celebrating'
         };
       }
     }
 
     case 'ON_FOCUS_GIVE_UP': {
-      if (persona === 'gentle') {
-        return {
-          quote: "It happens! Stopping early is okay. We can break it into a tiny 2-minute step next time.",
-          mood: 'worried'
-        };
-      } else if (persona === 'direct') {
-        return {
-          quote: "Session aborted. No problem. Let's figure out what blocked you.",
-          mood: 'idle'
-        };
-      } else {
-        return {
-          quote: "Oof! Slain by distraction! Let's regroup and chop this monster down into micro-steps.",
-          mood: 'worried'
-        };
-      }
+      return {
+        quote: "Honoring your capacity today. Releasing this session with self-compassion.",
+        mood: 'worried'
+      };
     }
 
     case 'ON_SNOOZE': {
       const count = task?.snoozeCount || 1;
-      if (persona === 'gentle') {
-        return {
-          quote: count >= 2
-            ? "Snoozing again? Totally okay. Maybe this task is feeling too big right now?"
-            : "No problem, we'll put it on the back burner for a few minutes.",
-          mood: count >= 2 ? 'worried' : 'idle'
-        };
-      } else if (persona === 'direct') {
-        return {
-          quote: count >= 2
-            ? `Snoozed ${count} times. If you don't want to do it, break it down or delete it.`
-            : "Snoozed. We will revisit it in a bit.",
-          mood: count >= 2 ? 'judging' : 'idle'
-        };
-      } else {
-        return {
-          quote: count >= 2
-            ? `Another snooze?! Are you planning to do ${taskTitle} in this lifetime or the next?`
-            : "Snooze button pressed! I see you dodging responsibility!",
-          mood: count >= 2 ? 'judging' : 'hyped'
-        };
-      }
+      return {
+        quote: count >= 2
+          ? "Feeling internal friction with this task? Let's break it down gently into tiny steps."
+          : "Saved for when you feel ready. No pressure.",
+        mood: count >= 2 ? 'worried' : 'idle'
+      };
     }
 
     case 'ON_AVOIDANCE_DETECTED': {
-      if (persona === 'gentle') {
-        return {
-          quote: "Hey friend, looks like this task has high resistance. Let's do a 2-minute micro step together!",
-          mood: 'worried'
-        };
-      } else if (persona === 'direct') {
-        return {
-          quote: "Avoidance alert! You've avoided this multiple times. Let's commit to 2 minutes only.",
-          mood: 'worried'
-        };
-      } else {
-        return {
-          quote: "🚨 BEEP BEEP! Avoidance detected! You cannot hide from Budge! Let's slice this into baby bites!",
-          mood: 'hyped'
-        };
-      }
+      return {
+        quote: "Heavy emotional resistance detected. You don't have to tackle the whole mountain — just 2 minutes.",
+        mood: 'worried'
+      };
     }
 
     case 'ON_TASK_ADD': {
-      if (persona === 'gentle') {
-        return {
-          quote: `Added ${taskTitle} safely to your inbox. One thing off your mind!`,
-          mood: 'idle'
-        };
-      } else if (persona === 'direct') {
-        return {
-          quote: `Task captured: ${taskTitle}. Queued up.`,
-          mood: 'idle'
-        };
-      } else {
-        return {
-          quote: `Ooh, shiny new task: ${taskTitle}! Please say we'll actually finish this one.`,
-          mood: 'hyped'
-        };
-      }
+      return {
+        quote: `Unburdened ${taskTitle} from your mind into your calm queue.`,
+        mood: 'idle'
+      };
     }
 
     case 'ON_POKE':
@@ -217,24 +153,22 @@ export function getAgentDialogue(
 export function getRandomBanter(persona: AgentPersona, _snoozeLevel: number = 0): AgentDialogue {
   if (persona === 'gentle') {
     const quotes = [
-      { quote: "I'm right here cheering you on! Even 1% progress counts.", mood: 'idle' as AgentMood },
-      { quote: "Hydration check! Grab a sip of water before our next sprint.", mood: 'idle' as AgentMood },
-      { quote: "Be gentle with your brain today. You are doing great.", mood: 'idle' as AgentMood }
+      { quote: "Honor your quiet rhythms today. Meaningful depth over rushed speed.", mood: 'idle' as AgentMood },
+      { quote: "Hydration check — a warm sip of tea or water helps restore clarity.", mood: 'idle' as AgentMood },
+      { quote: "You don't need anyone's permission to move thoughtfully and deliberately.", mood: 'idle' as AgentMood }
     ];
     return quotes[Math.floor(Math.random() * quotes.length)];
   } else if (persona === 'direct') {
     const quotes = [
-      { quote: "Stop poking me and start the timer! Action breeds motivation.", mood: 'watching' as AgentMood },
-      { quote: "One task at a time. Multi-tasking is just multi-distracting.", mood: 'watching' as AgentMood },
-      { quote: "25 minutes of deep focus beats 4 hours of half-hearted tabs.", mood: 'watching' as AgentMood }
+      { quote: "Clarity comes from focused action. What is your true priority right now?", mood: 'watching' as AgentMood },
+      { quote: "Protect your deep work sanctuary. Close the non-essential tabs.", mood: 'watching' as AgentMood },
+      { quote: "25 minutes of unbroken attention is transformative.", mood: 'watching' as AgentMood }
     ];
     return quotes[Math.floor(Math.random() * quotes.length)];
   } else {
     const quotes = [
-      { quote: "Hey! Don't poke me, poke the 'Start Focus' button!", mood: 'judging' as AgentMood },
-      { quote: "Procrastination is just fear wearing a clown costume. Let's go!", mood: 'hyped' as AgentMood },
-      { quote: "If you finish this task, I'll allow you to stare at a wall for 5 minutes.", mood: 'hyped' as AgentMood },
-      { quote: "I see your browser has 42 tabs open. Which one are you running away from?", mood: 'judging' as AgentMood }
+      { quote: "Trust your visionary instincts. One calm step at a time.", mood: 'hyped' as AgentMood },
+      { quote: "Release perfectionism — simply show up and let flow happen.", mood: 'hyped' as AgentMood }
     ];
     return quotes[Math.floor(Math.random() * quotes.length)];
   }

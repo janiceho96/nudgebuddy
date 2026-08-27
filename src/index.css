@@ -1,43 +1,40 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Lora:ital,wght@0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=JetBrains+Mono:wght@400;500&display=swap');
 
 :root {
-  /* Cozy Zen Matcha Palette */
-  --bg-app: #f7f4ed;
+  /* INFJ Minimalist Sanctuary Palette */
+  --bg-app: #f8f9fa;
   --bg-panel: #ffffff;
-  --bg-subtle: #efeae1;
-  --bg-warm: #fdfbf7;
+  --bg-subtle: #f1f3f5;
+  --bg-hover: #f8f9fb;
   
-  --text-main: #242e28;
-  --text-muted: #6b7c72;
-  --text-light: #94a399;
+  --text-main: #1e293b;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
   
-  --border-dark: #d5cebf;
-  --border-subtle: #e6e0d3;
-  --border-active: #588157;
-  --border-width: 1.5px;
+  --border-subtle: rgba(15, 23, 42, 0.07);
+  --border-dark: #e2e8f0;
+  --border-active: #6366f1;
+  --border-width: 1px;
   
-  --shadow-main: 0 4px 16px rgba(49, 78, 62, 0.07);
-  --shadow-sm: 0 2px 8px rgba(49, 78, 62, 0.05);
-  --shadow-lg: 0 10px 32px rgba(49, 78, 62, 0.12);
+  --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.03), 0 1px 2px rgba(15, 23, 42, 0.02);
+  --shadow-main: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.02);
+  --shadow-lg: 0 12px 36px -4px rgba(15, 23, 42, 0.08), 0 4px 12px -2px rgba(15, 23, 42, 0.03);
   
-  /* Zen Herbal Tones */
-  --color-matcha-dark: #344e41;
-  --color-matcha: #588157;
-  --color-matcha-light: #a3b18a;
-  --color-matcha-foam: #dad7cd;
-  
-  --color-oat: #f3ede2;
-  --color-terracotta: #c87d55;
-  --color-terracotta-light: #fae1d9;
-  --color-hojicha: #b08968;
-  --color-sakura: #f5d0c5;
-  --color-mist: #dbe7e4;
-  --color-danger: #c85a54;
+  /* Serene Ethereal Accents */
+  --color-primary: #1e293b;
+  --color-iris: #6366f1;
+  --color-iris-soft: #eef2ff;
+  --color-sage: #0d9488;
+  --color-sage-soft: #f0fdfa;
+  --color-lotus: #ec4899;
+  --color-lotus-soft: #fdf2f8;
+  --color-amber-soft: #fffbeb;
+  --color-amber: #d97706;
 
-  --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-serif: 'Lora', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-serif: 'Newsreader', Georgia, serif;
   --font-mono: 'JetBrains Mono', monospace;
-  --font-display: 'Outfit', var(--font-sans);
+  --font-display: var(--font-sans);
 }
 
 * {
@@ -61,22 +58,22 @@ html, body, #root {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Custom Cozy Zen Utilities */
+/* Minimalist INFJ Box & Button Styles */
 .nb-box {
   background: var(--bg-panel);
-  border: var(--border-width) solid var(--border-subtle);
-  box-shadow: var(--shadow-main);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-sm);
   border-radius: 16px;
 }
 
 .nb-btn {
   font-family: var(--font-sans);
-  font-weight: 600;
-  font-size: 0.85rem;
+  font-weight: 500;
+  font-size: 0.82rem;
   padding: 0.45rem 0.85rem;
-  border: 1.5px solid var(--border-dark);
+  border: 1px solid var(--border-dark);
   box-shadow: var(--shadow-sm);
-  border-radius: 12px;
+  border-radius: 10px;
   cursor: pointer;
   background: #ffffff;
   color: var(--text-main);
@@ -89,97 +86,86 @@ html, body, #root {
 }
 
 .nb-btn:hover {
-  background: #fdfbf7;
-  border-color: var(--color-matcha);
+  background: var(--bg-subtle);
+  border-color: #cbd5e1;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(49, 78, 62, 0.1);
 }
 
 .nb-btn:active {
   transform: translateY(0px);
-  box-shadow: var(--shadow-sm);
 }
 
 .nb-btn-primary {
-  background: var(--color-matcha-dark);
+  background: var(--color-primary);
   color: #ffffff;
-  border-color: var(--color-matcha-dark);
+  border-color: var(--color-primary);
 }
 
 .nb-btn-primary:hover {
-  background: var(--color-matcha);
-  border-color: var(--color-matcha);
+  background: #0f172a;
+  border-color: #0f172a;
   color: #ffffff;
 }
 
 .nb-btn-secondary {
-  background: var(--color-oat);
+  background: var(--bg-subtle);
   border-color: var(--border-dark);
-  color: var(--text-main);
+  color: var(--text-secondary);
 }
 
 .nb-btn-secondary:hover {
-  background: #ede6d8;
-  border-color: var(--color-hojicha);
-}
-
-.nb-btn-danger {
-  background: var(--color-terracotta-light);
-  border-color: var(--color-terracotta);
-  color: var(--color-terracotta);
-}
-
-.nb-btn-danger:hover {
-  background: var(--color-terracotta);
-  color: #ffffff;
+  background: #e9ecef;
+  color: var(--text-main);
 }
 
 .nb-btn-success {
-  background: #e3ede5;
-  border-color: var(--color-matcha);
-  color: var(--color-matcha-dark);
+  background: var(--color-sage-soft);
+  border-color: rgba(13, 148, 136, 0.2);
+  color: var(--color-sage);
 }
 
 .nb-btn-success:hover {
-  background: var(--color-matcha);
+  background: var(--color-sage);
   color: #ffffff;
+}
+
+.nb-btn-danger {
+  background: #fef2f2;
+  border-color: #fecaca;
+  color: #ef4444;
+}
+
+.nb-btn-danger:hover {
+  background: #fee2e2;
 }
 
 .nb-badge {
   font-family: var(--font-sans);
-  font-weight: 600;
+  font-weight: 500;
   font-size: 0.72rem;
-  padding: 0.18rem 0.5rem;
+  padding: 0.16rem 0.5rem;
   border-radius: 20px;
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
-  border: 1px solid rgba(49, 78, 62, 0.15);
-  background: #f3ede2;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-subtle);
+  color: var(--text-secondary);
 }
 
-/* Animations */
-@keyframes breathingPulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.03); }
-  100% { transform: scale(1); }
+/* Subtle Breathing Glow for INFJ Ethereal Orb */
+@keyframes etherealBreath {
+  0% { transform: scale(1); filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.18)); }
+  50% { transform: scale(1.05); filter: drop-shadow(0 0 16px rgba(99, 102, 241, 0.35)); }
+  100% { transform: scale(1); filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.18)); }
 }
 
-@keyframes gentleFloat {
+@keyframes calmFloat {
   0% { transform: translateY(0px); }
-  50% { transform: translateY(-4px); }
+  50% { transform: translateY(-3px); }
   100% { transform: translateY(0px); }
 }
 
-@keyframes softBlink {
-  0%, 90%, 100% { transform: scaleY(1); }
-  95% { transform: scaleY(0.1); }
-}
-
-.floating-mascot {
-  animation: gentleFloat 4s ease-in-out infinite;
-}
-
-.talking-mascot {
-  animation: breathingPulse 1.8s ease-in-out infinite;
+.ethereal-spirit {
+  animation: etherealBreath 4s ease-in-out infinite, calmFloat 6s ease-in-out infinite;
 }
