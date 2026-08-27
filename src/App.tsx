@@ -12,6 +12,7 @@ import { SoundscapePlayer } from './components/Focus/SoundscapePlayer';
 import { TaskList } from './components/Tasks/TaskList';
 import { QuickCaptureInput } from './components/Tasks/QuickCaptureInput';
 import { SettingsModal } from './components/Settings/SettingsModal';
+import { AgentChatModal } from './components/Agent/AgentChatModal';
 
 import './App.css';
 
@@ -149,18 +150,49 @@ export function App() {
       {/* Main Grid Container */}
       <main className="app-main-grid">
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
-          {/* Mindful Guide Presence Quote */}
-          <div className="agent-banner" onClick={() => dispatch({ type: 'POKE_AGENT' })}>
-            <MascotAvatar
-              mood={state.agent.currentMood}
-              isTalking={state.agent.isTalking}
-              size={36}
-            />
-            <div className="speech-bubble">
-              <p style={{ fontSize: '0.8rem', color: 'var(--text-main)', lineHeight: 1.4 }}>
-                {state.agent.currentQuote}
-              </p>
+          {/* Mindful Guide Presence Quote & Chat Trigger */}
+          <div className="agent-banner" style={{ background: '#ffffff', border: '1px solid var(--border-dark)', borderRadius: '14px', padding: '0.65rem 0.85rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.65rem', boxShadow: 'var(--shadow-sm)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', flex: 1, cursor: 'pointer' }} onClick={() => dispatch({ type: 'POKE_AGENT' })}>
+              <MascotAvatar
+                mood={state.agent.currentMood}
+                isTalking={state.agent.isTalking}
+                size={38}
+              />
+              <div className="speech-bubble" style={{ flex: 1 }}>
+                <p style={{ fontSize: '0.78rem', color: 'var(--text-main)', lineHeight: 1.35, fontWeight: 500 }}>
+                  "{state.agent.currentQuote}"
+                </p>
+                <span style={{ fontSize: '0.68rem', color: 'var(--text-muted)', display: 'block', marginTop: '2px' }}>
+                  🌱 Tap mascot or talk to AI
+                </span>
+              </div>
             </div>
+
+            <button
+              type="button"
+              className="nb-btn"
+              style={{
+                background: '#d8f3dc',
+                color: '#1b4332',
+                border: '1.5px solid #b7e4c7',
+                padding: '0.35rem 0.65rem',
+                fontSize: '0.74rem',
+                fontWeight: 700,
+                borderRadius: '8px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.35rem',
+                flexShrink: 0,
+                cursor: 'pointer'
+              }}
+              onClick={() => {
+                if (state.settings.soundEnabled) audioEngine.playSfx('pop');
+                dispatch({ type: 'OPEN_CHAT_MODAL' });
+              }}
+              title="Open AI Dialogue & Coaching"
+            >
+              💬 Talk to AI
+            </button>
           </div>
 
           {/* Unified North Star & Deep Flow Timer */}
@@ -227,6 +259,29 @@ export function App() {
         onResetAllData={() => {
           clearStateFromStorage();
           dispatch({ type: 'RESET_STATE' });
+        }}
+      />
+
+      {/* Interactive AI Chat & Coaching Modal */}
+      <AgentChatModal
+        agent={state.agent}
+        task={activeFocusTask}
+        userEnergy={state.settings.userEnergy || 'medium'}
+        timer={state.timer}
+        isOpen={state.isChatModalOpen}
+        soundEnabled={state.settings.soundEnabled}
+        voiceEnabled={state.settings.voiceEnabled}
+        geminiApiKey={state.settings.geminiApiKey}
+        onClose={() => dispatch({ type: 'CLOSE_CHAT_MODAL' })}
+        onAddMessage={(msg) => dispatch({ type: 'ADD_CHAT_MESSAGE', payload: msg })}
+        onSetTalking={(talking) => dispatch({ type: 'SET_AGENT_TALKING', payload: talking })}
+        onStartFocus={(taskId) => {
+          if (state.settings.soundEnabled) audioEngine.playSfx('ding');
+          dispatch({ type: 'START_FOCUS', payload: { taskId } });
+          dispatch({ type: 'CLOSE_CHAT_MODAL' });
+        }}
+        onApplySteps={(taskId, microSteps) => {
+          dispatch({ type: 'APPLY_MICRO_STEPS', payload: { taskId, microSteps } });
         }}
       />
     </div>
