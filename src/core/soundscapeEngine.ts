@@ -486,22 +486,58 @@ class SoundscapeEngine {
   }
 
   // ==========================================
-  // 5. 🌧️ LATE NIGHT RAIN & LO-FI JAZZ CAFE
+  // 5. 🌙 MIDNIGHT JAZZ LOUNGE & RHODES
   // ==========================================
   private generateLofiJazzCafe() {
-    this.generateRain();
-
     if (!this.ctx || !this.gainNode) return;
 
-    const melodyNotes = [261.63, 293.66, 329.63, 392.00, 440.00, 523.25];
-    const playMelody = () => {
+    // Smooth late night jazz chords: Ebmaj9 -> Cm9 -> Fm9 -> Bb13
+    const loungeChords = [
+      { bass: 77.78, chord: [155.56, 196.00, 233.08, 293.66, 349.23] }, // Ebmaj9
+      { bass: 65.41, chord: [130.81, 196.00, 233.08, 311.13, 392.00] }, // Cm9
+      { bass: 87.31, chord: [174.61, 207.65, 261.63, 311.13, 392.00] }, // Fm9
+      { bass: 58.27, chord: [116.54, 174.61, 233.08, 293.66, 370.00] }  // Bb13
+    ];
+
+    let chordIdx = 0;
+    const playLoungeStep = () => {
       if (!this.ctx || !this.gainNode || !this.isPlaying) return;
-      const note = melodyNotes[Math.floor(Math.random() * melodyNotes.length)];
+      const current = loungeChords[chordIdx % loungeChords.length];
       const now = this.ctx.currentTime;
-      this.triggerLeadNote(now, note, 2.2);
+      chordIdx++;
+
+      // Warm acoustic bass
+      this.triggerBassNote(now, current.bass, 3.2);
+
+      // Lush Rhodes Chords
+      current.chord.forEach((freq, idx) => {
+        if (!this.ctx || !this.gainNode) return;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        const filter = this.ctx.createBiquadFilter();
+
+        osc.type = idx % 2 === 0 ? 'sine' : 'triangle';
+        osc.frequency.setValueAtTime(freq, now + (idx * 0.03));
+
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(1100, now);
+
+        const noteTime = now + (idx * 0.03);
+        gain.gain.setValueAtTime(0.001, noteTime);
+        gain.gain.exponentialRampToValueAtTime(0.08, noteTime + 0.06);
+        gain.gain.exponentialRampToValueAtTime(0.001, noteTime + 3.0);
+
+        osc.connect(filter);
+        filter.connect(gain);
+        gain.connect(this.gainNode);
+
+        osc.start(noteTime);
+        osc.stop(noteTime + 3.2);
+      });
     };
 
-    const interval = window.setInterval(playMelody, 1800);
+    playLoungeStep();
+    const interval = window.setInterval(playLoungeStep, 3500);
     this.activeNodes.push(interval);
   }
 

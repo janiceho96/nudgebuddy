@@ -7,9 +7,9 @@ interface SoundscapePlayerProps {
 }
 
 export const SoundscapePlayer: React.FC<SoundscapePlayerProps> = ({ isTimerRunning }) => {
-  const [selectedType, setSelectedType] = useState<SoundscapeType>('none');
+  const [selectedType, setSelectedType] = useState<SoundscapeType>('energetic_jazz');
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [volume, setVolume] = useState<number>(0.3);
+  const [volume, setVolume] = useState<number>(0.35);
 
   // Auto-play selected soundscape during active focus sprint if one is chosen
   useEffect(() => {
@@ -54,19 +54,19 @@ export const SoundscapePlayer: React.FC<SoundscapePlayerProps> = ({ isTimerRunni
     <div style={{ background: '#ffffff', border: '1px solid var(--border-dark)', borderRadius: '12px', padding: '0.45rem 0.75rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.5rem', fontSize: '0.74rem', boxShadow: 'var(--shadow-sm)' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontWeight: 600, color: 'var(--text-secondary)' }}>
         <Headphones size={13} color="#2d6a4f" />
-        <span>Music:</span>
+        <span>Jazz:</span>
         <select
           value={selectedType}
           onChange={(e) => handleSelectType(e.target.value as SoundscapeType)}
           style={{ padding: '0.2rem 0.4rem', borderRadius: '6px', border: '1px solid var(--border-dark)', fontSize: '0.72rem', fontWeight: 600, background: '#ffffff', color: 'var(--text-main)', outline: 'none' }}
         >
-          <option value="none">Mute</option>
           <option value="energetic_jazz">🎷 Classic Blue Note Swing (128 BPM)</option>
           <option value="coffeehouse_bebop">☕ Uptown Coffeehouse Bop (120 BPM)</option>
           <option value="sunday_brunch_jazz">🥐 Sunday Jazz Brunch (110 BPM)</option>
           <option value="bossa_jazz">🌴 Ipanema Bossa Swing (124 BPM)</option>
-          <option value="lofi_jazz_cafe">🌧️ Late Night Rain & Lo-Fi Jazz</option>
-          <option value="forest_stream">🍃 Forest Brook & Soft Wind</option>
+          <option value="lofi_jazz_cafe">🌙 Midnight Jazz Lounge (Rhodes)</option>
+          <option value="forest_stream">🍃 Forest Brook (Nature Only)</option>
+          <option value="none">Mute / Off</option>
         </select>
       </div>
 

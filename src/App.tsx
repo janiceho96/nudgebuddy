@@ -43,40 +43,15 @@ export function App() {
     return () => clearInterval(interval);
   }, [state.timer.status]);
 
-  // Dynamic Click-Through: Ignore mouse clicks on transparent background, enable on UI elements
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      const isInteractive = Boolean(
-        target && (
-          target.closest('.app-wrapper') ||
-          target.closest('.agent-chat-overlay') ||
-          target.closest('.settings-overlay')
-        )
-      );
-
-      if (isInteractive) {
-        window.electronAPI?.setIgnoreMouseEvents(false);
-      } else {
-        window.electronAPI?.setIgnoreMouseEvents(true, { forward: true });
-      }
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
-
   const handleMouseEnter = () => {
     if (leaveDebounceRef.current) clearTimeout(leaveDebounceRef.current);
     setIsMouseInside(true);
-    window.electronAPI?.setIgnoreMouseEvents(false);
   };
 
   const handleMouseLeave = () => {
     if (leaveDebounceRef.current) clearTimeout(leaveDebounceRef.current);
     leaveDebounceRef.current = setTimeout(() => {
       setIsMouseInside(false);
-      window.electronAPI?.setIgnoreMouseEvents(true, { forward: true });
     }, 300);
   };
 

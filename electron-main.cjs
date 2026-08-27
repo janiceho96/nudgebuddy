@@ -8,17 +8,17 @@ function createWindow() {
   const { width: screenWidth, height: screenHeight } = primaryDisplay.workAreaSize;
 
   const windowWidth = 440;
-  const windowHeight = Math.min(760, screenHeight - 60);
+  const windowHeight = Math.min(780, screenHeight - 40);
 
   mainWindow = new BrowserWindow({
     width: windowWidth,
     height: windowHeight,
-    x: screenWidth - windowWidth - 15,
-    y: 45,
+    x: screenWidth - windowWidth - 20,
+    y: 35,
     frame: false,
     transparent: true,
     backgroundColor: '#00000000',
-    hasShadow: false,
+    hasShadow: true,
     alwaysOnTop: true,
     resizable: true,
     webPreferences: {
@@ -34,6 +34,11 @@ function createWindow() {
 
   // Load the compiled offline HTML directly without needing any localhost servers
   mainWindow.loadFile(path.join(__dirname, 'dist', 'index.html'));
+
+  mainWindow.once('ready-to-show', () => {
+    mainWindow.show();
+    mainWindow.focus();
+  });
 
   // Global hotkey: Option + Space toggles NudgeBuddy visibility anywhere on macOS
   globalShortcut.register('Alt+Space', () => {
@@ -55,7 +60,7 @@ function createWindow() {
 ipcMain.on('set-ignore-mouse-events', (event, ignore, options) => {
   const win = BrowserWindow.fromWebContents(event.sender);
   if (win && !win.isDestroyed()) {
-    win.setIgnoreMouseEvents(ignore, { forward: true, ...options });
+    win.setIgnoreMouseEvents(ignore, options || {});
   }
 });
 
