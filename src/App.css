@@ -429,6 +429,38 @@
   transform: scale(0.96);
 }
 
+@keyframes gentleFlutter {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg) scale(1);
+  }
+  25% {
+    transform: translateY(-3px) rotate(-6deg) scale(1.08);
+  }
+  75% {
+    transform: translateY(2px) rotate(6deg) scale(0.95);
+  }
+}
+
+.cute-timer-frame {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cute-digits-capsule.is-flow-active {
+  animation: breathingMeadow 4s ease-in-out infinite;
+}
+
+@keyframes breathingMeadow {
+  0%, 100% {
+    box-shadow: 0 4px 14px rgba(82, 183, 136, 0.2), inset 0 1px 0 rgba(255,255,255,0.8);
+    border-color: #95d5b2;
+  }
+  50% {
+    box-shadow: 0 6px 20px rgba(82, 183, 136, 0.35), inset 0 1px 0 rgba(255,255,255,0.9);
+    border-color: #52b788;
+  }
+}
+
+
 /* Modals */
 .modal-overlay {
   position: fixed;
