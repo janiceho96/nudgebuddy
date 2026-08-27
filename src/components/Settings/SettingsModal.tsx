@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { AppSettings, AgentPersona, ProactivityLevel } from '../../types';
-import { X, RotateCcw, Volume2, VolumeX, Mic, Key, Sparkles } from 'lucide-react';
+import { AppSettings } from '../../types';
+import { X, RotateCcw, Volume2, VolumeX, Mic, Key, Clock } from 'lucide-react';
 
 interface SettingsModalProps {
   settings: AppSettings;
@@ -23,107 +23,103 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 
   return (
     <div className="modal-overlay">
-      <div className="modal-content" style={{ maxHeight: '90vh', overflowY: 'auto' }}>
+      <div className="modal-content" style={{ maxHeight: '88vh', overflowY: 'auto', padding: '1.5rem', background: '#ffffff', borderRadius: '18px', border: '1px solid var(--border-dark)', boxShadow: 'var(--shadow-lg)' }}>
         <button
           type="button"
           onClick={onClose}
           style={{
             position: 'absolute',
-            top: '12px',
-            right: '12px',
-            background: '#ffffff',
-            border: '2px solid #121826',
-            borderRadius: '50%',
-            width: '28px',
-            height: '28px',
+            top: '16px',
+            right: '16px',
+            background: 'transparent',
+            border: 'none',
+            color: 'var(--text-muted)',
+            cursor: 'pointer',
+            padding: '4px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            cursor: 'pointer'
+            borderRadius: '6px',
+            transition: 'color 0.15s ease'
           }}
         >
-          <X size={16} />
+          <X size={18} />
         </button>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.9rem' }}>
-          <span className="nb-badge" style={{ background: '#d8b4fe' }}>Settings</span>
-          <h3 style={{ fontSize: '1.05rem', fontWeight: 800 }}>Accountability Preferences</h3>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '1.2rem' }}>
+          <span style={{ fontSize: '0.68rem', background: '#eef2ff', color: '#4f46e5', padding: '0.15rem 0.5rem', borderRadius: '12px', fontWeight: 600 }}>
+            Preferences
+          </span>
+          <h3 style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--text-main)' }}>Sanctuary Settings</h3>
         </div>
 
-        {/* Agent Persona */}
-        <div style={{ marginBottom: '0.9rem' }}>
-          <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', marginBottom: '0.3rem' }}>
-            Agent Persona / Tone
+        {/* Focus Duration Selector */}
+        <div style={{ marginBottom: '1.1rem' }}>
+          <label style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.74rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '0.45rem', textTransform: 'uppercase', letterSpacing: '0.3px' }}>
+            <Clock size={12} color="#6366f1" /> Default Flow Duration
           </label>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.4rem' }}>
-            {(['gentle', 'direct', 'spicy'] as AgentPersona[]).map((p) => (
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '0.4rem' }}>
+            {[15, 25, 45, 60].map((mins) => (
               <button
-                key={p}
+                key={mins}
                 type="button"
                 className="nb-btn"
                 style={{
-                  fontSize: '0.75rem',
-                  padding: '0.4rem 0.2rem',
-                  background: settings.defaultPersona === p ? '#ffe600' : '#ffffff'
+                  fontSize: '0.78rem',
+                  padding: '0.45rem 0.2rem',
+                  background: (settings.focusDurationMinutes || 25) === mins ? '#eef2ff' : '#ffffff',
+                  color: (settings.focusDurationMinutes || 25) === mins ? '#4f46e5' : 'var(--text-main)',
+                  borderColor: (settings.focusDurationMinutes || 25) === mins ? '#818cf8' : 'var(--border-dark)',
+                  fontWeight: (settings.focusDurationMinutes || 25) === mins ? 600 : 400
                 }}
-                onClick={() => onUpdateSettings({ defaultPersona: p })}
+                onClick={() => onUpdateSettings({ focusDurationMinutes: mins })}
               >
-                {p === 'gentle' ? '🌸 Gentle' : p === 'direct' ? '⏱️ Direct' : '🌶️ Spicy'}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Proactivity Level */}
-        <div style={{ marginBottom: '0.9rem' }}>
-          <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', marginBottom: '0.3rem' }}>
-            Proactivity & Nudge Aggressiveness
-          </label>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.4rem' }}>
-            {(['low', 'balanced', 'high'] as ProactivityLevel[]).map((lvl) => (
-              <button
-                key={lvl}
-                type="button"
-                className="nb-btn"
-                style={{
-                  fontSize: '0.75rem',
-                  padding: '0.4rem 0.2rem',
-                  background: settings.proactivity === lvl ? '#86efac' : '#ffffff'
-                }}
-                onClick={() => onUpdateSettings({ proactivity: lvl })}
-              >
-                {lvl === 'low' ? 'Chill' : lvl === 'balanced' ? 'Balanced' : 'High Alert'}
+                {mins}m
               </button>
             ))}
           </div>
         </div>
 
         {/* Audio & Voice Toggles */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1rem' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#f8fafc', padding: '0.5rem 0.75rem', borderRadius: '8px', border: '1.5px solid #121826' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.82rem', fontWeight: 700 }}>
-              {settings.soundEnabled ? <Volume2 size={15} /> : <VolumeX size={15} />}
-              <span>8-Bit Retro Sound Effects</span>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1.2rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#f8f9fa', padding: '0.6rem 0.85rem', borderRadius: '12px', border: '1px solid var(--border-subtle)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.8rem', fontWeight: 500, color: 'var(--text-main)' }}>
+              {settings.soundEnabled ? <Volume2 size={15} color="#6366f1" /> : <VolumeX size={15} color="#94a3b8" />}
+              <span>Gentle Chimes & Sounds</span>
             </div>
             <button
               type="button"
               className="nb-btn"
-              style={{ padding: '0.2rem 0.55rem', fontSize: '0.72rem', background: settings.soundEnabled ? '#86efac' : '#e2e8f0' }}
+              style={{
+                padding: '0.2rem 0.6rem',
+                fontSize: '0.72rem',
+                fontWeight: 600,
+                background: settings.soundEnabled ? '#eef2ff' : '#ffffff',
+                color: settings.soundEnabled ? '#4f46e5' : 'var(--text-muted)',
+                borderColor: settings.soundEnabled ? '#818cf8' : 'var(--border-dark)'
+              }}
               onClick={() => onUpdateSettings({ soundEnabled: !settings.soundEnabled })}
             >
               {settings.soundEnabled ? 'ON' : 'OFF'}
             </button>
           </div>
 
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#f8fafc', padding: '0.5rem 0.75rem', borderRadius: '8px', border: '1.5px solid #121826' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.82rem', fontWeight: 700 }}>
-              <Mic size={15} />
-              <span>Voice Speech (TTS Voice)</span>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#f8f9fa', padding: '0.6rem 0.85rem', borderRadius: '12px', border: '1px solid var(--border-subtle)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.8rem', fontWeight: 500, color: 'var(--text-main)' }}>
+              <Mic size={15} color="#6366f1" />
+              <span>Voice Speech (Calm TTS Guide)</span>
             </div>
             <button
               type="button"
               className="nb-btn"
-              style={{ padding: '0.2rem 0.55rem', fontSize: '0.72rem', background: settings.voiceEnabled ? '#86efac' : '#e2e8f0' }}
+              style={{
+                padding: '0.2rem 0.6rem',
+                fontSize: '0.72rem',
+                fontWeight: 600,
+                background: settings.voiceEnabled ? '#eef2ff' : '#ffffff',
+                color: settings.voiceEnabled ? '#4f46e5' : 'var(--text-muted)',
+                borderColor: settings.voiceEnabled ? '#818cf8' : 'var(--border-dark)'
+              }}
               onClick={() => onUpdateSettings({ voiceEnabled: !settings.voiceEnabled })}
             >
               {settings.voiceEnabled ? 'ON' : 'OFF'}
@@ -132,13 +128,13 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
         </div>
 
         {/* Optional Gemini API Key */}
-        <div style={{ marginBottom: '1.1rem', background: '#fffbeb', border: '1.5px solid #121826', borderRadius: '8px', padding: '0.7rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontSize: '0.78rem', fontWeight: 800, marginBottom: '0.3rem' }}>
-            <Key size={13} color="#d97706" />
-            <span>Optional Gemini API Key (Live LLM streaming)</span>
+        <div style={{ marginBottom: '1.2rem', background: '#f8f9fc', border: '1px solid var(--border-subtle)', borderRadius: '12px', padding: '0.75rem 0.85rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.76rem', fontWeight: 600, color: 'var(--text-main)', marginBottom: '0.25rem' }}>
+            <Key size={13} color="#6366f1" />
+            <span>Optional AI Key (Google Gemini)</span>
           </div>
-          <p style={{ fontSize: '0.72rem', color: '#64748b', marginBottom: '0.45rem' }}>
-            Leave blank to use the built-in intelligent zero-latency local brain, or paste a key to connect live Gemini models.
+          <p style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginBottom: '0.5rem', lineHeight: 1.35 }}>
+            Runs 100% locally with zero latency by default. Paste a key only if you wish to connect live Gemini models.
           </p>
           <div style={{ display: 'flex', gap: '0.35rem' }}>
             <input
@@ -146,33 +142,33 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               placeholder="AIzaSy..."
               value={apiKey}
               onChange={(e) => setApiKey(e.target.value)}
-              style={{ flex: 1, padding: '0.35rem 0.6rem', fontSize: '0.75rem', borderRadius: '6px', border: '1.5px solid #121826' }}
+              style={{ flex: 1, padding: '0.38rem 0.65rem', fontSize: '0.76rem', borderRadius: '8px', border: '1px solid var(--border-dark)', background: '#ffffff', outline: 'none' }}
             />
             <button
               type="button"
               className="nb-btn"
-              style={{ padding: '0.35rem 0.6rem', fontSize: '0.74rem' }}
+              style={{ padding: '0.35rem 0.65rem', fontSize: '0.74rem' }}
               onClick={() => onUpdateSettings({ geminiApiKey: apiKey.trim() })}
             >
-              Save Key
+              Save
             </button>
           </div>
         </div>
 
-        {/* Reset Demo Data */}
-        <div style={{ borderTop: '2px solid #e2e8f0', paddingTop: '0.9rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        {/* Reset / Actions */}
+        <div style={{ borderTop: '1px solid var(--border-subtle)', paddingTop: '0.9rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <button
             type="button"
-            className="nb-btn nb-btn-danger"
-            style={{ fontSize: '0.74rem' }}
+            className="nb-btn"
+            style={{ fontSize: '0.72rem', color: 'var(--text-muted)', background: '#ffffff' }}
             onClick={() => {
-              if (confirm('Reset all tasks and state to fresh initial demo?')) {
+              if (confirm('Clear and reset intentions to fresh sanctuary state?')) {
                 onResetAllData();
                 onClose();
               }
             }}
           >
-            <RotateCcw size={13} /> Reset Demo Data
+            <RotateCcw size={12} /> Reset Intentions
           </button>
 
           <button
