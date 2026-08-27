@@ -86,6 +86,7 @@ export function App() {
   const handleMouseEnter = () => {
     if (leaveDebounceRef.current) clearTimeout(leaveDebounceRef.current);
     setIsMouseInside(true);
+    window.electronAPI?.setIgnoreMouseEvents(false);
   };
 
   const handleMouseLeave = () => {
@@ -95,8 +96,9 @@ export function App() {
     leaveDebounceRef.current = setTimeout(() => {
       if (!isDragging) {
         setIsMouseInside(false);
+        window.electronAPI?.setIgnoreMouseEvents(true, { forward: true });
       }
-    }, 900); // Generous 900ms grace period so dragging never abruptly collapses
+    }, 300);
   };
 
   const handleHeaderMouseDown = () => {
