@@ -11,21 +11,21 @@ export function getAgentDialogue(
     case 'ON_INIT': {
       if (persona === 'gentle') {
         return {
-          quote: "Take a slow breath. We don't need to do everything at once — just align with this one moment.",
+          quote: "Take a deep grounding breath. Like trees in the forest, we grow quietly one ring at a time.",
           mood: 'idle',
-          subtitle: 'Sanctuary presence active 🕊️'
+          subtitle: 'Lush Forest Sanctuary active 🌿'
         };
       } else if (persona === 'direct') {
         return {
-          quote: "Welcome to your focus space. Choose what truly moves the needle today.",
+          quote: "Root your attention into the present. What is the single seed we are planting today?",
           mood: 'idle',
-          subtitle: 'Mindful Sage standing by 🧭'
+          subtitle: 'Ancient Oak standing by 🌲'
         };
       } else {
         return {
-          quote: "Clear the mental noise. Let your inner intuition guide what we shape next.",
+          quote: "Let distractions scatter like autumn leaves. Bring your wild creativity to life.",
           mood: 'hyped',
-          subtitle: 'Intuitive Beacon illuminating ✨'
+          subtitle: 'Wild Flora blooming 🌸'
         };
       }
     }

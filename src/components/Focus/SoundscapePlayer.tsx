@@ -51,20 +51,20 @@ export const SoundscapePlayer: React.FC<SoundscapePlayerProps> = ({ isTimerRunni
   };
 
   return (
-    <div style={{ background: '#ffffff', border: '1px solid var(--border-subtle)', borderRadius: '12px', padding: '0.45rem 0.75rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.5rem', fontSize: '0.74rem', boxShadow: 'var(--shadow-sm)' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontWeight: 500, color: 'var(--text-secondary)' }}>
-        <Headphones size={13} color="#6366f1" />
-        <span>Ambience:</span>
+    <div style={{ background: '#ffffff', border: '1px solid var(--border-dark)', borderRadius: '12px', padding: '0.45rem 0.75rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.5rem', fontSize: '0.74rem', boxShadow: 'var(--shadow-sm)' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontWeight: 600, color: 'var(--text-secondary)' }}>
+        <Headphones size={13} color="#2d6a4f" />
+        <span>Nature:</span>
         <select
           value={selectedType}
           onChange={(e) => handleSelectType(e.target.value as SoundscapeType)}
-          style={{ padding: '0.2rem 0.4rem', borderRadius: '6px', border: '1px solid var(--border-dark)', fontSize: '0.72rem', fontWeight: 500, background: '#ffffff', color: 'var(--text-main)', outline: 'none' }}
+          style={{ padding: '0.2rem 0.4rem', borderRadius: '6px', border: '1px solid var(--border-dark)', fontSize: '0.72rem', fontWeight: 600, background: '#ffffff', color: 'var(--text-main)', outline: 'none' }}
         >
-          <option value="none">Silent</option>
-          <option value="brown_noise">🌌 Deep Resonance (Brown Noise)</option>
-          <option value="rain">🌧️ Ethereal Rain</option>
-          <option value="binaural_40hz">⚡ 40Hz Theta/Gamma Waves</option>
-          <option value="lofi_drone">🕯️ Quiet Sanctuary Drone</option>
+          <option value="none">Silent Forest</option>
+          <option value="brown_noise">🌲 Pine Forest & Canopy Wind</option>
+          <option value="rain">🌧️ Rain on Leaves & Forest Stream</option>
+          <option value="binaural_40hz">⚡ 40Hz Forest Flow Entrainment</option>
+          <option value="lofi_drone">🍃 Moss & Ancient Woods Calm</option>
         </select>
       </div>
 
@@ -73,15 +73,15 @@ export const SoundscapePlayer: React.FC<SoundscapePlayerProps> = ({ isTimerRunni
           type="button"
           onClick={togglePlay}
           className="nb-btn"
-          style={{ padding: '0.2rem 0.45rem', fontSize: '0.7rem', background: isPlaying ? '#fef2f2' : '#eef2ff', color: isPlaying ? '#ef4444' : '#4f46e5', border: '1px solid var(--border-subtle)' }}
-          title={isPlaying ? 'Pause ambience' : 'Play ambience'}
+          style={{ padding: '0.2rem 0.45rem', fontSize: '0.7rem', background: isPlaying ? '#fef2f2' : '#d8f3dc', color: isPlaying ? '#ef4444' : '#1b4332', border: '1px solid var(--border-dark)', fontWeight: 700 }}
+          title={isPlaying ? 'Pause nature ambience' : 'Play nature ambience'}
         >
-          {isPlaying ? <Square size={10} fill="#ef4444" /> : <Play size={10} fill="#4f46e5" />}
+          {isPlaying ? <Square size={10} fill="#ef4444" /> : <Play size={10} fill="#1b4332" />}
           <span>{isPlaying ? 'Pause' : 'Play'}</span>
         </button>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
-          <Volume2 size={12} color="#94a3b8" />
+          <Volume2 size={12} color="#52b788" />
           <input
             type="range"
             min="0"
@@ -89,7 +89,7 @@ export const SoundscapePlayer: React.FC<SoundscapePlayerProps> = ({ isTimerRunni
             step="0.05"
             value={volume}
             onChange={(e) => handleVolumeChange(parseFloat(e.target.value))}
-            style={{ width: '38px', cursor: 'pointer', accentColor: '#6366f1' }}
+            style={{ width: '38px', cursor: 'pointer', accentColor: '#2d6a4f' }}
             title={`Volume: ${Math.round(volume * 100)}%`}
           />
         </div>

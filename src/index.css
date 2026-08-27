@@ -1,35 +1,35 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=JetBrains+Mono:wght@400;500&display=swap');
 
 :root {
-  /* INFJ Minimalist Sanctuary Palette */
-  --bg-app: #f8f9fa;
+  /* Lush Forest Sanctuary Palette */
+  --bg-app: #f2f7f4;
   --bg-panel: #ffffff;
-  --bg-subtle: #f1f3f5;
-  --bg-hover: #f8f9fb;
+  --bg-subtle: #eaf3ed;
+  --bg-hover: #def0e4;
   
-  --text-main: #1e293b;
-  --text-secondary: #475569;
-  --text-muted: #94a3b8;
+  --text-main: #143622;
+  --text-secondary: #2d5a43;
+  --text-muted: #5c856f;
   
-  --border-subtle: rgba(15, 23, 42, 0.07);
-  --border-dark: #e2e8f0;
-  --border-active: #6366f1;
-  --border-width: 1px;
+  --border-subtle: rgba(45, 106, 79, 0.12);
+  --border-dark: #b7e4c7;
+  --border-active: #2d6a4f;
+  --border-width: 1.5px;
   
-  --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.03), 0 1px 2px rgba(15, 23, 42, 0.02);
-  --shadow-main: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.02);
-  --shadow-lg: 0 12px 36px -4px rgba(15, 23, 42, 0.08), 0 4px 12px -2px rgba(15, 23, 42, 0.03);
+  --shadow-sm: 0 1px 3px rgba(20, 54, 34, 0.04), 0 1px 2px rgba(20, 54, 34, 0.03);
+  --shadow-main: 0 4px 20px -2px rgba(20, 54, 34, 0.06), 0 2px 6px -1px rgba(20, 54, 34, 0.03);
+  --shadow-lg: 0 12px 36px -4px rgba(20, 54, 34, 0.12), 0 4px 12px -2px rgba(20, 54, 34, 0.04);
   
-  /* Serene Ethereal Accents */
-  --color-primary: #1e293b;
-  --color-iris: #6366f1;
-  --color-iris-soft: #eef2ff;
-  --color-sage: #0d9488;
-  --color-sage-soft: #f0fdfa;
-  --color-lotus: #ec4899;
-  --color-lotus-soft: #fdf2f8;
-  --color-amber-soft: #fffbeb;
-  --color-amber: #d97706;
+  /* Lush Nature Accents */
+  --color-primary: #1b4332;
+  --color-iris: #2d6a4f;
+  --color-iris-soft: #d8f3dc;
+  --color-sage: #40916c;
+  --color-sage-soft: #e8f7ec;
+  --color-lotus: #52b788;
+  --color-lotus-soft: #edf9f0;
+  --color-amber-soft: #fefae0;
+  --color-amber: #b08968;
 
   --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-serif: 'Newsreader', Georgia, serif;

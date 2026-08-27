@@ -83,33 +83,44 @@ export const MascotAvatar: React.FC<MascotAvatarProps> = ({ mood, size = 48, isT
         xmlns="http://www.w3.org/2000/svg"
       >
         <defs>
-          <radialGradient id="solAura" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="#eef2ff" stopOpacity="1" />
-            <stop offset="65%" stopColor="#e0e7ff" stopOpacity="0.8" />
-            <stop offset="100%" stopColor="#c7d2fe" stopOpacity="0.3" />
+          <radialGradient id="forestAura" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="#d8f3dc" stopOpacity="1" />
+            <stop offset="65%" stopColor="#b7e4c7" stopOpacity="0.8" />
+            <stop offset="100%" stopColor="#95d5b2" stopOpacity="0.3" />
           </radialGradient>
-          <linearGradient id="solCore" x1="0" y1="0" x2="88" y2="88">
+          <linearGradient id="forestCore" x1="0" y1="0" x2="88" y2="88">
             <stop offset="0%" stopColor="#ffffff" />
-            <stop offset="100%" stopColor="#f1f5f9" />
+            <stop offset="100%" stopColor="#f0fdf4" />
           </linearGradient>
         </defs>
 
-        {/* Soft Ethereal Outer Halo */}
-        <circle cx="44" cy="44" r="38" fill="url(#solAura)" />
+        {/* Soft Forest Halo */}
+        <circle cx="44" cy="46" r="36" fill="url(#forestAura)" />
+
+        {/* Cute Leaf Sprout Crown on top */}
+        <path
+          d="M 44 24 C 41 15 32 14 30 18 C 28 22 36 24 44 24 Z"
+          fill="#40916c"
+        />
+        <path
+          d="M 44 24 C 47 14 56 13 58 17 C 60 21 52 24 44 24 Z"
+          fill="#52b788"
+        />
+        <line x1="44" y1="24" x2="44" y2="28" stroke="#2d6a4f" strokeWidth="2" strokeLinecap="round" />
 
         {/* Inner Luminous Core */}
         <circle
           cx="44"
-          cy="44"
-          r="26"
-          fill="url(#solCore)"
-          stroke="#cbd5e1"
-          strokeWidth="1.2"
+          cy="46"
+          r="25"
+          fill="url(#forestCore)"
+          stroke="#b7e4c7"
+          strokeWidth="1.5"
         />
 
-        {/* Subtle Iris Crown Node */}
-        <circle cx="44" cy="18" r="3" fill="#6366f1" opacity="0.85" />
-        <circle cx="44" cy="18" r="5" stroke="#818cf8" strokeWidth="0.8" opacity="0.5" />
+        {/* Soft Blush Cheeks */}
+        <circle cx="31" cy="49" r="3" fill="#fecdd3" opacity="0.8" />
+        <circle cx="57" cy="49" r="3" fill="#fecdd3" opacity="0.8" />
 
         {/* Facial Expression */}
         {renderEyes()}

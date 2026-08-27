@@ -58,8 +58,8 @@ export const DoThisNowHero: React.FC<DoThisNowHeroProps> = ({
     <div className="hero-card" style={{ background: '#ffffff', border: '1px solid var(--border-dark)', borderRadius: '16px', padding: '1.2rem 1.1rem', boxShadow: 'var(--shadow-sm)' }}>
       {/* Header Intention Label */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-        <span style={{ fontSize: '0.7rem', fontWeight: 600, color: 'var(--color-iris)', letterSpacing: '0.5px', textTransform: 'uppercase' }}>
-          🧭 Current Intention
+        <span style={{ fontSize: '0.7rem', fontWeight: 700, color: 'var(--color-iris)', letterSpacing: '0.5px', textTransform: 'uppercase' }}>
+          🌿 Forest Focus Intention
         </span>
         {timer.extendedCount > 0 && (
           <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>
@@ -75,18 +75,18 @@ export const DoThisNowHero: React.FC<DoThisNowHeroProps> = ({
 
       {/* Digits Display */}
       <div style={{ textAlign: 'center', margin: '0.4rem 0' }}>
-        <div style={{ fontFamily: 'var(--font-mono)', fontSize: '2.8rem', fontWeight: 500, color: 'var(--text-main)', letterSpacing: '-1px', lineHeight: 1 }}>
+        <div style={{ fontFamily: 'var(--font-mono)', fontSize: '2.8rem', fontWeight: 600, color: 'var(--text-main)', letterSpacing: '-1px', lineHeight: 1 }}>
           {isSessionActive ? formatTime(timer.remainingSeconds) : '25:00'}
         </div>
       </div>
 
       {/* Hairline Progress Bar */}
-      <div style={{ width: '100%', height: '5px', background: '#f1f5f9', borderRadius: '5px', overflow: 'hidden', margin: '0.65rem 0 1rem 0' }}>
+      <div style={{ width: '100%', height: '5px', background: '#eaf3ed', borderRadius: '5px', overflow: 'hidden', margin: '0.65rem 0 1rem 0' }}>
         <div
           style={{
             height: '100%',
             width: isSessionActive ? `${progressPercentage}%` : '0%',
-            background: 'linear-gradient(90deg, #6366f1, #818cf8)',
+            background: 'linear-gradient(90deg, #2d6a4f, #52b788)',
             borderRadius: '5px',
             transition: 'width 0.4s ease'
           }}

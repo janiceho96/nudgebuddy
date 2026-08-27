@@ -8,9 +8,9 @@ interface PersonalitySelectorProps {
 
 export const PersonalitySelector: React.FC<PersonalitySelectorProps> = ({ currentPersona, onSelect }) => {
   const options: { id: AgentPersona; label: string; activeBg: string; activeColor: string }[] = [
-    { id: 'gentle', label: '🕊️ Sanctuary', activeBg: '#eef2ff', activeColor: '#4f46e5' },
-    { id: 'direct', label: '🧭 Mindful Sage', activeBg: '#f0fdfa', activeColor: '#0d9488' },
-    { id: 'spicy', label: '✨ Intuitive Beacon', activeBg: '#fdf2f8', activeColor: '#db2777' }
+    { id: 'gentle', label: '🌿 Gentle Sprout', activeBg: '#d8f3dc', activeColor: '#1b4332' },
+    { id: 'direct', label: '🌲 Ancient Oak', activeBg: '#eaf3ed', activeColor: '#2d6a4f' },
+    { id: 'spicy', label: '🌸 Wild Flora', activeBg: '#fefae0', activeColor: '#b08968' }
   ];
 
   return (
