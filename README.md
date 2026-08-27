@@ -15,15 +15,15 @@
 
 <br />
 
-<img src="./docs/screenshots/app-preview.png" alt="NudgeBuddy Seamless macOS Floating Companion" width="880" style="border-radius: 12px; box-shadow: 0 12px 36px rgba(0,0,0,0.35);" />
+<img src="./docs/screenshots/hero-banner.png" alt="NudgeBuddy Seamless macOS Floating Companion" width="680" style="border-radius: 16px; box-shadow: 0 20px 40px rgba(0,0,0,0.5);" />
 
-<p align="center"><em>NudgeBuddy floating frameless on your Mac desktop beside your code editor & work apps.</em></p>
+<p align="center"><em>NudgeBuddy floating frameless on your Mac desktop while you do deep work.</em></p>
 
 <br />
 
 <div align="center">
-  <img src="./docs/screenshots/widget-card.png" alt="Frameless Widget Card" width="380" style="border-radius: 14px; margin-right: 12px;" />
-  <img src="./docs/screenshots/dock-pill-preview.png" alt="Bottom Dock Pill" width="460" style="border-radius: 14px;" />
+  <img src="./docs/screenshots/widget-card.png" alt="Frameless Widget Card" width="340" style="border-radius: 14px; margin-right: 12px;" />
+  <img src="./docs/screenshots/dock-pill-preview.png" alt="Bottom Dock Pill" width="480" style="border-radius: 14px;" />
 </div>
 
 [✨ Features](#-key-features) •
