@@ -85,8 +85,8 @@ export function App() {
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
           <MascotAvatar mood={state.agent.currentMood} size={28} />
           <div>
-            <span style={{ fontSize: '0.78rem', color: 'var(--text-main)', fontWeight: 600 }}>
-              {state.timer.status === 'running' ? `✨ ${formatMiniTimer(state.timer.remainingSeconds)}` : 'Sanctuary'}
+            <span style={{ fontSize: '0.78rem', color: '#1b4332', fontWeight: 700 }}>
+              {state.timer.status === 'running' ? `⚡ ${formatMiniTimer(state.timer.remainingSeconds)}` : '🌿 Sanctuary'}
             </span>
           </div>
         </div>
@@ -104,8 +104,8 @@ export function App() {
         onClick={() => setIsMouseInside(true)}
       >
         <MascotAvatar mood={state.agent.currentMood} size={24} />
-        <span className="tab-text">
-          {state.timer.status === 'running' ? `✨ ${formatMiniTimer(state.timer.remainingSeconds)}` : 'SANCTUARY'}
+        <span className="tab-text" style={{ color: '#1b4332', fontWeight: 700 }}>
+          {state.timer.status === 'running' ? `⚡ ${formatMiniTimer(state.timer.remainingSeconds)}` : '🌿 SANCTUARY'}
         </span>
         <span style={{ fontSize: '0.65rem' }}>◀</span>
       </div>
@@ -117,8 +117,8 @@ export function App() {
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
           <MascotAvatar mood={state.agent.currentMood} size={26} />
-          <span style={{ fontSize: '0.78rem', fontWeight: 600 }}>
-            {state.timer.status === 'running' ? `✨ ${formatMiniTimer(state.timer.remainingSeconds)}` : 'Sanctuary'}
+          <span style={{ fontSize: '0.78rem', fontWeight: 700, color: '#1b4332' }}>
+            {state.timer.status === 'running' ? `⚡ ${formatMiniTimer(state.timer.remainingSeconds)}` : '🌿 Sanctuary'}
           </span>
         </div>
         <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', maxWidth: '130px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>

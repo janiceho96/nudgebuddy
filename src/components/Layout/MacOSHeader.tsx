@@ -1,6 +1,6 @@
 import React from 'react';
 import { HoverHideMode } from '../../types';
-import { Settings, Sparkles, Minimize2, Pin, Eye } from 'lucide-react';
+import { Settings, Leaf, Sparkles, Minimize2, Pin, Eye } from 'lucide-react';
 
 interface MacOSHeaderProps {
   isWideMode: boolean;
@@ -60,11 +60,11 @@ export const MacOSHeader: React.FC<MacOSHeaderProps> = ({
         />
       </div>
 
-      <div className="header-title-badge">
-        <Sparkles size={13} color="#6366f1" fill="#6366f1" />
-        <span style={{ fontFamily: 'var(--font-sans)', fontSize: '0.88rem', fontWeight: 600, letterSpacing: '-0.2px' }}>NudgeBuddy</span>
-        <span style={{ fontSize: '0.62rem', background: '#eef2ff', color: '#4f46e5', padding: '0.1rem 0.4rem', borderRadius: '10px', fontWeight: 500 }}>
-          Sanctuary
+      <div className="header-title-badge" style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+        <Leaf size={14} color="#2d6a4f" fill="#52b788" />
+        <span style={{ fontFamily: 'var(--font-sans)', fontSize: '0.88rem', fontWeight: 700, color: '#1b4332', letterSpacing: '-0.2px' }}>NudgeBuddy</span>
+        <span style={{ fontSize: '0.62rem', background: '#d8f3dc', color: '#1b4332', border: '1px solid #b7e4c7', padding: '0.12rem 0.45rem', borderRadius: '10px', fontWeight: 700, letterSpacing: '0.5px' }}>
+          🌿 SANCTUARY
         </span>
       </div>
 
