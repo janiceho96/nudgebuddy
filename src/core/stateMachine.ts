@@ -160,7 +160,7 @@ export function appReducer(state: AppState, action: AppAction): AppState {
           currentMood: dialogue.mood,
           currentQuote: dialogue.quote,
           lastEvent: 'ON_TASK_ADD',
-          chatHistory: [...state.agent.chatHistory, newChat]
+          chatHistory: [...(state.agent.chatHistory || []), newChat]
         }
       };
     }
@@ -194,7 +194,7 @@ export function appReducer(state: AppState, action: AppAction): AppState {
           currentMood: dialogue.mood,
           currentQuote: dialogue.quote,
           lastEvent: 'ON_TASK_SELECT',
-          chatHistory: [...state.agent.chatHistory, newChat]
+          chatHistory: [...(state.agent.chatHistory || []), newChat]
         }
       };
     }
@@ -231,7 +231,7 @@ export function appReducer(state: AppState, action: AppAction): AppState {
           currentMood: dialogue.mood,
           currentQuote: dialogue.quote,
           lastEvent: 'ON_FOCUS_START',
-          chatHistory: [...state.agent.chatHistory, newChat]
+          chatHistory: [...(state.agent.chatHistory || []), newChat]
         }
       };
     }
@@ -350,7 +350,7 @@ export function appReducer(state: AppState, action: AppAction): AppState {
           currentMood: dialogue.mood,
           currentQuote: dialogue.quote,
           lastEvent: 'ON_FOCUS_COMPLETE',
-          chatHistory: [...state.agent.chatHistory, newChat]
+          chatHistory: [...(state.agent.chatHistory || []), newChat]
         }
       };
     }
@@ -661,7 +661,7 @@ export function appReducer(state: AppState, action: AppAction): AppState {
           ...state.agent,
           currentMood: msg.mood || state.agent.currentMood,
           currentQuote: msg.sender === 'agent' ? msg.text : state.agent.currentQuote,
-          chatHistory: [...state.agent.chatHistory, msg]
+          chatHistory: [...(state.agent.chatHistory || []), msg]
         }
       };
     }

@@ -31,7 +31,28 @@ export function loadStateFromStorage(): AppState | null {
   try {
     const serialized = localStorage.getItem(STORAGE_KEY);
     if (!serialized) return null;
-    return JSON.parse(serialized) as AppState;
+    const parsed = JSON.parse(serialized) as AppState;
+
+    if (parsed) {
+      if (!parsed.agent) {
+        parsed.agent = {
+          name: 'Sprout',
+          persona: 'gentle',
+          currentMood: 'idle',
+          currentQuote: "Take a deep grounding breath. Like trees in the forest, we grow quietly one ring at a time.",
+          pokeCount: 0,
+          chatHistory: []
+        };
+      } else if (!Array.isArray(parsed.agent.chatHistory)) {
+        parsed.agent.chatHistory = [];
+      }
+
+      if (!Array.isArray(parsed.tasks)) {
+        parsed.tasks = [];
+      }
+    }
+
+    return parsed;
   } catch (err) {
     console.error('Failed to load state from localStorage:', err);
     return null;
