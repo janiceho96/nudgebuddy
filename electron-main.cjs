@@ -1,5 +1,6 @@
-const { app, BrowserWindow, screen, globalShortcut } = require('electron');
+const { app, BrowserWindow, screen, globalShortcut, ipcMain } = require('electron');
 const path = require('path');
+const fs = require('fs');
 
 let mainWindow = null;
 
@@ -8,37 +9,37 @@ function createWindow() {
   const { width: screenWidth, height: screenHeight } = primaryDisplay.workAreaSize;
 
   const windowWidth = 440;
-  const windowHeight = Math.min(760, screenHeight - 60);
+  const windowHeight = Math.min(840, screenHeight - 40);
 
   mainWindow = new BrowserWindow({
     width: windowWidth,
     height: windowHeight,
     x: screenWidth - windowWidth - 20,
-    y: 40,
+    y: 30,
     frame: false,
     transparent: true,
     backgroundColor: '#00000000',
     hasShadow: false,
     alwaysOnTop: true,
     resizable: true,
+    show: true,
     webPreferences: {
       nodeIntegration: false,
-      contextIsolation: true
+      contextIsolation: true,
+      preload: path.join(__dirname, 'preload.cjs')
     }
   });
 
-  // Standard macOS floating window level (floats above apps but allows smooth background clicking!)
   mainWindow.setAlwaysOnTop(true, 'floating');
   mainWindow.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
 
   const distIndex = path.join(__dirname, 'dist', 'index.html');
   const appIndex = path.join(__dirname, 'Contents', 'Resources', 'app', 'index.html');
-  const fs = require('fs');
 
-  if (fs.existsSync(appIndex)) {
-    mainWindow.loadFile(appIndex);
-  } else if (fs.existsSync(distIndex)) {
+  if (fs.existsSync(distIndex)) {
     mainWindow.loadFile(distIndex);
+  } else if (fs.existsSync(appIndex)) {
+    mainWindow.loadFile(appIndex);
   } else {
     mainWindow.loadURL('http://localhost:5173/');
   }
@@ -59,7 +60,28 @@ function createWindow() {
   });
 }
 
-// Keep in macOS dock
+// IPC Handlers
+ipcMain.on('set-ignore-mouse-events', (event, ignore, options) => {
+  const win = BrowserWindow.fromWebContents(event.sender);
+  if (win && !win.isDestroyed()) {
+    win.setIgnoreMouseEvents(ignore, options);
+  }
+});
+
+ipcMain.on('resize-window', (event, width, height) => {
+  const win = BrowserWindow.fromWebContents(event.sender);
+  if (win && !win.isDestroyed()) {
+    win.setSize(width, height);
+  }
+});
+
+ipcMain.on('set-always-on-top', (event, flag) => {
+  const win = BrowserWindow.fromWebContents(event.sender);
+  if (win && !win.isDestroyed()) {
+    win.setAlwaysOnTop(flag, 'floating');
+  }
+});
+
 app.dock && app.dock.show();
 
 app.whenReady().then(createWindow);
