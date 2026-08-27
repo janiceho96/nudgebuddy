@@ -14,6 +14,8 @@ interface MacOSHeaderProps {
   onOpenSync: () => void;
   onOpenSettings: () => void;
   onReset: () => void;
+  onMouseDown?: () => void;
+  onMouseUp?: () => void;
 }
 
 export const MacOSHeader: React.FC<MacOSHeaderProps> = ({
@@ -27,7 +29,9 @@ export const MacOSHeader: React.FC<MacOSHeaderProps> = ({
   onOpenDailyRecap,
   onOpenSync,
   onOpenSettings,
-  onReset
+  onReset,
+  onMouseDown,
+  onMouseUp
 }) => {
   const getHoverModeLabel = () => {
     switch (hoverHideMode) {
@@ -41,14 +45,14 @@ export const MacOSHeader: React.FC<MacOSHeaderProps> = ({
         return { label: 'Ghost Dim', icon: <Eye size={13} />, bg: '#d8b4fe', title: 'Hover-to-Reveal: Dims translucent when cursor leaves' };
       case 'none':
       default:
-        return { label: 'Pinned Open', icon: <Pin size={13} />, bg: '#ffffff', title: '📌 Pinned Open: Always fully visible' };
+        return { label: 'Pinned Open', icon: <Pin size={13} />, bg: '#ffffff', title: '📌 Pinned Open: Always fully visible (will not minimize when dragged)' };
     }
   };
 
   const modeInfo = getHoverModeLabel();
 
   return (
-    <header className="macos-header">
+    <header className="macos-header" onMouseDown={onMouseDown} onMouseUp={onMouseUp}>
       <div className="traffic-lights">
         <div
           className="dot dot-red"

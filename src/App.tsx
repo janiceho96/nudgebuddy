@@ -81,16 +81,34 @@ export function App() {
     };
   }, [state.timer.status]);
 
+  const [isDragging, setIsDragging] = useState<boolean>(false);
+
   const handleMouseEnter = () => {
     if (leaveDebounceRef.current) clearTimeout(leaveDebounceRef.current);
     setIsMouseInside(true);
   };
 
   const handleMouseLeave = () => {
+    // If the user is dragging or interacting, never minimize!
+    if (isDragging) return;
     if (leaveDebounceRef.current) clearTimeout(leaveDebounceRef.current);
     leaveDebounceRef.current = setTimeout(() => {
-      setIsMouseInside(false);
-    }, 350);
+      if (!isDragging) {
+        setIsMouseInside(false);
+      }
+    }, 900); // Generous 900ms grace period so dragging never abruptly collapses
+  };
+
+  const handleHeaderMouseDown = () => {
+    setIsDragging(true);
+    setIsMouseInside(true);
+    if (leaveDebounceRef.current) clearTimeout(leaveDebounceRef.current);
+  };
+
+  const handleHeaderMouseUp = () => {
+    setTimeout(() => {
+      setIsDragging(false);
+    }, 500);
   };
 
   const cycleHoverHideMode = () => {
@@ -208,6 +226,8 @@ export function App() {
           clearStateFromStorage();
           dispatch({ type: 'RESET_STATE' });
         }}
+        onMouseDown={handleHeaderMouseDown}
+        onMouseUp={handleHeaderMouseUp}
       />
 
       {/* Main Grid Container */}
