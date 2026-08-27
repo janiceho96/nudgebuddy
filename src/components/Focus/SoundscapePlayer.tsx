@@ -38,7 +38,7 @@ export const SoundscapePlayer: React.FC<SoundscapePlayerProps> = ({ isTimerRunni
       soundscapeEngine.stopSoundscape();
       setIsPlaying(false);
     } else {
-      const typeToPlay = selectedType === 'none' ? 'brown_noise' : selectedType;
+      const typeToPlay = selectedType === 'none' ? 'energetic_jazz' : selectedType;
       setSelectedType(typeToPlay);
       soundscapeEngine.startSoundscape(typeToPlay);
       setIsPlaying(true);
@@ -61,10 +61,11 @@ export const SoundscapePlayer: React.FC<SoundscapePlayerProps> = ({ isTimerRunni
           style={{ padding: '0.2rem 0.4rem', borderRadius: '6px', border: '1px solid var(--border-dark)', fontSize: '0.72rem', fontWeight: 600, background: '#ffffff', color: 'var(--text-main)', outline: 'none' }}
         >
           <option value="none">Mute</option>
-          <option value="energetic_jazz">🎷 Energetic Jazz Bop (116 BPM)</option>
-          <option value="jazz_cafe">☕ Cozy Midnight Jazz Rhodes</option>
-          <option value="bossa_nova">🌴 Sunset Bossa Nova & Vibes</option>
-          <option value="rainy_lofi_jazz">🌧️ Tokyo Rain & Lo-Fi Jazz</option>
+          <option value="energetic_jazz">🎷 Classic Blue Note Swing (128 BPM)</option>
+          <option value="coffeehouse_bebop">☕ Uptown Coffeehouse Bop (120 BPM)</option>
+          <option value="sunday_brunch_jazz">🥐 Sunday Jazz Brunch (110 BPM)</option>
+          <option value="bossa_jazz">🌴 Ipanema Bossa Swing (124 BPM)</option>
+          <option value="lofi_jazz_cafe">🌧️ Late Night Rain & Lo-Fi Jazz</option>
           <option value="forest_stream">🍃 Forest Brook & Soft Wind</option>
         </select>
       </div>

@@ -1,11 +1,11 @@
 export type SoundscapeType = 
   | 'none' 
-  | 'jazz_cafe' 
   | 'energetic_jazz' 
-  | 'bossa_nova' 
-  | 'rainy_lofi_jazz' 
+  | 'coffeehouse_bebop' 
+  | 'sunday_brunch_jazz' 
+  | 'bossa_jazz' 
+  | 'lofi_jazz_cafe'
   | 'forest_stream'
-  | 'brown_noise'
   | 'rain';
 
 class SoundscapeEngine {
@@ -65,20 +65,22 @@ class SoundscapeEngine {
     this.isPlaying = true;
 
     switch (type) {
-      case 'jazz_cafe':
-        this.generateJazzCafe();
-        break;
       case 'energetic_jazz':
-        this.generateEnergeticJazz();
+        this.generateBlueNoteSwing(128); // 128 BPM
         break;
-      case 'bossa_nova':
-        this.generateBossaNova();
+      case 'coffeehouse_bebop':
+        this.generateCoffeehouseBebop(120); // 120 BPM
         break;
-      case 'rainy_lofi_jazz':
-        this.generateRainyLofiJazz();
+      case 'sunday_brunch_jazz':
+        this.generateSundayBrunch(110); // 110 BPM
+        break;
+      case 'bossa_jazz':
+        this.generateBossaJazz(124); // 124 BPM
+        break;
+      case 'lofi_jazz_cafe':
+        this.generateLofiJazzCafe();
         break;
       case 'forest_stream':
-      case 'brown_noise':
         this.generateForestStream();
         break;
       case 'rain':
@@ -106,241 +108,404 @@ class SoundscapeEngine {
     this.activeNodes = [];
   }
 
-  // 1. ☕ Cozy Midnight Jazz Cafe (Warm Rhodes & Upright Bass)
-  private generateJazzCafe() {
+  // --- PERCUSSION & INSTRUMENT SYNTHESIS HELPERS ---
+
+  // 1. Swing Ride Cymbal Tap
+  private triggerRideCymbal(time: number, accent = false) {
     if (!this.ctx || !this.gainNode) return;
 
-    // Jazz Progression: Fmaj9 -> Dm9 -> Gm9 -> C13
-    const chords = [
-      { bass: 87.31, chord: [174.61, 220.00, 261.63, 329.63, 392.00] }, // Fmaj9
-      { bass: 73.42, chord: [146.83, 220.00, 261.63, 349.23, 440.00] }, // Dm9
-      { bass: 98.00, chord: [196.00, 233.08, 293.66, 349.23, 440.00] }, // Gm9
-      { bass: 65.41, chord: [130.81, 196.00, 246.94, 329.63, 440.00] }  // C13
-    ];
+    const bufferSize = Math.floor(this.ctx.sampleRate * 0.25);
+    const noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const output = noiseBuffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      output[i] = Math.random() * 2 - 1;
+    }
 
-    let chordIdx = 0;
-    const playNextChord = () => {
-      if (!this.ctx || !this.gainNode || !this.isPlaying) return;
-      const current = chords[chordIdx % chords.length];
-      chordIdx++;
+    const noiseSource = this.ctx.createBufferSource();
+    noiseSource.buffer = noiseBuffer;
 
-      // Play Rhodes Piano notes
-      current.chord.forEach((freq, i) => {
-        if (!this.ctx || !this.gainNode) return;
-        const osc = this.ctx.createOscillator();
-        const noteGain = this.ctx.createGain();
-        const noteFilter = this.ctx.createBiquadFilter();
+    const bandpass = this.ctx.createBiquadFilter();
+    bandpass.type = 'bandpass';
+    bandpass.frequency.setValueAtTime(8500, time);
+    bandpass.Q.setValueAtTime(4.0, time);
 
-        osc.type = i % 2 === 0 ? 'sine' : 'triangle';
-        osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+    const gain = this.ctx.createGain();
+    const peakGain = accent ? 0.05 : 0.025;
+    gain.gain.setValueAtTime(0.001, time);
+    gain.gain.exponentialRampToValueAtTime(peakGain, time + 0.005);
+    gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.22);
 
-        noteFilter.type = 'lowpass';
-        noteFilter.frequency.setValueAtTime(1400, this.ctx.currentTime);
+    noiseSource.connect(bandpass);
+    bandpass.connect(gain);
+    gain.connect(this.gainNode);
 
-        const now = this.ctx.currentTime + (i * 0.04); // Gentle strum arpeggio
-        noteGain.gain.setValueAtTime(0.001, now);
-        noteGain.gain.exponentialRampToValueAtTime(0.09, now + 0.08);
-        noteGain.gain.exponentialRampToValueAtTime(0.001, now + 3.2);
-
-        osc.connect(noteFilter);
-        noteFilter.connect(noteGain);
-        noteGain.connect(this.gainNode);
-
-        osc.start(now);
-        osc.stop(now + 3.4);
-      });
-
-      // Play Upright Walking Bass
-      const bassOsc = this.ctx.createOscillator();
-      const bassGain = this.ctx.createGain();
-      const bassFilter = this.ctx.createBiquadFilter();
-
-      bassOsc.type = 'sine';
-      bassOsc.frequency.setValueAtTime(current.bass, this.ctx.currentTime);
-
-      bassFilter.type = 'lowpass';
-      bassFilter.frequency.setValueAtTime(280, this.ctx.currentTime);
-
-      const now = this.ctx.currentTime;
-      bassGain.gain.setValueAtTime(0.001, now);
-      bassGain.gain.exponentialRampToValueAtTime(0.18, now + 0.05);
-      bassGain.gain.exponentialRampToValueAtTime(0.001, now + 2.8);
-
-      bassOsc.connect(bassFilter);
-      bassFilter.connect(bassGain);
-      bassGain.connect(this.gainNode);
-
-      bassOsc.start(now);
-      bassOsc.stop(now + 3.0);
-    };
-
-    playNextChord();
-    const interval = window.setInterval(playNextChord, 3400);
-    this.activeNodes.push(interval);
+    noiseSource.start(time);
+    noiseSource.stop(time + 0.24);
   }
 
-  // 2. 🎷 Energetic Coffeehouse Swing & Bop (Upbeat 116 BPM)
-  private generateEnergeticJazz() {
+  // 2. Hi-Hat Pedal Chick (Beats 2 & 4)
+  private triggerHiHat(time: number) {
     if (!this.ctx || !this.gainNode) return;
 
-    // Upbeat Jazz Bop Progression: Bbmaj7 -> G7b9 -> Cm7 -> F7#9
-    const chords = [
-      { bass: 116.54, chord: [233.08, 293.66, 349.23, 440.00] }, // Bbmaj7
-      { bass: 98.00, chord: [196.00, 246.94, 293.66, 415.30] },  // G7b9
-      { bass: 130.81, chord: [261.63, 311.13, 392.00, 466.16] }, // Cm7
-      { bass: 87.31, chord: [174.61, 220.00, 261.63, 415.30] }   // F7#9
-    ];
+    const bufferSize = Math.floor(this.ctx.sampleRate * 0.08);
+    const noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const output = noiseBuffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      output[i] = Math.random() * 2 - 1;
+    }
 
-    let beat = 0;
-    const playBeat = () => {
-      if (!this.ctx || !this.gainNode || !this.isPlaying) return;
-      const currentChord = chords[Math.floor(beat / 4) % chords.length];
-      const stepInMeasure = beat % 4;
-      beat++;
+    const noiseSource = this.ctx.createBufferSource();
+    noiseSource.buffer = noiseBuffer;
 
-      const now = this.ctx.currentTime;
+    const highpass = this.ctx.createBiquadFilter();
+    highpass.type = 'highpass';
+    highpass.frequency.setValueAtTime(6000, time);
 
-      // Walking Bass on every beat
-      const bassNotes = [currentChord.bass, currentChord.bass * 1.25, currentChord.bass * 1.5, currentChord.bass * 1.12];
-      const bassFreq = bassNotes[stepInMeasure];
+    const gain = this.ctx.createGain();
+    gain.gain.setValueAtTime(0.001, time);
+    gain.gain.exponentialRampToValueAtTime(0.035, time + 0.003);
+    gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.06);
 
-      const bassOsc = this.ctx.createOscillator();
-      const bassGain = this.ctx.createGain();
-      bassOsc.type = 'triangle';
-      bassOsc.frequency.setValueAtTime(bassFreq, now);
+    noiseSource.connect(highpass);
+    highpass.connect(gain);
+    gain.connect(this.gainNode);
 
-      bassGain.gain.setValueAtTime(0.001, now);
-      bassGain.gain.exponentialRampToValueAtTime(0.14, now + 0.03);
-      bassGain.gain.exponentialRampToValueAtTime(0.001, now + 0.48);
-
-      bassOsc.connect(bassGain);
-      bassGain.connect(this.gainNode);
-      bassOsc.start(now);
-      bassOsc.stop(now + 0.5);
-
-      // Piano Comping on offbeats (Swing feel: beat 1 and beat 3-and)
-      if (stepInMeasure === 0 || stepInMeasure === 2) {
-        currentChord.chord.forEach((freq, idx) => {
-          if (!this.ctx || !this.gainNode) return;
-          const osc = this.ctx.createOscillator();
-          const chordGain = this.ctx.createGain();
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(freq, now + 0.05);
-
-          chordGain.gain.setValueAtTime(0.001, now + 0.05);
-          chordGain.gain.exponentialRampToValueAtTime(0.08, now + 0.08);
-          chordGain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
-
-          osc.connect(chordGain);
-          chordGain.connect(this.gainNode);
-          osc.start(now + 0.05);
-          osc.stop(now + 0.5);
-        });
-      }
-    };
-
-    playBeat();
-    const interval = window.setInterval(playBeat, 520); // ~116 BPM swing
-    this.activeNodes.push(interval);
+    noiseSource.start(time);
+    noiseSource.stop(time + 0.07);
   }
 
-  // 3. 🌴 Sunset Bossa Nova & Vibes
-  private generateBossaNova() {
+  // 3. Acoustic Upright Walking Bass Pluck
+  private triggerBassNote(time: number, freq: number, duration = 0.42) {
     if (!this.ctx || !this.gainNode) return;
 
-    // Bossa Progression: Dmaj9 -> Bm7 -> Em9 -> A13
-    const chords = [
-      { bass: 73.42, chord: [220.00, 277.18, 329.63, 415.30] }, // Dmaj9
-      { bass: 61.74, chord: [185.00, 220.00, 277.18, 370.00] }, // Bm7
-      { bass: 82.41, chord: [164.81, 246.94, 293.66, 370.00] }, // Em9
-      { bass: 55.00, chord: [164.81, 220.00, 277.18, 370.00] }  // A13
-    ];
+    const osc1 = this.ctx.createOscillator();
+    const osc2 = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    const filter = this.ctx.createBiquadFilter();
 
-    let patternIdx = 0;
-    const playBossaStep = () => {
-      if (!this.ctx || !this.gainNode || !this.isPlaying) return;
-      const current = chords[Math.floor(patternIdx / 4) % chords.length];
-      const now = this.ctx.currentTime;
-      patternIdx++;
+    osc1.type = 'triangle';
+    osc1.frequency.setValueAtTime(freq, time);
 
-      // Warm Nylon Guitar / Vibraphone Chords
-      current.chord.forEach((freq) => {
-        if (!this.ctx || !this.gainNode) return;
-        const osc = this.ctx.createOscillator();
-        const gain = this.ctx.createGain();
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(freq, now);
+    osc2.type = 'sine';
+    osc2.frequency.setValueAtTime(freq * 0.5, time); // Deep sub octave
 
-        gain.gain.setValueAtTime(0.001, now);
-        gain.gain.exponentialRampToValueAtTime(0.07, now + 0.04);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.9);
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(450, time);
+    filter.frequency.exponentialRampToValueAtTime(140, time + duration);
 
-        osc.connect(gain);
-        gain.connect(this.gainNode);
-        osc.start(now);
-        osc.stop(now + 0.95);
-      });
+    gain.gain.setValueAtTime(0.001, time);
+    gain.gain.exponentialRampToValueAtTime(0.22, time + 0.015);
+    gain.gain.exponentialRampToValueAtTime(0.001, time + duration);
 
-      // Smooth Bossa Bass
-      const bassOsc = this.ctx.createOscillator();
-      const bassGain = this.ctx.createGain();
-      bassOsc.type = 'sine';
-      bassOsc.frequency.setValueAtTime(current.bass, now);
+    osc1.connect(filter);
+    osc2.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.gainNode);
 
-      bassGain.gain.setValueAtTime(0.001, now);
-      bassGain.gain.exponentialRampToValueAtTime(0.15, now + 0.05);
-      bassGain.gain.exponentialRampToValueAtTime(0.001, now + 0.85);
-
-      bassOsc.connect(bassGain);
-      bassGain.connect(this.gainNode);
-      bassOsc.start(now);
-      bassOsc.stop(now + 0.9);
-    };
-
-    playBossaStep();
-    const interval = window.setInterval(playBossaStep, 800);
-    this.activeNodes.push(interval);
+    osc1.start(time);
+    osc2.start(time);
+    osc1.stop(time + duration + 0.02);
+    osc2.stop(time + duration + 0.02);
   }
 
-  // 4. 🌧️ Tokyo Rainy Cafe & Lo-Fi Jazz Piano
-  private generateRainyLofiJazz() {
-    this.generateRain();
-
+  // 4. Acoustic Jazz Piano Chord Comp
+  private triggerPianoChord(time: number, freqs: number[], duration = 0.5) {
     if (!this.ctx || !this.gainNode) return;
 
-    const melodyNotes = [261.63, 293.66, 329.63, 392.00, 440.00, 523.25]; // Pentatonic jazz
-    const playMelody = () => {
-      if (!this.ctx || !this.gainNode || !this.isPlaying) return;
-      const note = melodyNotes[Math.floor(Math.random() * melodyNotes.length)];
-      const now = this.ctx.currentTime;
-
+    freqs.forEach((freq, idx) => {
+      if (!this.ctx || !this.gainNode) return;
       const osc = this.ctx.createOscillator();
       const gain = this.ctx.createGain();
       const filter = this.ctx.createBiquadFilter();
 
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(note, now);
+      osc.type = idx % 2 === 0 ? 'sine' : 'triangle';
+      osc.frequency.setValueAtTime(freq, time);
 
       filter.type = 'lowpass';
-      filter.frequency.setValueAtTime(850, now);
+      filter.frequency.setValueAtTime(1800, time);
+      filter.frequency.exponentialRampToValueAtTime(400, time + duration);
 
-      gain.gain.setValueAtTime(0.001, now);
-      gain.gain.exponentialRampToValueAtTime(0.11, now + 0.06);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 2.5);
+      const noteTime = time + (idx * 0.012); // Natural human strum
+      gain.gain.setValueAtTime(0.001, noteTime);
+      gain.gain.exponentialRampToValueAtTime(0.07, noteTime + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.001, noteTime + duration);
 
       osc.connect(filter);
       filter.connect(gain);
       gain.connect(this.gainNode);
 
-      osc.start(now);
-      osc.stop(now + 2.6);
+      osc.start(noteTime);
+      osc.stop(noteTime + duration + 0.05);
+    });
+  }
+
+  // 5. Vibraphone / Horn Melodic Lead Note
+  private triggerLeadNote(time: number, freq: number, duration = 0.35) {
+    if (!this.ctx || !this.gainNode) return;
+
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    const filter = this.ctx.createBiquadFilter();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(freq, time);
+
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(2200, time);
+
+    gain.gain.setValueAtTime(0.001, time);
+    gain.gain.exponentialRampToValueAtTime(0.12, time + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.001, time + duration);
+
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.gainNode);
+
+    osc.start(time);
+    osc.stop(time + duration + 0.05);
+  }
+
+  // ==========================================
+  // 1. 🎷 CLASSIC BLUE NOTE ENERGETIC SWING QUARTET
+  // ==========================================
+  private generateBlueNoteSwing(bpm = 128) {
+    if (!this.ctx || !this.gainNode) return;
+
+    const beatDuration = 60 / bpm; // ~0.47s per beat in 128 BPM
+    const swingSub = beatDuration * 0.66; // Swung eighth note
+
+    // Classic 12-Bar Blues in F Major / ii-V-I Progression
+    const jazzChords = [
+      // Fmaj7 / F6
+      { bass: [87.31, 98.00, 110.00, 103.83], piano: [261.63, 329.63, 392.00, 440.00] },
+      // D7alt / D7b9
+      { bass: [73.42, 82.41, 92.50, 98.00], piano: [246.94, 311.13, 370.00, 415.30] },
+      // Gm9 (ii)
+      { bass: [98.00, 110.00, 116.54, 123.47], piano: [293.66, 349.23, 440.00, 523.25] },
+      // C13 / C7#9 (V)
+      { bass: [65.41, 87.31, 98.00, 82.41], piano: [261.63, 329.63, 392.00, 466.16] },
+      // Am7
+      { bass: [110.00, 123.47, 130.81, 123.47], piano: [261.63, 329.63, 392.00, 493.88] },
+      // D7b9
+      { bass: [73.42, 87.31, 92.50, 87.31], piano: [246.94, 311.13, 370.00, 415.30] },
+      // Gm9
+      { bass: [98.00, 116.54, 130.81, 123.47], piano: [293.66, 349.23, 440.00, 523.25] },
+      // C7
+      { bass: [65.41, 77.78, 87.31, 98.00], piano: [261.63, 329.63, 392.00, 466.16] }
+    ];
+
+    // Melodic Solo Pentatonic Licks
+    const jazzSoloLicks = [
+      [349.23, 392.00, 440.00, 523.25], // F G A C
+      [440.00, 466.16, 523.25, 587.33], // A Bb C D
+      [523.25, 466.16, 440.00, 349.23], // C Bb A F
+      [392.00, 440.00, 466.16, 523.25]  // G A Bb C
+    ];
+
+    let beat = 0;
+    const playStep = () => {
+      if (!this.ctx || !this.gainNode || !this.isPlaying) return;
+      const measure = Math.floor(beat / 4);
+      const beatInMeasure = beat % 4;
+      const currentChord = jazzChords[measure % jazzChords.length];
+      const now = this.ctx.currentTime;
+      beat++;
+
+      // 1. Upright Walking Bass on Every Quarter Beat (1-2-3-4)
+      const bassFreq = currentChord.bass[beatInMeasure];
+      this.triggerBassNote(now, bassFreq, beatDuration * 0.95);
+
+      // 2. Jazz Ride Cymbal (Swung Pattern: 1, 2-and, 3, 4-and)
+      this.triggerRideCymbal(now, beatInMeasure === 0 || beatInMeasure === 2);
+      this.triggerRideCymbal(now + swingSub, false);
+
+      // 3. Hi-Hat Pedal on Beats 2 & 4
+      if (beatInMeasure === 1 || beatInMeasure === 3) {
+        this.triggerHiHat(now);
+      }
+
+      // 4. Piano Comping (Charleston & Syncopated Offbeats: Beat 1 and Beat 2-and)
+      if (beatInMeasure === 0) {
+        this.triggerPianoChord(now, currentChord.piano, beatDuration * 1.4);
+      } else if (beatInMeasure === 1) {
+        this.triggerPianoChord(now + swingSub, currentChord.piano, beatDuration * 0.8);
+      } else if (beatInMeasure === 3 && Math.random() > 0.4) {
+        this.triggerPianoChord(now + swingSub, currentChord.piano, beatDuration * 0.7);
+      }
+
+      // 5. Occasional Vibraphone Jazz Melody Solo
+      if (measure % 2 === 1 && (beatInMeasure === 0 || beatInMeasure === 2)) {
+        const lick = jazzSoloLicks[measure % jazzSoloLicks.length];
+        const note = lick[Math.floor(Math.random() * lick.length)];
+        this.triggerLeadNote(now, note, beatDuration * 1.2);
+      }
     };
 
-    const interval = window.setInterval(playMelody, 1600);
+    playStep();
+    const interval = window.setInterval(playStep, beatDuration * 1000);
     this.activeNodes.push(interval);
   }
 
-  // 5. 🍃 Forest Stream & Soft Wind
+  // ==========================================
+  // 2. ☕ UPTOWN COFFEEHOUSE BEBOP (120 BPM)
+  // ==========================================
+  private generateCoffeehouseBebop(bpm = 120) {
+    if (!this.ctx || !this.gainNode) return;
+
+    const beatDuration = 60 / bpm;
+    const swingSub = beatDuration * 0.65;
+
+    // Classic Rhythm Changes in Bb Major
+    const bebopChords = [
+      { bass: [116.54, 130.81, 146.83, 138.59], piano: [233.08, 293.66, 349.23, 440.00] }, // Bbmaj7
+      { bass: [98.00, 110.00, 116.54, 123.47], piano: [220.00, 293.66, 370.00, 440.00] },  // G7b9
+      { bass: [130.81, 146.83, 155.56, 164.81], piano: [261.63, 311.13, 392.00, 466.16] }, // Cm7
+      { bass: [87.31, 98.00, 110.00, 103.83], piano: [261.63, 329.63, 415.30, 466.16] }   // F7#9
+    ];
+
+    let beat = 0;
+    const playBebop = () => {
+      if (!this.ctx || !this.gainNode || !this.isPlaying) return;
+      const measure = Math.floor(beat / 4);
+      const beatInMeasure = beat % 4;
+      const chord = bebopChords[measure % bebopChords.length];
+      const now = this.ctx.currentTime;
+      beat++;
+
+      // Snappy Walking Bass
+      this.triggerBassNote(now, chord.bass[beatInMeasure], beatDuration * 0.9);
+
+      // Swing Ride & Hi-hat
+      this.triggerRideCymbal(now, true);
+      this.triggerRideCymbal(now + swingSub, false);
+      if (beatInMeasure === 1 || beatInMeasure === 3) {
+        this.triggerHiHat(now);
+      }
+
+      // Crisp Stabs
+      if (beatInMeasure === 0 || beatInMeasure === 2) {
+        this.triggerPianoChord(now, chord.piano, beatDuration * 0.6);
+      }
+    };
+
+    playBebop();
+    const interval = window.setInterval(playBebop, beatDuration * 1000);
+    this.activeNodes.push(interval);
+  }
+
+  // ==========================================
+  // 3. 🥐 SUNDAY MORNING JAZZ BRUNCH (110 BPM)
+  // ==========================================
+  private generateSundayBrunch(bpm = 110) {
+    if (!this.ctx || !this.gainNode) return;
+
+    const beatDuration = 60 / bpm;
+    const swingSub = beatDuration * 0.67;
+
+    // Warm, joyful Major 9th progression
+    const brunchChords = [
+      { bass: [130.81, 146.83, 164.81, 146.83], piano: [261.63, 329.63, 392.00, 493.88] }, // Cmaj9
+      { bass: [110.00, 123.47, 130.81, 123.47], piano: [261.63, 329.63, 392.00, 440.00] }, // Am9
+      { bass: [146.83, 164.81, 174.61, 164.81], piano: [293.66, 349.23, 440.00, 523.25] }, // Dm9
+      { bass: [98.00, 110.00, 123.47, 110.00], piano: [246.94, 329.63, 392.00, 440.00] }   // G13
+    ];
+
+    let beat = 0;
+    const playBrunch = () => {
+      if (!this.ctx || !this.gainNode || !this.isPlaying) return;
+      const measure = Math.floor(beat / 4);
+      const beatInMeasure = beat % 4;
+      const chord = brunchChords[measure % brunchChords.length];
+      const now = this.ctx.currentTime;
+      beat++;
+
+      // Gentle walking bass
+      this.triggerBassNote(now, chord.bass[beatInMeasure], beatDuration * 0.95);
+
+      // Light brush cymbal
+      this.triggerRideCymbal(now, false);
+      this.triggerRideCymbal(now + swingSub, false);
+      if (beatInMeasure === 1 || beatInMeasure === 3) {
+        this.triggerHiHat(now);
+      }
+
+      // Warm rolling piano chords
+      if (beatInMeasure === 0 || beatInMeasure === 2) {
+        this.triggerPianoChord(now, chord.piano, beatDuration * 1.5);
+      }
+    };
+
+    playBrunch();
+    const interval = window.setInterval(playBrunch, beatDuration * 1000);
+    this.activeNodes.push(interval);
+  }
+
+  // ==========================================
+  // 4. 🌴 IPANEMA BOSSA NOVA JAZZ (124 BPM)
+  // ==========================================
+  private generateBossaJazz(bpm = 124) {
+    if (!this.ctx || !this.gainNode) return;
+
+    const beatDuration = 60 / bpm;
+
+    const bossaChords = [
+      { root: 73.42, fifth: 110.00, piano: [220.00, 277.18, 329.63, 415.30] }, // Dmaj9
+      { root: 61.74, fifth: 92.50, piano: [185.00, 220.00, 277.18, 370.00] },  // Bm7
+      { root: 82.41, fifth: 123.47, piano: [164.81, 246.94, 293.66, 370.00] }, // Em9
+      { root: 55.00, fifth: 82.41, piano: [164.81, 220.00, 277.18, 370.00] }   // A13
+    ];
+
+    let step = 0;
+    const playBossa = () => {
+      if (!this.ctx || !this.gainNode || !this.isPlaying) return;
+      const measure = Math.floor(step / 8);
+      const stepInMeasure = step % 8;
+      const chord = bossaChords[measure % bossaChords.length];
+      const now = this.ctx.currentTime;
+      step++;
+
+      // Bossa Bass (Root on 1, Fifth on 3)
+      if (stepInMeasure === 0) {
+        this.triggerBassNote(now, chord.root, beatDuration * 1.6);
+      } else if (stepInMeasure === 4) {
+        this.triggerBassNote(now, chord.fifth, beatDuration * 1.6);
+      }
+
+      // Shaker on every eighth note
+      this.triggerRideCymbal(now, stepInMeasure % 2 === 0);
+
+      // Classic Bossa Clave Syncopation (1, 1-and, 2-and, 3-and, 4)
+      if ([0, 3, 5, 7].includes(stepInMeasure)) {
+        this.triggerPianoChord(now, chord.piano, beatDuration * 0.8);
+      }
+    };
+
+    playBossa();
+    const interval = window.setInterval(playBossa, (beatDuration / 2) * 1000);
+    this.activeNodes.push(interval);
+  }
+
+  // ==========================================
+  // 5. 🌧️ LATE NIGHT RAIN & LO-FI JAZZ CAFE
+  // ==========================================
+  private generateLofiJazzCafe() {
+    this.generateRain();
+
+    if (!this.ctx || !this.gainNode) return;
+
+    const melodyNotes = [261.63, 293.66, 329.63, 392.00, 440.00, 523.25];
+    const playMelody = () => {
+      if (!this.ctx || !this.gainNode || !this.isPlaying) return;
+      const note = melodyNotes[Math.floor(Math.random() * melodyNotes.length)];
+      const now = this.ctx.currentTime;
+      this.triggerLeadNote(now, note, 2.2);
+    };
+
+    const interval = window.setInterval(playMelody, 1800);
+    this.activeNodes.push(interval);
+  }
+
+  // 6. Forest Brook
   private generateForestStream() {
     if (!this.ctx || !this.gainNode) return;
 
@@ -371,7 +536,7 @@ class SoundscapeEngine {
     this.activeNodes.push(whiteNoise, filter);
   }
 
-  // 6. Rain
+  // 7. Rain
   private generateRain() {
     if (!this.ctx || !this.gainNode) return;
 
