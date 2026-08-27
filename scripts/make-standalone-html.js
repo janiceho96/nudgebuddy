@@ -5,25 +5,34 @@ const distDir = path.resolve('dist');
 const htmlPath = path.join(distDir, 'index.html');
 let html = fs.readFileSync(htmlPath, 'utf8');
 
-// Inline CSS
-const cssMatch = html.match(/<link rel="stylesheet" crossorigin href="(\/assets\/[^"]+)">/);
-if (cssMatch) {
-  const cssFile = path.join(distDir, cssMatch[1]);
-  if (fs.existsSync(cssFile)) {
-    const cssContent = fs.readFileSync(cssFile, 'utf8');
-    html = html.replace(cssMatch[0], `<style>\n${cssContent}\n</style>`);
-  }
+// 1. Inline all CSS files in dist/assets
+const assetFiles = fs.readdirSync(path.join(distDir, 'assets'));
+const cssFiles = assetFiles.filter(f => f.endsWith('.css'));
+const jsFiles = assetFiles.filter(f => f.endsWith('.js'));
+
+// Replace stylesheet links with inline style tags
+for (const cssFile of cssFiles) {
+  const cssContent = fs.readFileSync(path.join(distDir, 'assets', cssFile), 'utf8');
+  // Match link tag for this CSS file
+  const linkRegex = new RegExp(`<link[^>]*href=["'][^"']*${cssFile}["'][^>]*>`, 'i');
+  html = html.replace(linkRegex, `<style>\n${cssContent}\n</style>`);
 }
 
-// Inline JS
-const jsMatch = html.match(/<script type="module" crossorigin src="(\/assets\/[^"]+)"><\/script>/);
-if (jsMatch) {
-  const jsFile = path.join(distDir, jsMatch[1]);
-  if (fs.existsSync(jsFile)) {
-    const jsContent = fs.readFileSync(jsFile, 'utf8');
-    html = html.replace(jsMatch[0], `<script type="module">\n${jsContent}\n</script>`);
-  }
+// Replace script tags with inline script tags
+for (const jsFile of jsFiles) {
+  const jsContent = fs.readFileSync(path.join(distDir, 'assets', jsFile), 'utf8');
+  // Match script tag for this JS file
+  const scriptRegex = new RegExp(`<script[^>]*src=["'][^"']*${jsFile}["'][^>]*><\\/script>`, 'i');
+  html = html.replace(scriptRegex, `<script type="module">\n${jsContent}\n</script>`);
 }
 
-fs.writeFileSync(path.join(distDir, 'NudgeBuddy-Offline.html'), html);
-console.log('Successfully created standalone NudgeBuddy-Offline.html!');
+// Write to dist and directly to Desktop for instant sharing
+const outPathDist = path.join(distDir, 'NudgeBuddy-Sanctuary.html');
+const outPathDesktop = path.join(process.env.HOME || '/Users/macjanice', 'Desktop', 'NudgeBuddy-Sanctuary.html');
+
+fs.writeFileSync(outPathDist, html);
+fs.writeFileSync(outPathDesktop, html);
+
+console.log(`✅ Standalone single-file HTML generated:`);
+console.log(`   -> ${outPathDist}`);
+console.log(`   -> ${outPathDesktop}`);
