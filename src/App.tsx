@@ -144,40 +144,14 @@ export function App() {
         className="bottom-dock-pill"
         onClick={() => setIsMouseInside(true)}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', flexShrink: 0 }}>
-          <MascotAvatar mood={state.agent.currentMood} size={28} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
+          <MascotAvatar mood={state.agent.currentMood} size={26} />
           <span style={{ fontSize: '0.78rem', fontWeight: 800, color: '#121826', whiteSpace: 'nowrap' }}>
             {state.timer.status === 'running' ? `⚡ ${formatMiniTimer(state.timer.remainingSeconds)}` : '🎯 Focus'}
           </span>
         </div>
 
-        <div style={{ fontSize: '0.72rem', color: '#1e293b', fontWeight: 600, flex: 1, padding: '0 0.5rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-          {activeFocusTask?.title || 'No task'}
-        </div>
-
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', flexShrink: 0 }}>
-          <button
-            type="button"
-            className="nb-btn"
-            style={{
-              background: '#ffffff',
-              padding: '0.2rem 0.45rem',
-              fontSize: '0.7rem',
-              display: 'flex',
-              alignItems: 'center',
-              cursor: 'pointer'
-            }}
-            onClick={(e) => {
-              e.stopPropagation();
-              setIsMouseInside(true);
-              dispatch({ type: 'TOGGLE_SETTINGS' });
-            }}
-            title="Open Settings"
-          >
-            ⚙️
-          </button>
-          <span style={{ fontSize: '0.75rem', fontWeight: 900, color: '#121826', cursor: 'pointer' }} title="Expand">▲</span>
-        </div>
+        <span style={{ fontSize: '0.72rem', fontWeight: 900, color: '#121826', marginLeft: '0.35rem' }} title="Expand">▲</span>
       </div>
 
       {/* Edge Drawer Pull Tab (Protruding tab when docked to Mac right bezel) */}
