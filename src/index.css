@@ -1,0 +1,171 @@
+:root {
+  --bg-app: #fbf9f4;
+  --bg-panel: #ffffff;
+  --text-main: #121826;
+  --text-muted: #64748b;
+  --border-dark: #121826;
+  --border-width: 2.5px;
+  --shadow-main: 3.5px 3.5px 0px #121826;
+  --shadow-sm: 2px 2px 0px #121826;
+  --shadow-lg: 5px 5px 0px #121826;
+  
+  /* Neo-Brutalist Palette */
+  --color-yellow: #ffe600;
+  --color-lavender: #d8b4fe;
+  --color-mint: #86efac;
+  --color-coral: #fda4af;
+  --color-orange: #fb923c;
+  --color-blue: #93c5fd;
+  --color-dark: #121826;
+  --color-danger: #ef4444;
+
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Space Grotesk', monospace;
+  --font-display: 'Space Grotesk', var(--font-sans);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  background: transparent !important;
+  background-image: none !important;
+  color: var(--text-main);
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  justify-content: flex-end;
+  align-items: stretch;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom Neo-Brutalist Utilities */
+.nb-box {
+  background: var(--bg-panel);
+  border: var(--border-width) solid var(--border-dark);
+  box-shadow: var(--shadow-main);
+  border-radius: 12px;
+}
+
+.nb-btn {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 0.88rem;
+  padding: 0.5rem 0.9rem;
+  border: var(--border-width) solid var(--border-dark);
+  box-shadow: var(--shadow-main);
+  border-radius: 8px;
+  cursor: pointer;
+  background: #ffffff;
+  color: var(--text-main);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  transition: all 0.12s ease;
+  user-select: none;
+}
+
+.nb-btn:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: var(--shadow-lg);
+}
+
+.nb-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0px var(--border-dark);
+}
+
+.nb-btn-primary {
+  background: var(--color-yellow);
+}
+
+.nb-btn-success {
+  background: var(--color-mint);
+}
+
+.nb-btn-danger {
+  background: var(--color-coral);
+}
+
+.nb-btn-lavender {
+  background: var(--color-lavender);
+}
+
+.nb-badge {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.2rem 0.5rem;
+  border: 1.8px solid var(--border-dark);
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* Animations */
+@keyframes bounceSmall {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-4deg); }
+  75% { transform: rotate(4deg); }
+}
+
+@keyframes talkingMascot {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-3px) rotate(-2deg); }
+  75% { transform: translateY(-1px) rotate(2deg); }
+}
+
+@keyframes talkingMouth {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(1.6); }
+}
+
+.animate-wiggle {
+  animation: wiggle 0.4s ease-in-out infinite;
+}
+
+.animate-bounce-subtle {
+  animation: bounceSmall 2s ease-in-out infinite;
+}
+
+.animate-talking-mascot {
+  animation: talkingMascot 0.3s ease-in-out infinite;
+}
+
+.animate-talking-mouth {
+  transform-origin: 40px 52px;
+  animation: talkingMouth 0.2s ease-in-out infinite;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-left: 1.5px solid var(--border-dark);
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border: 1.5px solid var(--border-dark);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
