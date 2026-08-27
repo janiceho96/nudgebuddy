@@ -144,31 +144,28 @@ export function App() {
         className="bottom-dock-pill"
         onClick={() => setIsMouseInside(true)}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-          <MascotAvatar mood={state.agent.currentMood} size={30} />
-          <div>
-            <span style={{ fontSize: '0.78rem', color: '#121826' }}>
-              {state.timer.status === 'running' ? `⚡ ${formatMiniTimer(state.timer.remainingSeconds)}` : '🎯 Focus Dock'}
-            </span>
-          </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', flexShrink: 0 }}>
+          <MascotAvatar mood={state.agent.currentMood} size={28} />
+          <span style={{ fontSize: '0.78rem', fontWeight: 800, color: '#121826', whiteSpace: 'nowrap' }}>
+            {state.timer.status === 'running' ? `⚡ ${formatMiniTimer(state.timer.remainingSeconds)}` : '🎯 Focus'}
+          </span>
         </div>
 
-        <div style={{ fontSize: '0.72rem', color: '#475569', maxWidth: '140px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+        <div style={{ fontSize: '0.72rem', color: '#1e293b', fontWeight: 600, flex: 1, padding: '0 0.5rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
           {activeFocusTask?.title || 'No task'}
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', flexShrink: 0 }}>
           <button
             type="button"
+            className="nb-btn"
             style={{
               background: '#ffffff',
-              border: '1.5px solid #121826',
-              borderRadius: '6px',
-              padding: '2px 5px',
-              cursor: 'pointer',
+              padding: '0.2rem 0.45rem',
+              fontSize: '0.7rem',
               display: 'flex',
               alignItems: 'center',
-              fontSize: '0.7rem'
+              cursor: 'pointer'
             }}
             onClick={(e) => {
               e.stopPropagation();
@@ -179,7 +176,7 @@ export function App() {
           >
             ⚙️
           </button>
-          <span style={{ fontSize: '0.75rem', fontWeight: 900, color: '#121826' }}>▲</span>
+          <span style={{ fontSize: '0.75rem', fontWeight: 900, color: '#121826', cursor: 'pointer' }} title="Expand">▲</span>
         </div>
       </div>
 
